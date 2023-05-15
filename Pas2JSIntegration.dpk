@@ -1,0 +1,43 @@
+﻿package Pas2JSIntegration;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  designide,
+  RESTComponents;
+
+contains
+  Pas2JS.Compiler in 'Pas2JS.Compiler.pas',
+  Pas2JS.Enviroment.Options in 'Pas2JS.Enviroment.Options.pas',
+  Pas2JS.Enviroment.Options.Frame in 'Pas2JS.Enviroment.Options.Frame.pas' {Pas2JSEnviromentOptions: TFrame},
+  Pas2JS.Project.Options in 'Pas2JS.Project.Options.pas',
+  Pas2JS.Compiler.Integration in 'Pas2JS.Compiler.Integration.pas',
+  Pas2JS.Registry in 'Pas2JS.Registry.pas';
+
+end.
