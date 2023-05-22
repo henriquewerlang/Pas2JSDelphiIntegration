@@ -134,7 +134,7 @@ begin
   Configuration.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] := cbxRemoveNotUsedDeclaration.Checked;
   Configuration.AsBoolean[PAS2JS_REMOVE_PRIVATES] := cbxRemovePrivates.Checked;
 
-  if edtSearchPath.Text <> EmptyStr then
+  if edtSearchPath.Text <> Configuration.Value[PAS2JS_SEARCH_PATH] then
     Configuration.Value[PAS2JS_SEARCH_PATH] := edtSearchPath.Text;
 
   cdsModules.First;
