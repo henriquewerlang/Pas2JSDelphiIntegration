@@ -7,6 +7,7 @@ uses Xml.XMLIntf, System.Generics.Collections, Pas2JS.Registry, ToolsAPI;
 type
   PPas2JSCompiler = Pointer;
   TLibLogCallBack = procedure (Data: Pointer; Msg: PAnsiChar; MsgLen: Integer); stdcall;
+  TReadPasCallBack = procedure (Data: Pointer; AFileName: PAnsiChar; AFileNameLen: Integer; AFileData: PAnsiChar; var AFileDataLen: Int32); stdcall;
   TUnitAliasCallBack = function (Data: Pointer; AUnitName: PAnsiChar; AUnitNameMaxLen: Integer): Boolean; stdcall;
   TWriteJSCallBack = procedure (Data : Pointer; AFileName: PAnsiChar; AFileNameLen : Integer; AFileData : PAnsiChar; AFileDataLen: Int32); stdcall;
 
@@ -36,6 +37,7 @@ type
     procedure CompilerLog(Info: String);
     procedure LoadLinks(const LibraryPath: String);
     procedure LoadPas2JSLibrary;
+    procedure ReleaseCompiler;
     procedure SaveIndexFile;
     procedure StartIndexFile;
     procedure WriteJS(const FileName, FileContent: PAnsiChar; const ContentSize: Int32);
@@ -243,8 +245,7 @@ end;
 
 destructor TPas2JSCompiler.Destroy;
 begin
-  if Assigned(FCompiler) then
-    FFreePas2JSCompiler(FCompiler);
+  ReleaseCompiler;
 
   FRegistry.Free;
 
@@ -297,6 +298,14 @@ begin
   LoadLinks(Registry.CompilerPath);
 end;
 
+procedure TPas2JSCompiler.ReleaseCompiler;
+begin
+  if Assigned(FCompiler) then
+    FFreePas2JSCompiler(FCompiler);
+
+  FCompiler := nil;
+end;
+
 procedure TPas2JSCompiler.Run(const Project: IOTAProject);
 begin
   FCurrentProject := Project;
@@ -322,6 +331,8 @@ begin
   FRunPas2JSCompiler(Compiler, nil, PAnsiChar(FilePath), @CommandLineParam[0], True);
 
   SaveIndexFile;
+
+  ReleaseCompiler;
 end;
 
 procedure TPas2JSCompiler.SaveIndexFile;
