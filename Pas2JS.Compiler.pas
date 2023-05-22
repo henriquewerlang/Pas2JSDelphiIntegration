@@ -32,12 +32,12 @@ type
     function GetRegistry: TPas2JSRegistry;
     function UnitAlias(const UnitName: PAnsiChar): Boolean;
 
-    procedure AddScriptFile(const FileName: String);
+    procedure AddScriptFile(const LinkFileName: String; const Script: Boolean);
     procedure CompilerLog(Info: String);
     procedure LoadLinks(const LibraryPath: String);
     procedure LoadPas2JSLibrary;
-    procedure SaveIndexFile(const Project: IOTAProject);
-    procedure StartIndexFile(const Project: IOTAProject);
+    procedure SaveIndexFile;
+    procedure StartIndexFile;
     procedure WriteJS(const FileName, FileContent: PAnsiChar; const ContentSize: Int32);
 
     property Compiler: PPas2JSCompiler read GetCompiler;
@@ -74,7 +74,7 @@ implementation
 //  SetPas2JSReadDirCallBack = procedure (P: PPas2JSCompiler; ACallBack: TReadDirCallBack; CallBackData: Pointer); stdcall;
 //  SetPas2JSReadPasCallBack = procedure (P: PPas2JSCompiler; ACallBack: TReadPasCallBack; CallBackData: Pointer; ABufferSize: Cardinal); stdcall;
 
-uses System.SysUtils, System.IOUtils, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs;
+uses System.SysUtils, System.IOUtils, System.Classes, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts;
 
 procedure CompilerLogCallBack(Data: Pointer; Msg: PAnsiChar; MsgLen: Integer); stdcall;
 begin
@@ -98,21 +98,37 @@ end;
 
 { TPas2JSCompiler }
 
-procedure TPas2JSCompiler.AddScriptFile(const FileName: String);
+procedure TPas2JSCompiler.AddScriptFile(const LinkFileName: String; const Script: Boolean);
 begin
-  var ScriptFile := ExtractFileName(FileName);
+  var LinkAttributeName: String;
+  var LinkNodeName: String;
+
+  if Script then
+  begin
+    LinkAttributeName := 'src';
+    LinkNodeName := 'script';
+  end
+  else
+  begin
+    LinkAttributeName := 'href';
+    LinkNodeName := 'link';
+  end;
 
   for var A := 0 to Pred(FHeader.ChildNodes.Count) do
   begin
     var Node := FHeader.ChildNodes[A];
 
-    if Node.Attributes['src'] = ScriptFile then
+    if Node.Attributes[LinkAttributeName] = LinkFileName then
       Exit;
   end;
 
-  var Script := FHeader.AddChild('script');
-  Script.Attributes['src'] := ScriptFile;
-  Script.Text := '';
+  var LinkNode := FHeader.AddChild(LinkNodeName);
+  LinkNode.Attributes[LinkAttributeName] := LinkFileName;
+
+  if Script then
+    LinkNode.Text := ''
+  else
+    LinkNode.Attributes['rel'] := 'stylesheet';
 end;
 
 function TPas2JSCompiler.BuildCommandLine: TArray<UTF8String>;
@@ -135,10 +151,8 @@ var
 
   procedure AppendSearchPaths;
   begin
-    var IncludePath := Format('%s;%s', [ExpandMacros(Options.GetValue(sUnitSearchPath, True)), ExpandMacros(Registry.LibraryPath)]);
-
-    if IncludePath <> ';' then
-      Result := Result + [UTF8String('-Fu' + IncludePath)];
+    var IncludePath := Format('%s;%s', [ExpandMacros(Registry.LibraryPath), Options.Value[PAS2JS_SEARCH_PATH]]);
+    Result := Result + [UTF8String('-Fu' + IncludePath)];
   end;
 
   procedure AppendDefines;
@@ -158,6 +172,24 @@ var
     Result := Result + [UTF8String(Format('-FE%s', [OutputPath]))];
   end;
 
+  procedure AppendPas2JSConfigurations;
+  begin
+    if Options.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] then
+      Result := Result + ['-Jc'];
+
+    if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
+      Result := Result + ['-Jm'];
+
+    if Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
+      Result := Result + ['-OoEnumNumbers'];
+
+    if Options.AsBoolean[PAS2JS_REMOVE_PRIVATES] then
+      Result := Result + ['-OoRemoveNotUsedPrivates'];
+
+    if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
+      Result := Result + ['-OoRemoveNotUsedDeclarations'];
+  end;
+
 begin
   Options := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
   Result := [
@@ -165,7 +197,6 @@ begin
     '-MDelphi',
     '-Pecmascript6',
     '-JeJSON',
-//    '-Jc', // Write all JavaScript concatenated into the output file
     '-vewhqb'
   ];
 
@@ -176,6 +207,8 @@ begin
   AppendSearchPaths;
 
   AppendOutputPath;
+
+  AppendPas2JSConfigurations;
 end;
 
 procedure TPas2JSCompiler.CompilerLog(Info: String);
@@ -284,41 +317,52 @@ begin
 
   FSetPas2JSWriteJSCallBack(Compiler, WriteJSCallBack, Self);
 
-  StartIndexFile(Project);
+  StartIndexFile;
 
   FRunPas2JSCompiler(Compiler, nil, PAnsiChar(FilePath), @CommandLineParam[0], True);
 
-  SaveIndexFile(Project);
+  SaveIndexFile;
 end;
 
-procedure TPas2JSCompiler.SaveIndexFile(const Project: IOTAProject);
+procedure TPas2JSCompiler.SaveIndexFile;
 begin
   var Output := '<!DOCTYPE html>'#13#10 + FIndexFile.DocumentElement.XML;
 
   TFile.WriteAllText(GetIndexFileName, Output, TEncoding.UTF8);
 end;
 
-procedure TPas2JSCompiler.StartIndexFile(const Project: IOTAProject);
+procedure TPas2JSCompiler.StartIndexFile;
+
+  procedure AddScriptFiles;
+  begin
+    var ModuleList := TStringList.Create;
+    ModuleList.DelimitedText := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration.Value[PAS2JS_MODULES];
+
+    for var A := 0 to Pred(ModuleList.Count) do
+      AddScriptFile(ModuleList.KeyNames[A], ModuleList.ValueFromIndex[A] = 'Library');
+
+    AddScriptFile('rtl.js', True);
+
+    ModuleList.Free;
+  end;
+
 begin
   FIndexFile := TXMLDocument.Create(nil);
-  FIndexFile.Active := True;
-  FIndexFile.Options := [doNodeAutoIndent, doNodeAutoCreate];
-  var HTML: IXMLNode;
 
   if TFile.Exists(GetIndexFileName) then
-  begin
-    FIndexFile.LoadFromFile(GetIndexFileName);
-
-    HTML := FIndexFile.DocumentElement;
-  end
+    FIndexFile.XML.Text := TFile.ReadAllText(GetIndexFileName)
   else
-    HTML := FIndexFile.AddChild('html');
+    FIndexFile.XML.Text := '<!DOCTYPE html><html/>';
+
+  FIndexFile.Active := True;
+  FIndexFile.Options := [doNodeAutoIndent, doNodeAutoCreate];
+  var HTML := FIndexFile.DocumentElement;
 
   FHeader := HTML.ChildNodes['head'];
 
   HTML.ChildNodes['body'].ChildNodes['script'].Text := 'rtl.run();';
 
-  AddScriptFile('rtl.js');
+  AddScriptFiles;
 end;
 
 function TPas2JSCompiler.UnitAlias(const UnitName: PAnsiChar): Boolean;
@@ -331,15 +375,13 @@ function TPas2JSCompiler.UnitAlias(const UnitName: PAnsiChar): Boolean;
       Result := UnitNameAlias.Substring(High(Result))
     else
       Result := UnitNameAlias;
+
+    Result := Result + #0;
   end;
 
 begin
   var NewName := UTF8String(RemoveAlias('System', String(UTF8String(UnitName))));
   Result := True;
-
-  AddScriptFile(String(NewName) + '.js');
-
-  NewName := NewName + #0;
 
   CopyMemory(UnitName, @NewName[1], Length(NewName));
 end;
@@ -348,7 +390,7 @@ procedure TPas2JSCompiler.WriteJS(const FileName, FileContent: PAnsiChar; const 
 begin
   var JSFileName := String(UTF8String(FileName));
 
-  AddScriptFile(JSFileName);
+  AddScriptFile(ExtractFileName(JSFileName), True);
 
   TFile.WriteAllBytes(JSFileName, BytesOf(FileContent, ContentSize));
 end;
