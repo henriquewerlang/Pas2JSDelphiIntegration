@@ -12,7 +12,6 @@ type
     SelectFile: TOpenDialog;
     lblLibraryPath: TLabel;
     LibraryPath: TEdit;
-    Label1: TLabel;
     procedure btnSelectFileClick(Sender: TObject);
   end;
 
@@ -28,9 +27,6 @@ procedure TPas2JSEnviromentOptions.btnSelectFileClick(Sender: TObject);
 begin
   if SelectFile.Execute then
     FilePath.Text := SelectFile.FileName;
-
-  if GetActiveProject <> nil then
-    Label1.Caption := GetActiveProject.FileName;
 end;
 
 end.

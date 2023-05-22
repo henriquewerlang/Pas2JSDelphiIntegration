@@ -21,13 +21,6 @@ object Pas2JSEnviromentOptions: TPas2JSEnviromentOptions
     Height = 15
     Caption = 'Library path'
   end
-  object Label1: TLabel
-    Left = 3
-    Top = 114
-    Width = 63
-    Height = 15
-    Caption = 'Library path'
-  end
   object FilePath: TEdit
     Left = 0
     Top = 21
@@ -35,7 +28,6 @@ object Pas2JSEnviromentOptions: TPas2JSEnviromentOptions
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
-    ExplicitWidth = 337
   end
   object btnSelectFile: TButton
     Left = 364
@@ -46,7 +38,6 @@ object Pas2JSEnviromentOptions: TPas2JSEnviromentOptions
     Caption = '...'
     TabOrder = 1
     OnClick = btnSelectFileClick
-    ExplicitLeft = 343
   end
   object LibraryPath: TEdit
     Left = 0
@@ -55,7 +46,6 @@ object Pas2JSEnviromentOptions: TPas2JSEnviromentOptions
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 337
   end
   object SelectFile: TOpenDialog
     Filter = 'Pas2JS Library|pas2jslib.dll'
