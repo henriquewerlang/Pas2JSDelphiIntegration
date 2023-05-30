@@ -124,18 +124,27 @@ begin
 end;
 
 procedure TPas2JSProjectOptionForm.SaveConfiguration;
+var
+  Configuration: IOTABuildConfiguration;
+
+  procedure SaveConfig(const PropertyName, Value: String);
+  begin
+    if (Configuration.Value[PropertyName] = Value) or Value.IsEmpty then
+      Configuration.Remove(PropertyName)
+    else
+      Configuration.Value[PropertyName] := Value;
+  end;
+
 begin
-  var Configuration := GetSelectedConfiguration;
+  Configuration := GetSelectedConfiguration;
   var Modules := TStringList.Create(dupIgnore, False, False);
 
-  Configuration.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] := cbxEnumartorNumber.Checked;
-  Configuration.AsBoolean[PAS2JS_GENERATE_MAP_FILE] := cbxGenerateMapFile.Checked;
-  Configuration.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] := cbxGenerateSingleFile.Checked;
-  Configuration.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] := cbxRemoveNotUsedDeclaration.Checked;
-  Configuration.AsBoolean[PAS2JS_REMOVE_PRIVATES] := cbxRemovePrivates.Checked;
-
-  if edtSearchPath.Text <> Configuration.Value[PAS2JS_SEARCH_PATH] then
-    Configuration.Value[PAS2JS_SEARCH_PATH] := edtSearchPath.Text;
+  SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, BoolToStr(cbxEnumartorNumber.Checked, True));
+  SaveConfig(PAS2JS_GENERATE_MAP_FILE, BoolToStr(cbxGenerateMapFile.Checked, True));
+  SaveConfig(PAS2JS_GENERATE_SINGLE_FILE, BoolToStr(cbxGenerateSingleFile.Checked, True));
+  SaveConfig(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, BoolToStr(cbxRemoveNotUsedDeclaration.Checked, True));
+  SaveConfig(PAS2JS_REMOVE_PRIVATES, BoolToStr(cbxRemovePrivates.Checked, True));
+  SaveConfig(PAS2JS_SEARCH_PATH, edtSearchPath.Text);
 
   cdsModules.First;
 
@@ -146,8 +155,7 @@ begin
     cdsModules.Next;
   end;
 
-  if Configuration.Value[PAS2JS_MODULES] <> Modules.DelimitedText then
-    Configuration.Value[PAS2JS_MODULES] := Modules.DelimitedText;
+  SaveConfig(PAS2JS_MODULES, Modules.DelimitedText);
 
   Modules.Free;
 end;
@@ -164,7 +172,9 @@ begin
   cbxRemovePrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_PRIVATES, False);
 
   if Configuration.PropertyExists(PAS2JS_SEARCH_PATH) then
-    edtSearchPath.Text := Configuration.GetValue(PAS2JS_SEARCH_PATH, False);
+    edtSearchPath.Text := Configuration.GetValue(PAS2JS_SEARCH_PATH, False)
+  else
+    edtSearchPath.Text := EmptyStr;
 
   if Configuration.PropertyExists(PAS2JS_MODULES) then
     Modules.DelimitedText := Configuration.GetValue(PAS2JS_MODULES, False);
