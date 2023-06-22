@@ -80,7 +80,7 @@ uses System.SysUtils, System.IOUtils, System.Classes, Rest.JSON, Rest.Types, Vcl
 
 procedure CompilerLogCallBack(Data: Pointer; Msg: PAnsiChar; MsgLen: Integer); stdcall;
 begin
-  TPas2JSCompiler(Data).CompilerLog(String(AnsiString(Msg)));
+  TPas2JSCompiler(Data).CompilerLog(String(UTF8String(Msg)));
 end;
 
 function ExpandMacros(const Value: String): String;
