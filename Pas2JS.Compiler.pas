@@ -159,10 +159,12 @@ var
 
   procedure AppendDefines;
   begin
-    var Defines := Options.GetValue(sDefine, True);
+    var Defines := TStringList.Create;
+    Defines.Delimiter := ';';
+    Defines.DelimitedText := Options.GetValue(sDefine, True);
 
-    if not Defines.IsEmpty then
-      Result := Result + [UTF8String('-d' + Defines)];
+    for var DefineName in Defines do
+      Result := Result + [UTF8String('-d' + DefineName)];
   end;
 
   procedure AppendOutputPath;
@@ -182,8 +184,8 @@ var
     if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
       Result := Result + ['-Jm'];
 
-    if Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
-      Result := Result + ['-OoEnumNumbers'];
+    if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
+      Result := Result + ['-OoEnumNumbers-'];
 
     if Options.AsBoolean[PAS2JS_REMOVE_PRIVATES] then
       Result := Result + ['-OoRemoveNotUsedPrivates'];
