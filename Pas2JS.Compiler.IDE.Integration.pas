@@ -1,19 +1,19 @@
-﻿unit Pas2JS.Compiler.Integration;
+﻿unit Pas2JS.Compiler.IDE.Integration;
 
 interface
 
-uses Pas2JS.Compiler, Vcl.Menus, ToolsApi, Pas2JS.Project.Options.Form;
+uses Pas2JS.Compiler.Project.Integration, Vcl.Menus, ToolsApi, Pas2JS.Project.Options.Form;
 
 type
-  TPas2JSCompilerIntegration = class (TInterfacedObject, IOTAIDENotifier, IOTAIDENotifier50)
+  TPas2JSIDECompilerIntegration = class (TInterfacedObject, IOTAIDENotifier, IOTAIDENotifier50)
   private
     class var FNoticationIndex: Integer;
   private
-    FCompiler: TPas2JSCompiler;
+    FCompiler: TPas2JSProjectCompiler;
     FOptionsForm: TPas2JSProjectOptionForm;
     FPas2JSMenu: TMenuItem;
 
-    function GetCompiler: TPas2JSCompiler;
+    function GetCompiler: TPas2JSProjectCompiler;
     function GetOptionsForm: TPas2JSProjectOptionForm;
     function GetPas2JSMenu: TMenuItem;
 
@@ -29,7 +29,7 @@ type
     procedure Modified;
     procedure OnClickPas2JSMenu(Sender: TObject);
 
-    property Compiler: TPas2JSCompiler read GetCompiler;
+    property Compiler: TPas2JSProjectCompiler read GetCompiler;
     property OptionsForm: TPas2JSProjectOptionForm read GetOptionsForm;
     property Pas2JSMenu: TMenuItem read GetPas2JSMenu;
 
@@ -48,31 +48,31 @@ uses System.SysUtils, Pas2JS.Consts;
 
 procedure Register;
 begin
-  TPas2JSCompilerIntegration.NoticationIndex := (BorlandIDEServices as IOTAServices).AddNotifier(TPas2JSCompilerIntegration.Create);
+  TPas2JSIDECompilerIntegration.NoticationIndex := (BorlandIDEServices as IOTAServices).AddNotifier(TPas2JSIDECompilerIntegration.Create);
 end;
 
-{ TPas2JSCompilerIntegration }
+{ TPas2JSIDECompilerIntegration }
 
-procedure TPas2JSCompilerIntegration.AfterCompile(Succeeded, IsCodeInsight: Boolean);
+procedure TPas2JSIDECompilerIntegration.AfterCompile(Succeeded, IsCodeInsight: Boolean);
 begin
 
 end;
 
-procedure TPas2JSCompilerIntegration.AfterSave;
+procedure TPas2JSIDECompilerIntegration.AfterSave;
 begin
 
 end;
 
-procedure TPas2JSCompilerIntegration.AfterCompile(Succeeded: Boolean);
+procedure TPas2JSIDECompilerIntegration.AfterCompile(Succeeded: Boolean);
 begin
 
 end;
 
-procedure TPas2JSCompilerIntegration.BeforeCompile(const Project: IOTAProject; var Cancel: Boolean);
+procedure TPas2JSIDECompilerIntegration.BeforeCompile(const Project: IOTAProject; var Cancel: Boolean);
 begin
 end;
 
-procedure TPas2JSCompilerIntegration.BeforeCompile(const Project: IOTAProject; IsCodeInsight: Boolean; var Cancel: Boolean);
+procedure TPas2JSIDECompilerIntegration.BeforeCompile(const Project: IOTAProject; IsCodeInsight: Boolean; var Cancel: Boolean);
 begin
   if Project.ApplicationType = APPLICATION_TYPE then
   begin
@@ -82,17 +82,17 @@ begin
   end;
 end;
 
-procedure TPas2JSCompilerIntegration.BeforeSave;
+procedure TPas2JSIDECompilerIntegration.BeforeSave;
 begin
 
 end;
 
-procedure TPas2JSCompilerIntegration.CheckMenu;
+procedure TPas2JSIDECompilerIntegration.CheckMenu;
 begin
   Pas2JSMenu.Enabled := (GetActiveProject <> nil) and (GetActiveProject.ApplicationType = APPLICATION_TYPE);
 end;
 
-constructor TPas2JSCompilerIntegration.Create;
+constructor TPas2JSIDECompilerIntegration.Create;
 begin
   inherited;
 
@@ -106,7 +106,7 @@ begin
   CheckMenu;
 end;
 
-destructor TPas2JSCompilerIntegration.Destroy;
+destructor TPas2JSIDECompilerIntegration.Destroy;
 begin
   FPas2JSMenu.Free;
 
@@ -115,25 +115,25 @@ begin
   inherited;
 end;
 
-procedure TPas2JSCompilerIntegration.Destroyed;
+procedure TPas2JSIDECompilerIntegration.Destroyed;
 begin
   FreeAndNil(FCompiler);
 end;
 
-procedure TPas2JSCompilerIntegration.FileNotification(NotifyCode: TOTAFileNotification; const FileName: string; var Cancel: Boolean);
+procedure TPas2JSIDECompilerIntegration.FileNotification(NotifyCode: TOTAFileNotification; const FileName: string; var Cancel: Boolean);
 begin
   CheckMenu;
 end;
 
-function TPas2JSCompilerIntegration.GetCompiler: TPas2JSCompiler;
+function TPas2JSIDECompilerIntegration.GetCompiler: TPas2JSProjectCompiler;
 begin
   if not Assigned(FCompiler) then
-    FCompiler := TPas2JSCompiler.Create;
+    FCompiler := TPas2JSProjectCompiler.Create;
 
   Result := FCompiler;
 end;
 
-function TPas2JSCompilerIntegration.GetOptionsForm: TPas2JSProjectOptionForm;
+function TPas2JSIDECompilerIntegration.GetOptionsForm: TPas2JSProjectOptionForm;
 begin
   if not Assigned(FOptionsForm) then
     FOptionsForm := TPas2JSProjectOptionForm.Create(nil);
@@ -141,7 +141,7 @@ begin
   Result := FOptionsForm;
 end;
 
-function TPas2JSCompilerIntegration.GetPas2JSMenu: TMenuItem;
+function TPas2JSIDECompilerIntegration.GetPas2JSMenu: TMenuItem;
 begin
   if not Assigned(FPas2JSMenu) then
     FPas2JSMenu := TMenuItem.Create(nil);
@@ -149,12 +149,12 @@ begin
   Result := FPas2JSMenu;
 end;
 
-procedure TPas2JSCompilerIntegration.Modified;
+procedure TPas2JSIDECompilerIntegration.Modified;
 begin
 
 end;
 
-procedure TPas2JSCompilerIntegration.OnClickPas2JSMenu(Sender: TObject);
+procedure TPas2JSIDECompilerIntegration.OnClickPas2JSMenu(Sender: TObject);
 begin
   OptionsForm.Open;
 end;
@@ -162,7 +162,7 @@ end;
 initialization
 
 finalization
-  (BorlandIDEServices as IOTAServices).RemoveNotifier(TPas2JSCompilerIntegration.NoticationIndex);
+  (BorlandIDEServices as IOTAServices).RemoveNotifier(TPas2JSIDECompilerIntegration.NoticationIndex);
 
 end.
 

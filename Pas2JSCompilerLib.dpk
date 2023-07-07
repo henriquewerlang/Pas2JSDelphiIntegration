@@ -1,0 +1,85 @@
+﻿package Pas2JSCompilerLib;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS OFF}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$DEFINE HASFILESYSTEM}
+{$DEFINE HASFILEWRITER}
+{$DEFINE HASFS}
+{$DEFINE HASINT64}
+{$DEFINE HASJSONPARSER}
+{$DEFINE HASPAS2JSFILER}
+{$DEFINE HASSTREAMS}
+{$DEFINE WINDOWS}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD OFF}
+
+requires
+  rtl;
+
+contains
+  Delphi.Helper in 'Compiler\Delphi.Helper.pas',
+  ZStream in 'Compiler\ZStream.pas',
+  fppjssrcmap in 'FPCCompiler\packages\pastojs\src\fppjssrcmap.pas',
+  pas2jsfilecache in 'FPCCompiler\packages\pastojs\src\pas2jsfilecache.pas',
+  pas2jscompiler in 'FPCCompiler\packages\pastojs\src\pas2jscompiler.pas',
+  pas2jslibcompiler in 'FPCCompiler\packages\pastojs\src\pas2jslibcompiler.pas',
+  pas2jsutils in 'FPCCompiler\packages\pastojs\src\pas2jsutils.pas',
+  pas2jslogger in 'FPCCompiler\packages\pastojs\src\pas2jslogger.pas',
+  pas2jsfileutils in 'FPCCompiler\packages\pastojs\src\pas2jsfileutils.pas',
+  pas2jsfs in 'FPCCompiler\packages\pastojs\src\pas2jsfs.pas',
+  pas2jsresstrfile in 'FPCCompiler\packages\pastojs\src\pas2jsresstrfile.pas',
+  pas2jshtmlresources in 'FPCCompiler\packages\pastojs\src\pas2jshtmlresources.pas',
+  pas2jsresources in 'FPCCompiler\packages\pastojs\src\pas2jsresources.pas',
+  pas2jsjsresources in 'FPCCompiler\packages\pastojs\src\pas2jsjsresources.pas',
+  fppas2js in 'FPCCompiler\packages\pastojs\src\fppas2js.pas',
+  pas2jspparser in 'FPCCompiler\packages\pastojs\src\pas2jspparser.pas',
+  pas2jsuseanalyzer in 'FPCCompiler\packages\pastojs\src\pas2jsuseanalyzer.pas',
+  pas2jspcucompiler in 'FPCCompiler\packages\pastojs\src\pas2jspcucompiler.pas',
+  pas2jsfscompiler in 'FPCCompiler\packages\pastojs\src\pas2jsfscompiler.pas',
+  pas2jsfiler in 'FPCCompiler\packages\pastojs\src\pas2jsfiler.pas',
+  pas2jscompilercfg in 'FPCCompiler\packages\pastojs\src\pas2jscompilercfg.pas',
+  pas2jscompilerpp in 'FPCCompiler\packages\pastojs\src\pas2jscompilerpp.pas',
+  jsbase in 'FPCCompiler\packages\fcl-js\src\jsbase.pas',
+  jswriter in 'FPCCompiler\packages\fcl-js\src\jswriter.pas',
+  jstree in 'FPCCompiler\packages\fcl-js\src\jstree.pas',
+  jstoken in 'FPCCompiler\packages\fcl-js\src\jstoken.pas',
+  jssrcmap in 'FPCCompiler\packages\fcl-js\src\jssrcmap.pas',
+  fpjson in 'FPCCompiler\packages\fcl-json\src\fpjson.pas',
+  jsonparser in 'FPCCompiler\packages\fcl-json\src\jsonparser.pas',
+  jsonscanner in 'FPCCompiler\packages\fcl-json\src\jsonscanner.pas',
+  jsonreader in 'FPCCompiler\packages\fcl-json\src\jsonreader.pas',
+  pscanner in 'FPCCompiler\packages\fcl-passrc\src\pscanner.pas',
+  pasresolver in 'FPCCompiler\packages\fcl-passrc\src\pasresolver.pas',
+  pastree in 'FPCCompiler\packages\fcl-passrc\src\pastree.pas',
+  pparser in 'FPCCompiler\packages\fcl-passrc\src\pparser.pas',
+  pasresolveeval in 'FPCCompiler\packages\fcl-passrc\src\pasresolveeval.pas',
+  pasuseanalyzer in 'FPCCompiler\packages\fcl-passrc\src\pasuseanalyzer.pas',
+  process in 'FPCCompiler\packages\fcl-process\src\process.pas',
+  pipes in 'FPCCompiler\packages\fcl-process\src\pipes.pas',
+  avl_tree in 'FPCCompiler\packages\fcl-base\src\avl_tree.pas',
+  Pas2JS.Compiler.Delphi in 'Pas2JS.Compiler.Delphi.pas';
+
+end.
