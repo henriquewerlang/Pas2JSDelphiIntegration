@@ -26,10 +26,14 @@ type
 
   TFPObjectList = class(TListFreePascal)
   private
+    FDestroyValues: Boolean;
+
     function GetItem(const Index: Integer): TObject;
     procedure SetItem(const Index: Integer; const Value: TObject);
   public
-    constructor Create(const AValue: Boolean = False);
+    constructor Create(const DestroyValues: Boolean = False);
+
+    destructor Destroy; override;
 
     property Items[const Index: Integer]: TObject read GetItem write SetItem; default;
   end;
@@ -366,9 +370,20 @@ end;
 
 { TFPObjectList }
 
-constructor TFPObjectList.Create(const AValue: Boolean);
+constructor TFPObjectList.Create(const DestroyValues: Boolean);
 begin
   inherited Create;
+
+  FDestroyValues := DestroyValues;
+end;
+
+destructor TFPObjectList.Destroy;
+begin
+  if FDestroyValues then
+    for var Value in Self do
+      TObject(Value).Free;
+
+  inherited;
 end;
 
 function TFPObjectList.GetItem(const Index: Integer): TObject;
