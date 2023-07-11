@@ -25,6 +25,7 @@
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
@@ -35,16 +36,18 @@ requires
   inet,
   vcldb,
   soapserver,
-  dsnap;
+  dsnap,
+  Pas2JSCompilerLib;
 
 contains
-  Pas2JS.Compiler in 'Pas2JS.Compiler.pas',
+  Pas2JS.Compiler.Project.Integration in 'Pas2JS.Compiler.Project.Integration.pas',
   Pas2JS.Enviroment.Options in 'Pas2JS.Enviroment.Options.pas',
   Pas2JS.Enviroment.Options.Frame in 'Pas2JS.Enviroment.Options.Frame.pas' {Pas2JSEnviromentOptions: TFrame},
   Pas2JS.Project.Options in 'Pas2JS.Project.Options.pas',
-  Pas2JS.Compiler.Integration in 'Pas2JS.Compiler.Integration.pas',
+  Pas2JS.Compiler.IDE.Integration in 'Pas2JS.Compiler.IDE.Integration.pas',
   Pas2JS.Registry in 'Pas2JS.Registry.pas',
   Pas2JS.Project.Options.Form in 'Pas2JS.Project.Options.Form.pas' {Pas2JSProjectOptionForm},
   Pas2JS.Consts in 'Pas2JS.Consts.pas';
 
 end.
+

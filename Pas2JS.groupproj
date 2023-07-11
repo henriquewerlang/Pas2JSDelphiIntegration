@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BE426338-050D-4158-A2C2-6D8F7003BA94}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Pas2JSCopyFiles.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Pas2JSCompilerLib.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Pas2JSIntegration.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Pas2JSCopyFiles">
+        <MSBuild Projects="Pas2JSCopyFiles.dproj"/>
+    </Target>
+    <Target Name="Pas2JSCopyFiles:Clean">
+        <MSBuild Projects="Pas2JSCopyFiles.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Pas2JSCopyFiles:Make">
+        <MSBuild Projects="Pas2JSCopyFiles.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Pas2JSCompilerLib">
+        <MSBuild Projects="Pas2JSCompilerLib.dproj"/>
+    </Target>
+    <Target Name="Pas2JSCompilerLib:Clean">
+        <MSBuild Projects="Pas2JSCompilerLib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Pas2JSCompilerLib:Make">
+        <MSBuild Projects="Pas2JSCompilerLib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Pas2JSIntegration">
+        <MSBuild Projects="Pas2JSIntegration.dproj"/>
+    </Target>
+    <Target Name="Pas2JSIntegration:Clean">
+        <MSBuild Projects="Pas2JSIntegration.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Pas2JSIntegration:Make">
+        <MSBuild Projects="Pas2JSIntegration.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Pas2JSCopyFiles;Pas2JSCompilerLib;Pas2JSIntegration"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Pas2JSCopyFiles:Clean;Pas2JSCompilerLib:Clean;Pas2JSIntegration:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Pas2JSCopyFiles:Make;Pas2JSCompilerLib:Make;Pas2JSIntegration:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
