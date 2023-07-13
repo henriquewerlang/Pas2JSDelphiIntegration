@@ -1,1 +1,1 @@
-mklink /j FPCCompiler %1"\FPCCompiler"
+mklink /j Pas2JS %1"\Pas2JS"
