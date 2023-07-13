@@ -1,0 +1,4 @@
+[submodule "Pas2JS"]
+	path = Pas2JS
+	url = https://github.com/henriquewerlang/Pas2JSClone.git
+	branch = main

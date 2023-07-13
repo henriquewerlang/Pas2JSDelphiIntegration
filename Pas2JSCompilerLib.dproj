@@ -82,7 +82,7 @@
         <VerInfo_Locale>1046</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_LongStrings>false</DCC_LongStrings>
-        <DCC_UnitSearchPath>.\FPCCompiler\packages\fcl-process\src\win;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>.\Pas2JS\Compiler\packages\fcl-process\src\win;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_OutputNeverBuildDcps>true</DCC_OutputNeverBuildDcps>
         <PreBuildEvent><![CDATA[.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1
 $(PreBuildEvent)]]></PreBuildEvent>
@@ -154,44 +154,44 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="Compiler\Delphi.Helper.pas"/>
         <DCCReference Include="Compiler\ZStream.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\fppjssrcmap.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsfilecache.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jscompiler.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jslibcompiler.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsutils.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jslogger.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsfileutils.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsfs.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsresstrfile.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jshtmlresources.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsresources.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsjsresources.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\fppas2js.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jspparser.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsuseanalyzer.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jspcucompiler.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsfscompiler.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jsfiler.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jscompilercfg.pas"/>
-        <DCCReference Include="FPCCompiler\packages\pastojs\src\pas2jscompilerpp.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-js\src\jsbase.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-js\src\jswriter.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-js\src\jstree.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-js\src\jstoken.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-js\src\jssrcmap.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-json\src\fpjson.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-json\src\jsonparser.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-json\src\jsonscanner.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-json\src\jsonreader.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pscanner.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pasresolver.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pastree.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pparser.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pasresolveeval.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-passrc\src\pasuseanalyzer.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-process\src\process.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-process\src\pipes.pas"/>
-        <DCCReference Include="FPCCompiler\packages\fcl-base\src\avl_tree.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompiler.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jslibcompiler.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsutils.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jslogger.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfileutils.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfs.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsresstrfile.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jshtmlresources.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsresources.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsjsresources.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppas2js.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jspparser.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsuseanalyzer.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jspcucompiler.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfscompiler.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfiler.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompilercfg.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompilerpp.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jsbase.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jswriter.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jstree.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jstoken.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jssrcmap.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-json\src\fpjson.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-json\src\jsonparser.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-json\src\jsonscanner.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-json\src\jsonreader.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pscanner.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pasresolver.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pastree.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pparser.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pasresolveeval.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pasuseanalyzer.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-process\src\process.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-process\src\pipes.pas"/>
+        <DCCReference Include="Pas2JS\Compiler\packages\fcl-base\src\avl_tree.pas"/>
         <DCCReference Include="Pas2JS.Compiler.Delphi.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -982,147 +982,147 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Android'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Android64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='iOSDevice64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='iOSSimARM64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Linux64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSX64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='OSXARM64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Android'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Android64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='iOSDevice64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='iOSSimARM64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Linux64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSX64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='OSXARM64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
-        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
+        <PreBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR) 1</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>True</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
+        <PostBuildEvent>.\Pas2JSCopyFiles.exe $(PROJECTDIR)</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>
