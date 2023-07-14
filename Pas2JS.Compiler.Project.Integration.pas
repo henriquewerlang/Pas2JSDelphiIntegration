@@ -289,8 +289,6 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
     for var A := 0 to Pred(ModuleList.Count) do
       AddScriptFile(ModuleList.KeyNames[A], ModuleList.ValueFromIndex[A] = 'Library');
 
-    AddScriptFile('rtl.js', True);
-
     ModuleList.Free;
   end;
 
