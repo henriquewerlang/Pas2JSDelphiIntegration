@@ -44,7 +44,7 @@ begin
   var DestinyFile := TStringStream.Create;
   Result := True;
 
-  Writer.SaveJSToStream(False, MapFilename, DestinyFile);
+  Writer.SaveJSToStream(False, ExtractFileName(MapFilename), DestinyFile);
 
   TFile.WriteAllText(DestFilename, DestinyFile.DataString, TEncoding.UTF8);
 
