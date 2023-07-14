@@ -174,8 +174,6 @@ begin
   AppendOutputPath;
 
   AppendPas2JSConfigurations;
-
-  Result.SaveToFile('C:\Teste\Config.txt');
 end;
 
 procedure TPas2JSProjectCompiler.CompilerLog(Sender: TObject; const Info: String);
