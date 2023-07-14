@@ -19,7 +19,7 @@ type
     function GetOutputConfiguration: String;
     function GetRegistry: TPas2JSRegistry;
 
-    procedure AddScriptFile(const LinkFileName: String; const Script: Boolean);
+    procedure AddScriptFile(LinkFileName: String; const Script: Boolean);
     procedure CompilerLog(Sender: TObject; const Info: String);
     procedure SaveIndexFile;
     procedure StartIndexFile;
@@ -59,10 +59,18 @@ end;
 
 { TPas2JSProjectCompiler }
 
-procedure TPas2JSProjectCompiler.AddScriptFile(const LinkFileName: String; const Script: Boolean);
+procedure TPas2JSProjectCompiler.AddScriptFile(LinkFileName: String; const Script: Boolean);
 begin
+  var DestinyFile := Format('%s\%s', [GetOutputConfiguration, ExtractFileName(LinkFileName)]);
   var LinkAttributeName: String;
   var LinkNodeName: String;
+
+  if TFile.Exists(LinkFileName) then
+  begin
+    TFile.Copy(LinkFileName, DestinyFile, True);
+
+    LinkFileName := ExtractFileName(LinkFileName);
+  end;
 
   if Script then
   begin
