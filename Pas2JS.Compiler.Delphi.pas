@@ -2,22 +2,26 @@
 
 interface
 
-uses System.Classes, Pas2JSPCUCompiler, Pas2JSLogger, FPPJsSrcMap;
+uses System.Classes, System.SysUtils, Pas2JSPCUCompiler, Pas2JSLogger, FPPJsSrcMap;
 
 type
   TPas2JSCompiler = class(TPas2jsPCUCompiler)
   private
+    FOnWriteJSFile: TProc<String>;
+
     function LoadFile(FileName: String; var Source: String): Boolean;
   protected
     function DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean; override;
   public
     procedure CheckUnitAlias(var UseUnitName: string); override;
     procedure Run(const FileName: String; const CommandLine: TStrings);
+
+    property OnWriteJSFile: TProc<String> read FOnWriteJSFile write FOnWriteJSFile;
   end;
 
 implementation
 
-uses System.SysUtils, System.IOUtils;
+uses System.IOUtils;
 
 { TPas2JSCompiler }
 
@@ -37,14 +41,17 @@ end;
 
 function TPas2JSCompiler.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
 begin
-  var DestinyFile := TStringStream.Create(EmptyStr, TEncoding.UTF8);
+  var DestinyFile := TStringStream.Create;
   Result := True;
 
-  Writer.SaveJSToStream(True, MapFilename, DestinyFile);
+  Writer.SaveJSToStream(False, MapFilename, DestinyFile);
 
-  DestinyFile.SaveToFile(DestFilename);
+  TFile.WriteAllText(DestFilename, DestinyFile.DataString, TEncoding.UTF8);
 
   DestinyFile.Free;
+
+  if Assigned(OnWriteJSFile) then
+    OnWriteJSFile(DestFilename);
 end;
 
 function TPas2JSCompiler.LoadFile(FileName: String; var Source: String): Boolean;

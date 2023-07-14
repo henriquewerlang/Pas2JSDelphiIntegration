@@ -21,16 +21,11 @@ type
 
     procedure AddScriptFile(const LinkFileName: String; const Script: Boolean);
     procedure CompilerLog(Sender: TObject; const Info: String);
-    procedure LoadLinks(const LibraryPath: String);
-    procedure LoadPas2JSLibrary;
     procedure SaveIndexFile;
     procedure StartIndexFile;
-    procedure WriteJS(const FileName, FileContent: PAnsiChar; const ContentSize: Int32);
 
     property Registry: TPas2JSRegistry read GetRegistry;
   public
-    constructor Create;
-
     destructor Destroy; override;
 
     procedure Run(const Project: IOTAProject);
@@ -55,16 +50,11 @@ type
 
 implementation
 
-uses System.SysUtils, System.IOUtils, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts;
+uses System.SysUtils, System.IOUtils, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts, PasUseAnalyzer;
 
 function ExpandMacros(const Value: String): String;
 begin
   Result := (BorlandIDEServices as IOTAServices).ExpandRootMacro(Value);
-end;
-
-procedure WriteJSCallBack(Data: Pointer; AFileName: PAnsiChar; AFileNameLen: Integer; AFileData: PAnsiChar; AFileDataLen: Int32); stdcall;
-begin
-  TPas2JSProjectCompiler(Data).WriteJS(AFileName, AFileData, AFileDataLen);
 end;
 
 { TPas2JSProjectCompiler }
@@ -191,31 +181,38 @@ end;
 procedure TPas2JSProjectCompiler.CompilerLog(Sender: TObject; const Info: String);
 begin
   var CompilerMessage := TJson.JsonToObject<TCompilerMessage>(Info);
-  var LineReference: Pointer;
-  var MessageService := (BorlandIDEServices as IOTAMessageServices);
-  var MessageType := otamkInfo;
 
-  if CompilerMessage.&Type = 'Fatal' then
-    MessageType := otamkFatal
-  else if CompilerMessage.&Type = 'Error' then
-    MessageType := otamkError
-  else if CompilerMessage.&Type = 'Warning' then
-    MessageType := otamkWarn
-  else if CompilerMessage.&Type = 'Hint' then
-    MessageType := otamkHint;
+  case CompilerMessage.Number of
+    nPAUnitNotUsed: ;
+    nPAParameterNotUsed: ;
+    nPAParameterInOverrideNotUsed: ;
+    else
+    begin
+      var LineReference: Pointer;
+      var MessageService := (BorlandIDEServices as IOTAMessageServices);
+      var MessageType := otamkInfo;
 
-  MessageService.AddCompilerMessage(CompilerMessage.FileName, CompilerMessage.Message, 'Pas2JS Compiler', MessageType, CompilerMessage.Line, CompilerMessage.Col, nil, LineReference);
+      if CompilerMessage.&Type = 'Fatal' then
+        MessageType := otamkFatal
+      else if CompilerMessage.&Type = 'Error' then
+        MessageType := otamkError
+      else if CompilerMessage.&Type = 'Warning' then
+        MessageType := otamkWarn
+      else if CompilerMessage.&Type = 'Hint' then
+        MessageType := otamkHint;
 
-  MessageService := nil;
+      var Message := CompilerMessage.Message;
+
+      if CompilerMessage.Number > 0 then
+        Message := Format('Code: %d %s', [CompilerMessage.Number, Message]);
+
+      MessageService.AddCompilerMessage(CompilerMessage.FileName, Message, 'Pas2JS Compiler', MessageType, CompilerMessage.Line, CompilerMessage.Col, nil, LineReference);
+
+      MessageService := nil;
+    end;
+  end;
 
   CompilerMessage.Free;
-end;
-
-constructor TPas2JSProjectCompiler.Create;
-begin
-  inherited Create;
-
-  LoadPas2JSLibrary;
 end;
 
 destructor TPas2JSProjectCompiler.Destroy;
@@ -253,19 +250,15 @@ begin
   Result := FRegistry;
 end;
 
-procedure TPas2JSProjectCompiler.LoadLinks(const LibraryPath: String);
-begin
-
-end;
-
-procedure TPas2JSProjectCompiler.LoadPas2JSLibrary;
-begin
-  LoadLinks(Registry.CompilerPath);
-end;
-
 procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
 begin
   var Compiler := TPas2JSCompiler.Create;
+  Compiler.OnWriteJSFile :=
+    procedure (JSFileName: String)
+    begin
+      AddScriptFile(ExtractFileName(JSFileName), True);
+    end;
+
   Compiler.Log.OnLog := CompilerLog;
   FCurrentProject := Project;
 
@@ -320,15 +313,6 @@ begin
   HTML.ChildNodes['body'].ChildNodes['script'].Text := 'rtl.run();';
 
   AddScriptFiles;
-end;
-
-procedure TPas2JSProjectCompiler.WriteJS(const FileName, FileContent: PAnsiChar; const ContentSize: Int32);
-begin
-  var JSFileName := String(UTF8String(FileName));
-
-  AddScriptFile(ExtractFileName(JSFileName), True);
-
-  TFile.WriteAllBytes(JSFileName, BytesOf(FileContent, ContentSize));
 end;
 
 end.
