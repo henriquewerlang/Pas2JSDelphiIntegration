@@ -74,7 +74,7 @@ type
   TFPHashList = THashDictionary<TObject>;
 
 const
-  AllowDirectorySeparators: set of Char = ['\', '/'];
+  AllowDirectorySeparators: TSysCharSet = ['\', '/'];
   AllFilesMask = '*.*';
   LineEnding = sLineBreak;
   DirectorySeparator = '\';
@@ -88,11 +88,13 @@ var
 function BoolToStr(const Value: Boolean): String; overload;
 function BoolToStr(const Value: Boolean; const TrueValue, FalseValue: String): String; overload;
 function EncodeStringBase64(const Value: String): String;
-function LeftStr(const Str: String; const Count: Integer): String;
+function ExtractWord(N: Integer; const S: String; const WordDelims: TSysCharSet): String;
+function ExtractWordPos(N: Integer; const S: String; const WordDelims: TSysCharSet; out Pos: Integer): String;
 function GetLastOSError: Cardinal;
-function HexStr(const Value: Integer): String; overload;
 function HexStr(const Value: Int64; const Digits: Integer): String; overload;
+function HexStr(const Value: Integer): String; overload;
 function IsValidIdent(const Ident: string; AllowDots: Boolean = False; StrictDots: Boolean = False): Boolean;
+function LeftStr(const Str: String; const Count: Integer): String;
 function RightStr(const Str: String; const Count: Integer): String;
 function SetDirSeparators(const FileName: String): String;
 function SplitCommandLine(S: String): TStringDynArray;
@@ -100,6 +102,8 @@ function StringInList(const Value: String; const Values: TArray<String>): Boolea
 function StrToQWord(const Value: String): QWord;
 function TryStringToGUID(const Value: String; var GUID: TGUID): Boolean;
 function TryStrToQWord(const Str: String; var Value: QWord): Boolean;
+function WordCount(const S: String; const WordDelims: TSysCharSet): SizeInt;
+function WordPosition(const N: Integer; const S: String; const WordDelims: TSysCharSet): SizeInt;
 
 procedure DoDirSeparators(var FileName: String);
 procedure FillByte(var Dest; Count: NativeInt; Value: Byte);
@@ -109,20 +113,99 @@ implementation
 
 uses System.NetEncoding;
 
+function WordPosition(const N: Integer; const S: String; const WordDelims: TSysCharSet): SizeInt;
+var
+  PS, P, PE, Count: Integer;
+
+begin
+  Result := 0;
+  Count := 0;
+  PS := 1;
+  PE := Length(S);
+  P := PS;
+  while (P <= PE) and (Count <> N) do
+  begin
+    while (P <= PE) and CharInSet(S[P], WordDelims) do
+      Inc(P);
+
+    if (P <= PE) then
+      Inc(Count);
+
+    if (Count <> N) then
+      while (P <= PE) and not CharInSet(S[P], WordDelims) do
+        Inc(P)
+    else
+      Result := (P - PS) + 1;
+  end;
+end;
+
+function WordCount(const S: String; const WordDelims: TSysCharSet): SizeInt;
+var
+  P, L: Integer;
+
+begin
+  Result := 0;
+  P := 1;
+  L := Length(S);
+  while P <= L do
+  begin
+    while (P <= L) and CharInSet(S[P], WordDelims) do
+      Inc(P);
+
+    if (P <= L) then
+      Inc(Result);
+
+    while (P <= L) and not CharInSet(S[P], WordDelims) do
+      Inc(P);
+  end;
+end;
+
+function ExtractWord(N: Integer; const S: String; const WordDelims: TSysCharSet): String;
+var
+  i: LongInt;
+
+begin
+  Result := ExtractWordPos(N, S, WordDelims, i);
+end;
+
+function ExtractWordPos(N: Integer; const S: String; const WordDelims: TSysCharSet; out Pos: Integer): String;
+
+var
+  i, j, L: SizeInt;
+
+begin
+  j := 0;
+  i := WordPosition(N, S, WordDelims);
+  if (i > MaxInt) then
+  begin
+    Result := '';
+    Pos := -1;
+    Exit;
+  end;
+  Pos := i;
+  if (i <> 0) then
+  begin
+    j := i;
+    L := Length(S);
+    while (j <= L) and not CharInSet(S[j], WordDelims) do
+      Inc(j);
+  end;
+  Result := Copy(S, i, j - i);
+end;
+
 function SplitCommandLine(S: String): TStringDynArray;
 
   function GetNextWord: String;
-
-  Const
+  const
     WhiteSpace = [' ', #9, #10, #13];
     Literals = ['"', ''''];
 
-  Var
+  var
     Wstart, wend: Integer;
     InLiteral: Boolean;
     LastLiteral: Char;
 
-    Procedure AppendToResult;
+    procedure AppendToResult;
 
     begin
       Result := Result + Copy(S, Wstart, wend - Wstart);
@@ -132,14 +215,14 @@ function SplitCommandLine(S: String): TStringDynArray;
   begin
     Result := '';
     Wstart := 1;
-    While (Wstart <= Length(S)) and charinset(S[Wstart], WhiteSpace) do
+    while (Wstart <= Length(S)) and CharInSet(S[Wstart], WhiteSpace) do
       Inc(Wstart);
     wend := Wstart;
     InLiteral := False;
     LastLiteral := #0;
-    While (wend <= Length(S)) and (Not charinset(S[wend], WhiteSpace) or InLiteral) do
+    while (wend <= Length(S)) and (Not CharInSet(S[wend], WhiteSpace) or InLiteral) do
     begin
-      if charinset(S[wend], Literals) then
+      if CharInSet(S[wend], Literals) then
         If InLiteral then
         begin
           InLiteral := Not(S[wend] = LastLiteral);
@@ -155,12 +238,12 @@ function SplitCommandLine(S: String): TStringDynArray;
       Inc(wend);
     end;
     AppendToResult;
-    While (wend <= Length(S)) and (S[wend] in WhiteSpace) do
+    while (wend <= Length(S)) and CharInSet(S[wend], WhiteSpace) do
       Inc(wend);
     Delete(S, 1, wend - 1);
   end;
 
-Var
+var
   W: String;
   len: Integer;
 
@@ -168,12 +251,15 @@ begin
   len := 0;
   Result := nil;
   SetLength(Result, (Length(S) div 2) + 1);
-  While Length(S) > 0 do
+
+  while Length(S) > 0 do
   begin
     W := GetNextWord;
-    If (W <> '') then
+
+    if W <> '' then
     begin
       Result[len] := W;
+
       Inc(len);
     end;
   end;
