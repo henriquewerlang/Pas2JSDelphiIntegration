@@ -9,6 +9,9 @@
         <Projects Include="Pas2JSCompilerLib.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Pas2JSStub.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="Pas2JSIntegration.dproj">
             <Dependencies/>
         </Projects>
@@ -38,6 +41,15 @@
     <Target Name="Pas2JSCompilerLib:Make">
         <MSBuild Projects="Pas2JSCompilerLib.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Pas2JSStub">
+        <MSBuild Projects="Pas2JSStub.dproj"/>
+    </Target>
+    <Target Name="Pas2JSStub:Clean">
+        <MSBuild Projects="Pas2JSStub.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Pas2JSStub:Make">
+        <MSBuild Projects="Pas2JSStub.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Pas2JSIntegration">
         <MSBuild Projects="Pas2JSIntegration.dproj"/>
     </Target>
@@ -48,13 +60,13 @@
         <MSBuild Projects="Pas2JSIntegration.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="Pas2JSCopyFiles;Pas2JSCompilerLib;Pas2JSIntegration"/>
+        <CallTarget Targets="Pas2JSCopyFiles;Pas2JSCompilerLib;Pas2JSStub;Pas2JSIntegration"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Pas2JSCopyFiles:Clean;Pas2JSCompilerLib:Clean;Pas2JSIntegration:Clean"/>
+        <CallTarget Targets="Pas2JSCopyFiles:Clean;Pas2JSCompilerLib:Clean;Pas2JSStub:Clean;Pas2JSIntegration:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Pas2JSCopyFiles:Make;Pas2JSCompilerLib:Make;Pas2JSIntegration:Make"/>
+        <CallTarget Targets="Pas2JSCopyFiles:Make;Pas2JSCompilerLib:Make;Pas2JSStub:Make;Pas2JSIntegration:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
