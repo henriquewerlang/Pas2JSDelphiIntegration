@@ -2,10 +2,10 @@
 
 interface
 
-uses System.Classes, System.SysUtils, Pas2JSPCUCompiler, Pas2JSLogger, FPPJsSrcMap;
+uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, FPPJsSrcMap;
 
 type
-  TPas2JSCompiler = class(TPas2jsPCUCompiler)
+  TPas2JSCompilerDelphi = class(TPas2JSFSCompiler)
   private
     FOnWriteJSFile: TProc<String>;
 
@@ -23,9 +23,9 @@ implementation
 
 uses System.IOUtils;
 
-{ TPas2JSCompiler }
+{ TPas2JSCompilerDelphi }
 
-procedure TPas2JSCompiler.CheckUnitAlias(var UseUnitName: string);
+procedure TPas2JSCompilerDelphi.CheckUnitAlias(var UseUnitName: string);
 
   function RemoveAlias(Alias: String): String;
   begin
@@ -39,7 +39,7 @@ begin
   RemoveAlias('System');
 end;
 
-function TPas2JSCompiler.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
+function TPas2JSCompilerDelphi.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
 begin
   var DestinyFile := TMemoryStream.Create;
   Result := True;
@@ -56,13 +56,13 @@ begin
     OnWriteJSFile(DestFilename);
 end;
 
-function TPas2JSCompiler.LoadFile(FileName: String; var Source: String): Boolean;
+function TPas2JSCompilerDelphi.LoadFile(FileName: String; var Source: String): Boolean;
 begin
   Result := True;
   Source := TFile.ReadAllText(FileName);
 end;
 
-procedure TPas2JSCompiler.Run(const FileName: String; const CommandLine: TStrings);
+procedure TPas2JSCompilerDelphi.Run(const FileName: String; const CommandLine: TStrings);
 begin
   FileCache.OnReadFile := LoadFile;
   MainSrcFile := FileName;
