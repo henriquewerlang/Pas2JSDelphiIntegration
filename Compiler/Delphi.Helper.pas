@@ -19,7 +19,8 @@ type
 
   TListFreePascal = class(TList)
   public
-    procedure AddRange(const List: TList);
+    procedure AddRange(const List: TArray<Pointer>); overload;
+    procedure AddRange(const List: TList); overload;
   end;
 
   TFPList = TListFreePascal;
@@ -507,8 +508,13 @@ begin
     Add(Value);
 end;
 
-initialization
+procedure TListFreePascal.AddRange(const List: TArray<Pointer>);
+begin
+  for var Value in List do
+    Add(Value);
+end;
 
-StdErr := GetStdHandle(STD_ERROR_HANDLE);
+initialization
+  StdErr := GetStdHandle(STD_ERROR_HANDLE);
 
 end.

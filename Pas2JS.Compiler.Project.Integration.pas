@@ -136,11 +136,7 @@ var
 
   procedure AppendOutputPath;
   begin
-    var OutputPath := GetOutputConfiguration;
-
-    ForceDirectories(OutputPath);
-
-    Result.Add(Format('-FE%s', [OutputPath]));
+    Result.Add(Format('-FE%s', [GetOutputConfiguration]));
   end;
 
   procedure AppendPas2JSConfigurations;
@@ -270,6 +266,8 @@ begin
 
   var FileName := ChangeFileExt(Project.FileName, '.dpr');
   var FilePath := ExtractFilePath(FileName);
+
+  ForceDirectories(GetOutputConfiguration);
 
   StartIndexFile;
 

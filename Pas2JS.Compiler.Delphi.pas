@@ -41,12 +41,14 @@ end;
 
 function TPas2JSCompiler.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
 begin
-  var DestinyFile := TStringStream.Create;
+  var DestinyFile := TMemoryStream.Create;
   Result := True;
 
-  Writer.SaveJSToStream(False, ExtractFileName(MapFilename), DestinyFile);
+  Writer.SaveJSToStream(False, MapFilename, DestinyFile);
 
-  TFile.WriteAllText(DestFilename, DestinyFile.DataString, TEncoding.UTF8);
+  DestinyFile.WriteData(#0);
+
+  TFile.WriteAllText(DestFilename, PChar(DestinyFile.Memory), TEncoding.UTF8);
 
   DestinyFile.Free;
 
