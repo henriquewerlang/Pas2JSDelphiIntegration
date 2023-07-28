@@ -153,7 +153,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="Compiler\Delphi.Helper.pas"/>
-        <DCCReference Include="Compiler\ZStream.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompiler.pas"/>

@@ -41,7 +41,6 @@ requires
 
 contains
   Delphi.Helper in 'Compiler\Delphi.Helper.pas',
-  ZStream in 'Compiler\ZStream.pas',
   fppjssrcmap in 'Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas',
   pas2jsfilecache in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas',
   pas2jscompiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jscompiler.pas',

@@ -5,16 +5,10 @@ interface
 uses System.SysUtils, System.Generics.Collections, System.Classes, System.WideStrUtils, System.Generics.Defaults, System.Types, Winapi.Windows;
 
 type
-  CodePointer = Pointer;
-  DWord = Cardinal;
-  EFOpenError = Exception;
-  PCodePointer = PPointer;
   PtrInt = Integer;
-  PtrUInt = Cardinal;
   PUnicodeChar = PChar;
   QWord = UInt64;
   SizeInt = NativeInt;
-  TJSString = String;
   TStringArray = TArray<String>;
 
   TListFreePascal = class(TList)
@@ -61,16 +55,6 @@ type
     property Items[const Index: Integer]: V read GetItem write SetItem; default;
   end;
 
-  THandleStream = class(System.Classes.THandleStream)
-  protected
-    function GetPosition: Int64; virtual; abstract;
-
-    procedure FakeSeekForward(Offset: NativeInt; const Origin: TSeekOrigin; const Pos: NativeInt);
-    procedure InvalidSeek; virtual; abstract;
-    procedure ReadNotImplemented;
-    procedure WriteNotImplemented;
-  end;
-
   TFPHashObjectList = THashDictionary<TObject>;
   TFPHashList = THashDictionary<TObject>;
 
@@ -80,20 +64,12 @@ const
   LineEnding = sLineBreak;
   DirectorySeparator = '\';
   PathSeparator = '\';
-  MAX_PATH = MAX_PATH;
-
-var
-  StdErr: THandle;
-  StdInputHandle: THandle;
 
 function BoolToStr(const Value: Boolean): String; overload;
 function BoolToStr(const Value: Boolean; const TrueValue, FalseValue: String): String; overload;
 function EncodeStringBase64(const Value: String): String;
-function ExtractWord(N: Integer; const S: String; const WordDelims: TSysCharSet): String;
-function ExtractWordPos(N: Integer; const S: String; const WordDelims: TSysCharSet; out Pos: Integer): String;
 function GetLastOSError: Cardinal;
-function HexStr(const Value: Int64; const Digits: Integer): String; overload;
-function HexStr(const Value: Integer): String; overload;
+function HexStr(const Value: Int64; const Digits: Integer): String;
 function IsValidIdent(const Ident: string; AllowDots: Boolean = False; StrictDots: Boolean = False): Boolean;
 function LeftStr(const Str: String; const Count: Integer): String;
 function RightStr(const Str: String; const Count: Integer): String;
@@ -103,96 +79,12 @@ function StringInList(const Value: String; const Values: TArray<String>): Boolea
 function StrToQWord(const Value: String): QWord;
 function TryStringToGUID(const Value: String; var GUID: TGUID): Boolean;
 function TryStrToQWord(const Str: String; var Value: QWord): Boolean;
-function WordCount(const S: String; const WordDelims: TSysCharSet): SizeInt;
-function WordPosition(const N: Integer; const S: String; const WordDelims: TSysCharSet): SizeInt;
 
-procedure DoDirSeparators(var FileName: String);
-procedure FillByte(var Dest; Count: NativeInt; Value: Byte);
 procedure SetCodePage(S: RawByteString; CodePage: Word; Convert: Boolean);
 
 implementation
 
 uses System.NetEncoding;
-
-function WordPosition(const N: Integer; const S: String; const WordDelims: TSysCharSet): SizeInt;
-var
-  PS, P, PE, Count: Integer;
-
-begin
-  Result := 0;
-  Count := 0;
-  PS := 1;
-  PE := Length(S);
-  P := PS;
-  while (P <= PE) and (Count <> N) do
-  begin
-    while (P <= PE) and CharInSet(S[P], WordDelims) do
-      Inc(P);
-
-    if (P <= PE) then
-      Inc(Count);
-
-    if (Count <> N) then
-      while (P <= PE) and not CharInSet(S[P], WordDelims) do
-        Inc(P)
-    else
-      Result := (P - PS) + 1;
-  end;
-end;
-
-function WordCount(const S: String; const WordDelims: TSysCharSet): SizeInt;
-var
-  P, L: Integer;
-
-begin
-  Result := 0;
-  P := 1;
-  L := Length(S);
-  while P <= L do
-  begin
-    while (P <= L) and CharInSet(S[P], WordDelims) do
-      Inc(P);
-
-    if (P <= L) then
-      Inc(Result);
-
-    while (P <= L) and not CharInSet(S[P], WordDelims) do
-      Inc(P);
-  end;
-end;
-
-function ExtractWord(N: Integer; const S: String; const WordDelims: TSysCharSet): String;
-var
-  i: LongInt;
-
-begin
-  Result := ExtractWordPos(N, S, WordDelims, i);
-end;
-
-function ExtractWordPos(N: Integer; const S: String; const WordDelims: TSysCharSet; out Pos: Integer): String;
-
-var
-  i, j, L: SizeInt;
-
-begin
-  j := 0;
-  i := WordPosition(N, S, WordDelims);
-  if (i > MaxInt) then
-  begin
-    Result := '';
-    Pos := -1;
-    Exit;
-  end;
-  Pos := i;
-  if (i <> 0) then
-  begin
-    j := i;
-    L := Length(S);
-    while (j <= L) and not CharInSet(S[j], WordDelims) do
-      Inc(j);
-  end;
-  Result := Copy(S, i, j - i);
-end;
 
 function SplitCommandLine(S: String): TStringDynArray;
 
@@ -267,11 +159,6 @@ begin
   SetLength(Result, len);
 end;
 
-procedure DoDirSeparators(var FileName: String);
-begin
-
-end;
-
 function TryStringToGUID(const Value: String; var GUID: TGUID): Boolean;
 begin
   try
@@ -280,11 +167,6 @@ begin
   except
     Result := False;
   end;
-end;
-
-procedure FillByte(var Dest; Count: NativeInt; Value: Byte);
-begin
-  FillChar(Dest, Count, Value);
 end;
 
 function EncodeStringBase64(const Value: String): String;
@@ -305,11 +187,6 @@ end;
 function GetLastOSError: Cardinal;
 begin
   Result := GetLastError;
-end;
-
-function HexStr(const Value: Integer): String;
-begin
-  Result := IntToHex(Value);
 end;
 
 function HexStr(const Value: Int64; const Digits: Integer): String;
@@ -483,23 +360,6 @@ begin
   inherited Items[Index] := Value;
 end;
 
-{ THandleStream }
-
-procedure THandleStream.FakeSeekForward(Offset: NativeInt; const Origin: TSeekOrigin; const Pos: NativeInt);
-begin
-
-end;
-
-procedure THandleStream.ReadNotImplemented;
-begin
-  raise Exception.Create('Not implemented!');
-end;
-
-procedure THandleStream.WriteNotImplemented;
-begin
-  raise Exception.Create('Not implemented!');
-end;
-
 { TListFreePascal }
 
 procedure TListFreePascal.AddRange(const List: TList);
@@ -513,8 +373,5 @@ begin
   for var Value in List do
     Add(Value);
 end;
-
-initialization
-  StdErr := GetStdHandle(STD_ERROR_HANDLE);
 
 end.
