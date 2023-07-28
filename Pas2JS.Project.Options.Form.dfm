@@ -4,7 +4,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pas2JS Options'
-  ClientHeight = 490
+  ClientHeight = 576
   ClientWidth = 628
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +16,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   TextHeight = 15
   object lblModules: TLabel
     Left = 8
-    Top = 223
+    Top = 239
     Width = 46
     Height = 15
     Caption = '&Modules'
@@ -24,7 +24,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object lblSearchPath: TLabel
     Left = 8
-    Top = 58
+    Top = 52
     Width = 62
     Height = 15
     Caption = 'Search Path'
@@ -33,16 +33,16 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   object lblTarget: TLabel
     Left = 8
     Top = 8
-    Width = 32
+    Width = 33
     Height = 15
     Caption = 'Target'
     FocusControl = grdModule
   end
   object grdModule: TDBGrid
     Left = 8
-    Top = 244
+    Top = 259
     Width = 612
-    Height = 209
+    Height = 281
     DataSource = dsModules
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -70,8 +70,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
       end>
   end
   object btnOk: TButton
-    Left = 8
-    Top = 459
+    Left = 4
+    Top = 546
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -81,8 +81,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     OnClick = btnOkClick
   end
   object btnCancel: TButton
-    Left = 89
-    Top = 459
+    Left = 84
+    Top = 546
     Width = 75
     Height = 25
     Cancel = True
@@ -92,14 +92,14 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object edtSearchPath: TEdit
     Left = 8
-    Top = 79
+    Top = 72
     Width = 612
     Height = 23
     TabOrder = 3
   end
   object cbxGenerateSingleFile: TCheckBox
     Left = 8
-    Top = 108
+    Top = 96
     Width = 145
     Height = 17
     Caption = 'Generate single JS file'
@@ -107,7 +107,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxGenerateMapFile: TCheckBox
     Left = 8
-    Top = 131
+    Top = 120
     Width = 145
     Height = 17
     Caption = 'Generate MAP File'
@@ -115,15 +115,15 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxEnumartorNumber: TCheckBox
     Left = 8
-    Top = 154
+    Top = 168
     Width = 217
     Height = 17
     Caption = 'Generate enumerators as numbers'
     TabOrder = 6
   end
-  object cbxRemovePrivates: TCheckBox
+  object cbxRemoveNotUsedPrivates: TCheckBox
     Left = 8
-    Top = 177
+    Top = 192
     Width = 217
     Height = 17
     Caption = 'Remove not  used privates'
@@ -131,7 +131,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cobTarget: TComboBox
     Left = 8
-    Top = 29
+    Top = 28
     Width = 273
     Height = 23
     Style = csDropDownList
@@ -140,11 +140,20 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxRemoveNotUsedDeclaration: TCheckBox
     Left = 8
-    Top = 200
+    Top = 215
     Width = 217
     Height = 17
     Caption = 'Remove not used declarations'
     TabOrder = 9
+  end
+  object cbxDisableAllOptimizations: TCheckBox
+    Left = 8
+    Top = 144
+    Width = 217
+    Height = 17
+    Caption = 'Disable all optimizations'
+    TabOrder = 10
+    OnClick = cbxDisableAllOptimizationsClick
   end
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
