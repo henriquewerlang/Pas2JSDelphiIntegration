@@ -157,7 +157,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompiler.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jslibcompiler.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsutils.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jslogger.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfileutils.pas"/>
@@ -169,11 +168,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppas2js.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jspparser.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsuseanalyzer.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jspcucompiler.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfscompiler.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfiler.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompilercfg.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jscompilerpp.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jsbase.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jswriter.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-js\src\jstree.pas"/>
@@ -189,8 +184,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pparser.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pasresolveeval.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-passrc\src\pasuseanalyzer.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\fcl-process\src\process.pas"/>
-        <DCCReference Include="Pas2JS\Compiler\packages\fcl-process\src\pipes.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\fcl-base\src\avl_tree.pas"/>
         <DCCReference Include="Pas2JS.Compiler.Delphi.pas"/>
         <BuildConfiguration Include="Base">

@@ -45,7 +45,6 @@ contains
   fppjssrcmap in 'Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas',
   pas2jsfilecache in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas',
   pas2jscompiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jscompiler.pas',
-  pas2jslibcompiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jslibcompiler.pas',
   pas2jsutils in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsutils.pas',
   pas2jslogger in 'Pas2JS\Compiler\packages\pastojs\src\pas2jslogger.pas',
   pas2jsfileutils in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsfileutils.pas',
@@ -57,11 +56,7 @@ contains
   fppas2js in 'Pas2JS\Compiler\packages\pastojs\src\fppas2js.pas',
   pas2jspparser in 'Pas2JS\Compiler\packages\pastojs\src\pas2jspparser.pas',
   pas2jsuseanalyzer in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsuseanalyzer.pas',
-  pas2jspcucompiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jspcucompiler.pas',
   pas2jsfscompiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsfscompiler.pas',
-  pas2jsfiler in 'Pas2JS\Compiler\packages\pastojs\src\pas2jsfiler.pas',
-  pas2jscompilercfg in 'Pas2JS\Compiler\packages\pastojs\src\pas2jscompilercfg.pas',
-  pas2jscompilerpp in 'Pas2JS\Compiler\packages\pastojs\src\pas2jscompilerpp.pas',
   jsbase in 'Pas2JS\Compiler\packages\fcl-js\src\jsbase.pas',
   jswriter in 'Pas2JS\Compiler\packages\fcl-js\src\jswriter.pas',
   jstree in 'Pas2JS\Compiler\packages\fcl-js\src\jstree.pas',
@@ -77,8 +72,6 @@ contains
   pparser in 'Pas2JS\Compiler\packages\fcl-passrc\src\pparser.pas',
   pasresolveeval in 'Pas2JS\Compiler\packages\fcl-passrc\src\pasresolveeval.pas',
   pasuseanalyzer in 'Pas2JS\Compiler\packages\fcl-passrc\src\pasuseanalyzer.pas',
-  process in 'Pas2JS\Compiler\packages\fcl-process\src\process.pas',
-  pipes in 'Pas2JS\Compiler\packages\fcl-process\src\pipes.pas',
   avl_tree in 'Pas2JS\Compiler\packages\fcl-base\src\avl_tree.pas',
   Pas2JS.Compiler.Delphi in 'Pas2JS.Compiler.Delphi.pas';
 
