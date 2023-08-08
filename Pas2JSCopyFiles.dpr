@@ -8,57 +8,79 @@ uses
   System.SysUtils,
   System.IOUtils, Vcl.Dialogs;
 
-const
-  BASE_PATH = '\Pas2JS\Compiler\packages';
-  EXTENSION_CONVERSION: array[Boolean] of String = ('.pas', '.pp');
+type
+  EXTENSION_ARRAY = array[Boolean] of String;
+
+var
+  PasToFPC: Boolean;
+
+  ProjectFolder: String;
 
   function GetFileNames: TArray<String>;
   begin
     Result := [
-      '%s\fcl-base\src\avl_tree.file',
-      '%s\fcl-json\src\fpjson.file',
-      '%s\fcl-json\src\jsonparser.file',
-      '%s\fcl-json\src\jsonreader.file',
-      '%s\fcl-json\src\jsonscanner.file',
-      '%s\fcl-js\src\jsbase.file',
-      '%s\fcl-js\src\jstoken.file',
-      '%s\fcl-js\src\jstree.file',
-      '%s\fcl-js\src\jswriter.file',
-      '%s\fcl-passrc\src\pasresolver.file',
-      '%s\fcl-passrc\src\pastree.file',
-      '%s\fcl-passrc\src\pparser.file',
-      '%s\fcl-passrc\src\pscanner.file',
-      '%s\pastojs\src\fppas2js.file',
-      '%s\pastojs\src\fppjssrcmap.file',
-      '%s\pastojs\src\pas2jscompiler.file',
-      '%s\pastojs\src\pas2jsfilecache.file',
-      '%s\pastojs\src\pas2jsfileutils.file',
-      '%s\pastojs\src\pas2jsfs.file',
-      '%s\pastojs\src\pas2jsfscompiler.file',
-      '%s\pastojs\src\pas2jshtmlresources.file',
-      '%s\pastojs\src\pas2jsjsresources.file',
-      '%s\pastojs\src\pas2jslogger.file',
-      '%s\pastojs\src\pas2jspparser.file',
-      '%s\pastojs\src\pas2jsresources.file',
-      '%s\pastojs\src\pas2jsresstrfile.file',
-      '%s\pastojs\src\pas2jsuseanalyzer.file',
-      '%s\pastojs\src\pas2jsutils.file',
-      '%s\..\utils\pas2js\stubcreator.file'];
+      'fcl-fpcunit\src\fpcunit.file',
+      'fcl-fpcunit\src\testregistry.file',
+      'fcl-fpcunit\src\testdecorator.file',
+      'fcl-fpcunit\src\testutils.file',
+
+      'fcl-base\src\avl_tree.file',
+      'fcl-json\src\fpjson.file',
+      'fcl-json\src\jsonparser.file',
+      'fcl-json\src\jsonreader.file',
+      'fcl-json\src\jsonscanner.file',
+      'fcl-js\src\jsbase.file',
+      'fcl-js\src\jstoken.file',
+      'fcl-js\src\jstree.file',
+      'fcl-js\src\jswriter.file',
+      'fcl-passrc\src\pasresolver.file',
+      'fcl-passrc\src\pastree.file',
+      'fcl-passrc\src\pparser.file',
+      'fcl-passrc\src\pscanner.file',
+      'pastojs\src\fppas2js.file',
+      'pastojs\src\fppjssrcmap.file',
+      'pastojs\src\pas2jscompiler.file',
+      'pastojs\src\pas2jsfilecache.file',
+      'pastojs\src\pas2jsfileutils.file',
+      'pastojs\src\pas2jsfs.file',
+      'pastojs\src\pas2jsfscompiler.file',
+      'pastojs\src\pas2jshtmlresources.file',
+      'pastojs\src\pas2jsjsresources.file',
+      'pastojs\src\pas2jslogger.file',
+      'pastojs\src\pas2jspparser.file',
+      'pastojs\src\pas2jsresources.file',
+      'pastojs\src\pas2jsresstrfile.file',
+      'pastojs\src\pas2jsuseanalyzer.file',
+      'pastojs\src\pas2jsutils.file',
+      '..\utils\pas2js\stubcreator.file'
+      ];
   end;
 
-begin
-  var PasToFPC := ParamStr(2) = '1';
-  var ProjectFolder := ParamStr(1);
+  procedure ChangeFileExtension(const BaseFileName: String; const ExtensionConversor: EXTENSION_ARRAY);
+  const
+    BASE_PATH = '\Pas2JS\Compiler\packages\';
 
-  for var FileNameList in GetFileNames do
   begin
-    var FileName := Format(FileNameList, [BASE_PATH]);
+    var FileName := BASE_PATH + BaseFileName;
 
-    var DestinyFile := ProjectFolder + ChangeFileExt(FileName, EXTENSION_CONVERSION[not PasToFPC]);
-    var SourceFile := ProjectFolder + ChangeFileExt(FileName, EXTENSION_CONVERSION[PasToFPC]);
+    var DestinyFile := ProjectFolder + ChangeFileExt(FileName, ExtensionConversor[not PasToFPC]);
+    var SourceFile := ProjectFolder + ChangeFileExt(FileName, ExtensionConversor[PasToFPC]);
 
     if TFile.Exists(SourceFile) and not TFile.Exists(DestinyFile) then
       TFile.Move(SourceFile, DestinyFile);
   end;
+
+const
+  EXTENSION_FILE_CONVERSION: EXTENSION_ARRAY = ('.pas', '.pp');
+  EXTENSION_PROJECT_CONVERSION: EXTENSION_ARRAY = ('.dpr', '.pp');
+
+begin
+  PasToFPC := ParamStr(2) = '1';
+  ProjectFolder := ParamStr(1);
+
+  ChangeFileExtension('pastojs\tests\testpas2js.file', EXTENSION_PROJECT_CONVERSION);
+
+  for var FileName in GetFileNames do
+    ChangeFileExtension(FileName, EXTENSION_FILE_CONVERSION);
 end.
 

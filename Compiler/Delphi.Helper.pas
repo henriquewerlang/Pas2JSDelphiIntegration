@@ -5,7 +5,8 @@ interface
 uses System.SysUtils, System.Generics.Collections, System.Classes, System.WideStrUtils, System.Generics.Defaults, System.Types, Winapi.Windows;
 
 type
-  PtrInt = Integer;
+  PtrInt = NativeInt;
+  PtrUInt = ^NativeInt;
   PUnicodeChar = PChar;
   QWord = UInt64;
   SizeInt = NativeInt;
@@ -79,12 +80,18 @@ function StringInList(const Value: String; const Values: TArray<String>): Boolea
 function StrToQWord(const Value: String): QWord;
 function TryStringToGUID(const Value: String; var GUID: TGUID): Boolean;
 function TryStrToQWord(const Str: String; var Value: QWord): Boolean;
+function UnicodeFormat(const Expression: String; const Params: array of const): String;
 
 procedure SetCodePage(S: RawByteString; CodePage: Word; Convert: Boolean);
 
 implementation
 
 uses System.NetEncoding;
+
+function UnicodeFormat(const Expression: String; const Params: array of const): String;
+begin
+  Result := Format(Expression, Params);
+end;
 
 function SplitCommandLine(S: String): TStringDynArray;
 
