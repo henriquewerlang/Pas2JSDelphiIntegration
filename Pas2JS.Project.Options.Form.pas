@@ -20,19 +20,22 @@ type
     cbxGenerateSingleFile: TCheckBox;
     cbxGenerateMapFile: TCheckBox;
     cbxEnumartorNumber: TCheckBox;
-    cbxRemovePrivates: TCheckBox;
+    cbxRemoveNotUsedPrivates: TCheckBox;
     cobTarget: TComboBox;
     lblTarget: TLabel;
     cbxRemoveNotUsedDeclaration: TCheckBox;
+    cbxDisableAllOptimizations: TCheckBox;
     procedure cobTargetSelect(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cbxDisableAllOptimizationsClick(Sender: TObject);
   private
     FSelectedConfiguration: IOTABuildConfiguration;
 
     function GetSelectedConfiguration: IOTABuildConfiguration;
 
     procedure ActivateConfiguration(const ItemIndex: Integer);
+    procedure CheckOptimizations;
     procedure ClearConfiguration;
     procedure SaveConfiguration;
     procedure UpdateConfiguration;
@@ -71,6 +74,18 @@ begin
   SaveConfiguration;
 
   GetActiveProject.MarkModified;
+end;
+
+procedure TPas2JSProjectOptionForm.cbxDisableAllOptimizationsClick(Sender: TObject);
+begin
+  CheckOptimizations;
+end;
+
+procedure TPas2JSProjectOptionForm.CheckOptimizations;
+begin
+  cbxEnumartorNumber.Enabled := not cbxDisableAllOptimizations.Checked;
+  cbxRemoveNotUsedDeclaration.Enabled := not cbxDisableAllOptimizations.Checked;
+  cbxRemoveNotUsedPrivates.Enabled := not cbxDisableAllOptimizations.Checked;
 end;
 
 procedure TPas2JSProjectOptionForm.ClearConfiguration;
@@ -142,11 +157,12 @@ begin
   Configuration := GetSelectedConfiguration;
   var Modules := TStringList.Create(dupIgnore, False, False);
 
+  SaveConfig(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, BOOLEAN_VALUE[cbxDisableAllOptimizations.Checked]);
   SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, BOOLEAN_VALUE[cbxEnumartorNumber.Checked]);
   SaveConfig(PAS2JS_GENERATE_MAP_FILE, BOOLEAN_VALUE[cbxGenerateMapFile.Checked]);
   SaveConfig(PAS2JS_GENERATE_SINGLE_FILE, BOOLEAN_VALUE[cbxGenerateSingleFile.Checked]);
   SaveConfig(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, BOOLEAN_VALUE[cbxRemoveNotUsedDeclaration.Checked]);
-  SaveConfig(PAS2JS_REMOVE_PRIVATES, BOOLEAN_VALUE[cbxRemovePrivates.Checked]);
+  SaveConfig(PAS2JS_REMOVE_NOT_USED_PRIVATES, BOOLEAN_VALUE[cbxRemoveNotUsedPrivates.Checked]);
   SaveConfig(PAS2JS_SEARCH_PATH, edtSearchPath.Text);
 
   cdsModules.First;
@@ -168,11 +184,12 @@ begin
   var Configuration := GetSelectedConfiguration;
   var Modules := TStringList.Create;
 
+  cbxDisableAllOptimizations.Checked := Configuration.GetBoolean(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, False);
   cbxEnumartorNumber.Checked := Configuration.GetBoolean(PAS2JS_ENUMERATOR_AS_NUMBER, False);
   cbxGenerateMapFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_MAP_FILE, False);
   cbxGenerateSingleFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_SINGLE_FILE, False);
   cbxRemoveNotUsedDeclaration.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, False);
-  cbxRemovePrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_PRIVATES, False);
+  cbxRemoveNotUsedPrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_PRIVATES, False);
   edtSearchPath.Text := Configuration.Value[PAS2JS_SEARCH_PATH];
   Modules.DelimitedText := Configuration.Value[PAS2JS_MODULES];
 
@@ -189,6 +206,8 @@ begin
   end;
 
   Modules.Free;
+
+  CheckOptimizations;
 end;
 
 { TConfiguration }

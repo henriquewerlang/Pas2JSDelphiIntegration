@@ -136,11 +136,7 @@ var
 
   procedure AppendOutputPath;
   begin
-    var OutputPath := GetOutputConfiguration;
-
-    ForceDirectories(OutputPath);
-
-    Result.Add(Format('-FE%s', [OutputPath]));
+    Result.Add(Format('-FE%s', [GetOutputConfiguration]));
   end;
 
   procedure AppendPas2JSConfigurations;
@@ -151,14 +147,19 @@ var
     if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
       Result.Add('-Jm');
 
-    if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
-      Result.Add('-OoEnumNumbers-');
+    if Options.AsBoolean[PAS2JS_DISABLE_ALL_OPTIMIZATIONS] then
+      Result.Add('-O-')
+    else
+    begin
+      if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
+        Result.Add('-OoEnumNumbers-');
 
-    if Options.AsBoolean[PAS2JS_REMOVE_PRIVATES] then
-      Result.Add('-OoRemoveNotUsedPrivates');
+      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_PRIVATES] then
+        Result.Add('-OoRemoveNotUsedPrivates');
 
-    if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
-      Result.Add('-OoRemoveNotUsedDeclarations');
+      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
+        Result.Add('-OoRemoveNotUsedDeclarations');
+    end;
   end;
 
 begin
@@ -258,7 +259,7 @@ end;
 
 procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
 begin
-  var Compiler := TPas2JSCompiler.Create;
+  var Compiler := TPas2JSCompilerDelphi.Create;
   Compiler.OnWriteJSFile :=
     procedure (JSFileName: String)
     begin
@@ -270,6 +271,8 @@ begin
 
   var FileName := ChangeFileExt(Project.FileName, '.dpr');
   var FilePath := ExtractFilePath(FileName);
+
+  ForceDirectories(GetOutputConfiguration);
 
   StartIndexFile;
 
