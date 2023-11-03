@@ -65,6 +65,7 @@ const
   LineEnding = sLineBreak;
   DirectorySeparator = '\';
   PathSeparator = '\';
+  UTF8BOM = #$EF#$BB#$BF;
 
 function BoolToStr(const Value: Boolean): String; overload;
 function BoolToStr(const Value: Boolean; const TrueValue, FalseValue: String): String; overload;

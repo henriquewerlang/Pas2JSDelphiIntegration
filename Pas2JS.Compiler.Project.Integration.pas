@@ -5,6 +5,8 @@ interface
 uses System.Classes, System.Generics.Collections, Xml.XMLIntf, Pas2JS.Registry, ToolsAPI, Pas2JS.Compiler.Delphi;
 
 type
+  TScriptType = (Style, Script, Module);
+
   TPas2JSProjectCompiler = class
   private
     FCommandLine: TStringList;
@@ -19,7 +21,7 @@ type
     function GetOutputConfiguration: String;
     function GetRegistry: TPas2JSRegistry;
 
-    procedure AddScriptFile(LinkFileName: String; const Script: Boolean);
+    procedure AddScriptFile(LinkFileName: String; const ScriptType: TScriptType);
     procedure CompilerLog(Sender: TObject; const Info: String);
     procedure SaveIndexFile;
     procedure StartIndexFile;
@@ -48,6 +50,9 @@ type
     property &Type: String read FType write FType;
   end;
 
+const
+  SCRIPT_TYPE: array[TScriptType] of String = ('Style', 'Library', 'Module');
+
 implementation
 
 uses System.SysUtils, System.IOUtils, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts, PasUseAnalyzer;
@@ -59,7 +64,7 @@ end;
 
 { TPas2JSProjectCompiler }
 
-procedure TPas2JSProjectCompiler.AddScriptFile(LinkFileName: String; const Script: Boolean);
+procedure TPas2JSProjectCompiler.AddScriptFile(LinkFileName: String; const ScriptType: TScriptType);
 begin
   var DestinyFile := Format('%s\%s', [GetOutputConfiguration, ExtractFileName(LinkFileName)]);
   var LinkAttributeName: String;
@@ -72,7 +77,7 @@ begin
     LinkFileName := ExtractFileName(LinkFileName);
   end;
 
-  if Script then
+  if ScriptType in [Module, Script] then
   begin
     LinkAttributeName := 'src';
     LinkNodeName := 'script';
@@ -94,9 +99,9 @@ begin
   var LinkNode := FHeader.AddChild(LinkNodeName);
   LinkNode.Attributes[LinkAttributeName] := LinkFileName;
 
-  if Script then
-    LinkNode.Text := ''
-  else
+  if ScriptType = Module then
+    LinkNode.Attributes['type'] := 'module'
+  else if ScriptType = Style then
     LinkNode.Attributes['rel'] := 'stylesheet';
 end;
 
@@ -263,7 +268,7 @@ begin
   Compiler.OnWriteJSFile :=
     procedure (JSFileName: String)
     begin
-      AddScriptFile(ExtractFileName(JSFileName), True);
+      AddScriptFile(ExtractFileName(JSFileName), Script);
     end;
 
   Compiler.Log.OnLog := CompilerLog;
@@ -292,13 +297,22 @@ end;
 
 procedure TPas2JSProjectCompiler.StartIndexFile;
 
+  function GetScriptType(const TypeName: String): TScriptType;
+  begin
+    Result := Script;
+
+    for var ScriptType := Low(TScriptType) to High(TScriptType) do
+      if SCRIPT_TYPE[ScriptType] = TypeName then
+        Exit(ScriptType);
+  end;
+
   procedure AddScriptFiles;
   begin
     var ModuleList := TStringList.Create;
     ModuleList.DelimitedText := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration.Value[PAS2JS_MODULES];
 
     for var A := 0 to Pred(ModuleList.Count) do
-      AddScriptFile(ModuleList.KeyNames[A], ModuleList.ValueFromIndex[A] = 'Library');
+      AddScriptFile(ModuleList.KeyNames[A], GetScriptType(ModuleList.ValueFromIndex[A]));
 
     ModuleList.Free;
   end;

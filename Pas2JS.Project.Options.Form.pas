@@ -29,6 +29,7 @@ type
     procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cbxDisableAllOptimizationsClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FSelectedConfiguration: IOTABuildConfiguration;
 
@@ -54,7 +55,7 @@ implementation
 
 {$R *.dfm}
 
-uses System.SysUtils, Pas2JS.Consts, PlatformConst;
+uses System.SysUtils, Pas2JS.Consts, PlatformConst, Pas2JS.Compiler.Project.Integration;
 
 { TPas2JSProjectOptionForm }
 
@@ -106,6 +107,13 @@ end;
 procedure TPas2JSProjectOptionForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   ClearConfiguration;
+end;
+
+procedure TPas2JSProjectOptionForm.FormCreate(Sender: TObject);
+begin
+  grdModule.Columns[1].PickList.AddStrings(SCRIPT_TYPE);
+
+  grdModule.Columns[1].DropDownRows := grdModule.Columns[1].PickList.Count;
 end;
 
 function TPas2JSProjectOptionForm.GetSelectedConfiguration: IOTABuildConfiguration;

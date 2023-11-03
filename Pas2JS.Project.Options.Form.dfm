@@ -13,6 +13,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   Font.Name = 'Segoe UI'
   Font.Style = []
   OnClose = FormClose
+  OnCreate = FormCreate
   TextHeight = 15
   object lblModules: TLabel
     Left = 8
@@ -40,7 +41,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object grdModule: TDBGrid
     Left = 8
-    Top = 259
+    Top = 260
     Width = 612
     Height = 281
     DataSource = dsModules
@@ -58,12 +59,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
         Visible = True
       end
       item
-        DropDownRows = 2
         Expanded = False
         FieldName = 'ModuleType'
-        PickList.Strings = (
-          'CSS'
-          'Library')
         Title.Caption = 'Type'
         Width = 79
         Visible = True
