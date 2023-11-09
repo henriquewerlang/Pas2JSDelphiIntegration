@@ -99,6 +99,9 @@ begin
   var LinkNode := FHeader.AddChild(LinkNodeName);
   LinkNode.Attributes[LinkAttributeName] := LinkFileName;
 
+  if ScriptType in [Module, Script] then
+    LinkNode.NodeValue := EmptyStr;
+
   if ScriptType = Module then
     LinkNode.Attributes['type'] := 'module'
   else if ScriptType = Style then
@@ -265,10 +268,11 @@ end;
 procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
 begin
   var Compiler := TPas2JSCompilerDelphi.Create;
-  Compiler.OnWriteJSFile :=
-    procedure (JSFileName: String)
+  Compiler.OnReadFile :=
+    procedure (FileName: String)
     begin
-      AddScriptFile(ExtractFileName(JSFileName), Script);
+      if (TPath.GetExtension(FileName) = '.pas') or (TPath.GetExtension(FileName) = '.dpr') or (TPath.GetExtension(FileName) = '.pp') then
+        AddScriptFile(TPath.GetFileName(TPath.ChangeExtension(FileName, '.js')), Script);
     end;
 
   Compiler.Log.OnLog := CompilerLog;
@@ -319,11 +323,7 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
 
 begin
   FIndexFile := TXMLDocument.Create(nil);
-
-  if TFile.Exists(GetIndexFileName) then
-    FIndexFile.XML.Text := TFile.ReadAllText(GetIndexFileName)
-  else
-    FIndexFile.XML.Text := '<!DOCTYPE html><html/>';
+  FIndexFile.XML.Text := '<!DOCTYPE html><html/>';
 
   FIndexFile.Active := True;
   FIndexFile.Options := [doNodeAutoIndent, doNodeAutoCreate];
