@@ -7,7 +7,7 @@ uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, FPPJsSrcMa
 type
   TPas2JSCompilerDelphi = class(TPas2JSFSCompiler)
   private
-    FOnWriteJSFile: TProc<String>;
+    FOnReadFile: TProc<String>;
 
     function LoadFile(FileName: String; var Source: String): Boolean;
   protected
@@ -16,7 +16,7 @@ type
     procedure CheckUnitAlias(var UseUnitName: string); override;
     procedure Run(const FileName: String; const CommandLine: TStrings);
 
-    property OnWriteJSFile: TProc<String> read FOnWriteJSFile write FOnWriteJSFile;
+    property OnReadFile: TProc<String> read FOnReadFile write FOnReadFile;
   end;
 
 implementation
@@ -51,15 +51,15 @@ begin
   TFile.WriteAllText(DestFilename, PChar(DestinyFile.Memory), TEncoding.UTF8);
 
   DestinyFile.Free;
-
-  if Assigned(OnWriteJSFile) then
-    OnWriteJSFile(DestFilename);
 end;
 
 function TPas2JSCompilerDelphi.LoadFile(FileName: String; var Source: String): Boolean;
 begin
   Result := True;
   Source := TFile.ReadAllText(FileName);
+
+  if Assigned(OnReadFile) then
+    OnReadFile(Filename);
 end;
 
 procedure TPas2JSCompilerDelphi.Run(const FileName: String; const CommandLine: TStrings);
