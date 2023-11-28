@@ -24,6 +24,8 @@ uses
 type
   TTestInsightListener = class(TInterfacedObject, ITestListener)
   private
+    FClient: TTestInsightRestClient;
+
     procedure AddFailure(ATest: TTest; AFailure: TTestFailure);
     procedure AddError(ATest: TTest; AError: TTestFailure);
     procedure StartTest(ATest: TTest);
@@ -55,6 +57,12 @@ uses
 
 procedure RunRegisteredTests(const baseUrl: string);
 begin
+  var Listener := TTestInsightListener.Create(baseUrl) as ITestListener;
+  var Results := TTestResult.Create;
+
+  Results.AddListener(Listener);
+
+  TTestCase.Suite.Run(Results);
 end;
 
 { TTestInsightTestListener }
@@ -72,7 +80,8 @@ end;
 constructor TTestInsightListener.Create(const baseUrl: string);
 begin
   inherited Create;
-//  fClient := TTestInsightRestClient.Create(baseUrl);
+
+  FClient := TTestInsightRestClient.Create(baseUrl);
 //  selectedTests := fClient.GetTests;
 //  fSelectedTests := TDictionary<string,Boolean>.Create(Length(selectedTests));
 //  for i := 0 to High(selectedTests) do
@@ -99,7 +108,7 @@ end;
 
 procedure TTestInsightListener.StartTest(ATest: TTest);
 begin
-
+  FClient.StartedTesting(ATest.CountTestCases)
 end;
 
 procedure TTestInsightListener.StartTestSuite(ATestSuite: TTestSuite);
