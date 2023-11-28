@@ -37,7 +37,8 @@
 {$IMPLICITBUILD OFF}
 
 requires
-  rtl;
+  rtl,
+  RESTComponents;
 
 contains
   Delphi.Helper in 'Compiler\Delphi.Helper.pas',

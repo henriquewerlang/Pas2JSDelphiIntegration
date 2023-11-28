@@ -9,20 +9,16 @@ type
 
   TPas2JSProjectCompiler = class
   private
-    FCommandLine: TStringList;
     FIndexFile: IXMLDocument;
     FHeader: IXMLNode;
     FCurrentProject: IOTAProject;
     FRegistry: TPas2JSRegistry;
 
-    function BuildCommandLine: TStringList;
-    function GetCommandLine: TStringList;
     function GetIndexFileName: String;
     function GetOutputConfiguration: String;
     function GetRegistry: TPas2JSRegistry;
 
     procedure AddScriptFile(LinkFileName: String; const ScriptType: TScriptType);
-    procedure CompilerLog(Sender: TObject; const Info: String);
     procedure SaveIndexFile;
     procedure StartIndexFile;
 
@@ -33,29 +29,12 @@ type
     procedure Run(const Project: IOTAProject);
   end;
 
-  TCompilerMessage = class
-  private
-    FCol: Integer;
-    FFileName: String;
-    FLine: Integer;
-    FMessage: String;
-    FNumber: Integer;
-    FType: String;
-  public
-    property Col: Integer read FCol write FCol;
-    property FileName: String read FFileName write FFileName;
-    property Line: Integer read FLine write FLine;
-    property Message: String read FMessage write FMessage;
-    property Number: Integer read FNumber write FNumber;
-    property &Type: String read FType write FType;
-  end;
-
 const
   SCRIPT_TYPE: array[TScriptType] of String = ('Style', 'Library', 'Module');
 
 implementation
 
-uses System.SysUtils, System.IOUtils, Rest.JSON, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts, PasUseAnalyzer;
+uses System.SysUtils, System.IOUtils, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts;
 
 function ExpandMacros(const Value: String): String;
 begin
@@ -108,143 +87,11 @@ begin
     LinkNode.Attributes['rel'] := 'stylesheet';
 end;
 
-function TPas2JSProjectCompiler.BuildCommandLine: TStringList;
-var
-  Options: IOTABuildConfiguration;
-
-  procedure AppendCheckErrors;
-  begin
-    var CheckError := EmptyStr;
-
-    if Options.GetBoolean(sRangeChecking) then
-      CheckError := CheckError + 'r';
-
-    if Options.GetBoolean(sIntegerOverflowCheck) then
-      CheckError := CheckError + 'o';
-
-    if CheckError <> '' then
-      Result.Add('-C' + CheckError);
-  end;
-
-  procedure AppendSearchPaths;
-  begin
-    var IncludePath := Format('%s;%s', [ExpandMacros(Registry.LibraryPath), Options.Value[PAS2JS_SEARCH_PATH]]);
-    Result.Add('-Fu' + IncludePath);
-  end;
-
-  procedure AppendDefines;
-  begin
-    var Defines := TStringList.Create;
-    Defines.Delimiter := ';';
-    Defines.DelimitedText := Options.GetValue(sDefine, True);
-
-    for var DefineName in Defines do
-      Result.Add('-d' + DefineName);
-  end;
-
-  procedure AppendOutputPath;
-  begin
-    Result.Add(Format('-FE%s', [GetOutputConfiguration]));
-  end;
-
-  procedure AppendPas2JSConfigurations;
-  begin
-    if Options.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] then
-      Result.Add('-Jc');
-
-    if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
-      Result.Add('-Jm');
-
-    if Options.AsBoolean[PAS2JS_DISABLE_ALL_OPTIMIZATIONS] then
-      Result.Add('-O-')
-    else
-    begin
-      if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
-        Result.Add('-OoEnumNumbers-');
-
-      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_PRIVATES] then
-        Result.Add('-OoRemoveNotUsedPrivates');
-
-      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
-        Result.Add('-OoRemoveNotUsedDeclarations');
-    end;
-  end;
-
-begin
-  Options := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
-  Result := GetCommandLine;
-
-  Result.AddStrings([
-    '-JRjs',
-    '-MDelphi',
-    '-Pecmascript6',
-    '-JeJSON',
-    '-vewhqb'
-  ]);
-
-  AppendDefines;
-
-  AppendCheckErrors;
-
-  AppendSearchPaths;
-
-  AppendOutputPath;
-
-  AppendPas2JSConfigurations;
-end;
-
-procedure TPas2JSProjectCompiler.CompilerLog(Sender: TObject; const Info: String);
-begin
-  var CompilerMessage := TJson.JsonToObject<TCompilerMessage>(Info);
-
-  case CompilerMessage.Number of
-    nPAUnitNotUsed: ;
-    nPAParameterNotUsed: ;
-    nPAParameterInOverrideNotUsed: ;
-    else
-    begin
-      var LineReference: Pointer;
-      var MessageService := (BorlandIDEServices as IOTAMessageServices);
-      var MessageType := otamkInfo;
-
-      if CompilerMessage.&Type = 'Fatal' then
-        MessageType := otamkFatal
-      else if CompilerMessage.&Type = 'Error' then
-        MessageType := otamkError
-      else if CompilerMessage.&Type = 'Warning' then
-        MessageType := otamkWarn
-      else if CompilerMessage.&Type = 'Hint' then
-        MessageType := otamkHint;
-
-      var Message := CompilerMessage.Message;
-
-      if CompilerMessage.Number > 0 then
-        Message := Format('Code: %d %s', [CompilerMessage.Number, Message]);
-
-      MessageService.AddCompilerMessage(CompilerMessage.FileName, Message, 'Pas2JS Compiler', MessageType, CompilerMessage.Line, CompilerMessage.Col, nil, LineReference);
-
-      MessageService := nil;
-    end;
-  end;
-
-  CompilerMessage.Free;
-end;
-
 destructor TPas2JSProjectCompiler.Destroy;
 begin
   FRegistry.Free;
 
   inherited;
-end;
-
-function TPas2JSProjectCompiler.GetCommandLine: TStringList;
-begin
-  if not Assigned(FCommandLine) then
-    FCommandLine := TStringList.Create;
-
-  FCommandLine.Clear;
-
-  Result := FCommandLine;
 end;
 
 function TPas2JSProjectCompiler.GetIndexFileName: String;
@@ -266,30 +113,85 @@ begin
 end;
 
 procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
+
+  procedure LoadCompilerConfiguration(const Compiler: TPas2JSCompilerDelphi);
+  begin
+    var Options := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
+
+    Compiler.Defines := Options.GetValue(sDefine, True);
+    Compiler.OutputPath := GetOutputConfiguration;
+    Compiler.SearchPath := Format('%s;%s', [ExpandMacros(Registry.LibraryPath), Options.Value[PAS2JS_SEARCH_PATH]]);
+
+    if Options.GetBoolean(sRangeChecking) then
+      Compiler.Options := [TCompilerOption.RangeCheckError];
+
+    if Options.GetBoolean(sIntegerOverflowCheck) then
+      Compiler.Options := [TCompilerOption.IntegerOverflowCheck];
+
+    if Options.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] then
+      Compiler.Options := [TCompilerOption.GenerateSingleFile];
+
+    if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
+      Compiler.Options := [TCompilerOption.GenerateMapFile];
+
+    if Options.AsBoolean[PAS2JS_DISABLE_ALL_OPTIMIZATIONS] then
+      Compiler.Options := [TCompilerOption.DisableAllOptimizations]
+    else
+    begin
+      if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
+        Compiler.Options := [TCompilerOption.GenerateEnumeratorNumber];
+
+      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_PRIVATES] then
+        Compiler.Options := [TCompilerOption.RemoveNotUsedPrivates];
+
+      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
+        Compiler.Options := [TCompilerOption.RemoveNotUsedDeclaration];
+    end;
+  end;
+
 begin
   var Compiler := TPas2JSCompilerDelphi.Create;
+  Compiler.OnCompilerMessage :=
+    procedure (CompilerMessage: TCompilerMessage)
+    begin
+      var LineReference: Pointer := nil;
+      var MessageService := (BorlandIDEServices as IOTAMessageServices);
+      var MessageType := otamkInfo;
+
+      if CompilerMessage.&Type = 'Fatal' then
+        MessageType := otamkFatal
+      else if CompilerMessage.&Type = 'Error' then
+        MessageType := otamkError
+      else if CompilerMessage.&Type = 'Warning' then
+        MessageType := otamkWarn
+      else if CompilerMessage.&Type = 'Hint' then
+        MessageType := otamkHint;
+
+      MessageService.AddCompilerMessage(CompilerMessage.FileName, CompilerMessage.Message, 'Pas2JS Compiler', MessageType, CompilerMessage.Line, CompilerMessage.Col, nil, LineReference);
+
+      MessageService := nil;
+    end;
   Compiler.OnReadFile :=
     procedure (FileName: String)
     begin
       if (TPath.GetExtension(FileName) = '.pas') or (TPath.GetExtension(FileName) = '.dpr') or (TPath.GetExtension(FileName) = '.pp') then
         AddScriptFile(TPath.GetFileName(TPath.ChangeExtension(FileName, '.js')), Script);
     end;
-
-  Compiler.Log.OnLog := CompilerLog;
   FCurrentProject := Project;
 
-  var FileName := ChangeFileExt(Project.FileName, '.dpr');
-  var FilePath := ExtractFilePath(FileName);
+  try
+    LoadCompilerConfiguration(Compiler);
 
-  ForceDirectories(GetOutputConfiguration);
+    ForceDirectories(GetOutputConfiguration);
 
-  StartIndexFile;
+    StartIndexFile;
 
-  Compiler.Run(FileName, BuildCommandLine);
+    Compiler.Run(ChangeFileExt(Project.FileName, '.dpr'));
 
-  SaveIndexFile;
-
-  Compiler.Free;
+    SaveIndexFile;
+  finally
+    Compiler.Free;
+  end;
 end;
 
 procedure TPas2JSProjectCompiler.SaveIndexFile;

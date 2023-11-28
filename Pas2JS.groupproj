@@ -18,6 +18,9 @@
         <Projects Include="Pas2JSTests.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Debug\Debug.Pas2JS.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="Pas2JSTests:Make">
         <MSBuild Projects="Pas2JSTests.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Debug_Pas2JS">
+        <MSBuild Projects="Debug\Debug.Pas2JS.dproj"/>
+    </Target>
+    <Target Name="Debug_Pas2JS:Clean">
+        <MSBuild Projects="Debug\Debug.Pas2JS.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Debug_Pas2JS:Make">
+        <MSBuild Projects="Debug\Debug.Pas2JS.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Pas2JSCopyFiles;Pas2JSCompilerLib;Pas2JSIntegration;Pas2JSStub;Pas2JSTests"/>
+        <CallTarget Targets="Pas2JSCopyFiles;Pas2JSCompilerLib;Pas2JSIntegration;Pas2JSStub;Pas2JSTests;Debug_Pas2JS"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Pas2JSCopyFiles:Clean;Pas2JSCompilerLib:Clean;Pas2JSIntegration:Clean;Pas2JSStub:Clean;Pas2JSTests:Clean"/>
+        <CallTarget Targets="Pas2JSCopyFiles:Clean;Pas2JSCompilerLib:Clean;Pas2JSIntegration:Clean;Pas2JSStub:Clean;Pas2JSTests:Clean;Debug_Pas2JS:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Pas2JSCopyFiles:Make;Pas2JSCompilerLib:Make;Pas2JSIntegration:Make;Pas2JSStub:Make;Pas2JSTests:Make"/>
+        <CallTarget Targets="Pas2JSCopyFiles:Make;Pas2JSCompilerLib:Make;Pas2JSIntegration:Make;Pas2JSStub:Make;Pas2JSTests:Make;Debug_Pas2JS:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

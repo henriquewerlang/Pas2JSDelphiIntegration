@@ -136,6 +136,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="RESTComponents.dcp"/>
         <DCCReference Include="Compiler\Delphi.Helper.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\fppjssrcmap.pas"/>
         <DCCReference Include="Pas2JS\Compiler\packages\pastojs\src\pas2jsfilecache.pas"/>
@@ -210,7 +211,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\Pas2JSCompilerLib.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\Pas2JSCompilerLib.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Pas2JSCompilerLib.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
