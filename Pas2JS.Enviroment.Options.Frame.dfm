@@ -7,50 +7,19 @@ object Pas2JSEnviromentOptions: TPas2JSEnviromentOptions
   DesignSize = (
     399
     192)
-  object lblCompilerFile: TLabel
-    Left = 0
-    Top = 0
-    Width = 125
-    Height = 15
-    Caption = 'Path to Pas2JS compiler'
-  end
   object lblLibraryPath: TLabel
-    Left = 0
-    Top = 50
+    Left = 3
+    Top = 2
     Width = 63
     Height = 15
     Caption = 'Library path'
   end
-  object FilePath: TEdit
-    Left = 0
-    Top = 21
+  object LibraryPath: TEdit
+    Left = 3
+    Top = 23
     Width = 358
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
-  end
-  object btnSelectFile: TButton
-    Left = 364
-    Top = 21
-    Width = 25
-    Height = 23
-    Anchors = [akTop, akRight]
-    Caption = '...'
-    TabOrder = 1
-    OnClick = btnSelectFileClick
-  end
-  object LibraryPath: TEdit
-    Left = 0
-    Top = 71
-    Width = 358
-    Height = 23
-    Anchors = [akLeft, akTop, akRight]
-    TabOrder = 2
-  end
-  object SelectFile: TOpenDialog
-    Filter = 'Pas2JS Library|pas2jslib.dll'
-    Options = [ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 320
-    Top = 24
   end
 end

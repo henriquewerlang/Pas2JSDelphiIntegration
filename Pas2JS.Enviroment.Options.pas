@@ -56,7 +56,6 @@ procedure TPas2JSEnvironment.DialogClosed(Accepted: Boolean);
 begin
   if Accepted then
   begin
-    Registry.CompilerPath := FFrame.FilePath.Text;
     Registry.LibraryPath := FFrame.LibraryPath.Text;
   end;
 end;
@@ -64,7 +63,6 @@ end;
 procedure TPas2JSEnvironment.FrameCreated(AFrame: TCustomFrame);
 begin
   FFrame := AFrame as TPas2JSEnviromentOptions;
-  FFrame.FilePath.Text := Registry.CompilerPath;
   FFrame.LibraryPath.Text := Registry.LibraryPath;
 end;
 
