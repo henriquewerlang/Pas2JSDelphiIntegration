@@ -104,7 +104,7 @@ begin
   var DestinyFile := TMemoryStream.Create;
   Result := True;
 
-  Writer.SaveJSToStream(False, MapFilename, DestinyFile);
+  Writer.SaveJSToStream(False, ExtractFileName(MapFilename), DestinyFile);
 
   DestinyFile.WriteData(#0);
 
