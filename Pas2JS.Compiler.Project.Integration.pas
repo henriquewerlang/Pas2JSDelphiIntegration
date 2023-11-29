@@ -123,29 +123,29 @@ procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
     Compiler.SearchPath := Format('%s;%s', [ExpandMacros(Registry.LibraryPath), Options.Value[PAS2JS_SEARCH_PATH]]);
 
     if Options.GetBoolean(sRangeChecking) then
-      Compiler.Options := [TCompilerOption.RangeCheckError];
+      Compiler.Options := Compiler.Options + [TCompilerOption.RangeCheckError];
 
     if Options.GetBoolean(sIntegerOverflowCheck) then
-      Compiler.Options := [TCompilerOption.IntegerOverflowCheck];
+      Compiler.Options := Compiler.Options + [TCompilerOption.IntegerOverflowCheck];
 
     if Options.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] then
-      Compiler.Options := [TCompilerOption.GenerateSingleFile];
+      Compiler.Options := Compiler.Options + [TCompilerOption.GenerateSingleFile];
 
     if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
-      Compiler.Options := [TCompilerOption.GenerateMapFile];
+      Compiler.Options := Compiler.Options + [TCompilerOption.GenerateMapFile];
 
     if Options.AsBoolean[PAS2JS_DISABLE_ALL_OPTIMIZATIONS] then
-      Compiler.Options := [TCompilerOption.DisableAllOptimizations]
+      Compiler.Options := Compiler.Options + [TCompilerOption.DisableAllOptimizations]
     else
     begin
       if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
-        Compiler.Options := [TCompilerOption.GenerateEnumeratorNumber];
+        Compiler.Options := Compiler.Options + [TCompilerOption.GenerateEnumeratorNumber];
 
       if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_PRIVATES] then
-        Compiler.Options := [TCompilerOption.RemoveNotUsedPrivates];
+        Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedPrivates];
 
       if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
-        Compiler.Options := [TCompilerOption.RemoveNotUsedDeclaration];
+        Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedDeclaration];
     end;
   end;
 
