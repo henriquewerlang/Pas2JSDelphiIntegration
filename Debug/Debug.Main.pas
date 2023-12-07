@@ -45,7 +45,7 @@ procedure TDebugMain.CompilerExecuteClick(Sender: TObject);
 begin
   var Compiler := TPas2JSCompilerDelphi.Create;
   Compiler.Defines := Defines.Text;
-  Compiler.SearchPath := '..\..\..\Pas2JS\packages\rtl;' + SearchPath.Text;
+  Compiler.SearchPath := '..\..\..\Pas2JS\packages\rtl\src;' + SearchPath.Text;
   Compiler.OutputPath := OutputPath.Text;
   Compiler.OnCompilerMessage :=
     procedure(CompilerMessage: TCompilerMessage)
