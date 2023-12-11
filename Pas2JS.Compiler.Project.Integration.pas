@@ -223,6 +223,18 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
     ModuleList.Free;
   end;
 
+  procedure CopyResourceFiles;
+  begin
+    var ResourceDirectoryList := TStringList.Create;
+
+    ResourceDirectoryList.DelimitedText := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration.Value[PAS2JS_RESOURCE_DIRECTORY_PATH];
+
+    for var A := 0 to Pred(ResourceDirectoryList.Count) do
+      TDirectory.Copy(ResourceDirectoryList.KeyNames[A], ExpandMacros(ResourceDirectoryList.ValueFromIndex[A].Replace('$(OutputDir)', GetOutputConfiguration, [rfIgnoreCase])));
+
+    ResourceDirectoryList.Free;
+  end;
+
 begin
   FIndexFile := TXMLDocument.Create(nil);
   FIndexFile.XML.Text := '<!DOCTYPE html><html/>';
@@ -236,6 +248,8 @@ begin
   HTML.ChildNodes['body'].ChildNodes['script'].Text := 'rtl.run();';
 
   AddScriptFiles;
+
+  CopyResourceFiles;
 end;
 
 end.

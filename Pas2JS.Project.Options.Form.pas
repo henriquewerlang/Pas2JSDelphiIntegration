@@ -25,6 +25,12 @@ type
     lblTarget: TLabel;
     cbxRemoveNotUsedDeclaration: TCheckBox;
     cbxDisableAllOptimizations: TCheckBox;
+    LabelResourceDirectory: TLabel;
+    ResourceGrid: TDBGrid;
+    ResourceDirectory: TClientDataSet;
+    dsResourceDirectory: TDataSource;
+    ResourceDirectorySource: TStringField;
+    ResourceDirectoryDestiny: TStringField;
     procedure cobTargetSelect(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -161,9 +167,25 @@ var
       Configuration.Value[PropertyName] := Value;
   end;
 
+  procedure SaveDataSet(const DataSet: TDataSet; const ConfigurationName: String);
+  begin
+    var Values := TStringList.Create(dupIgnore, False, False);
+    DataSet.First;
+
+    while not DataSet.Eof do
+    begin
+      Values.Values[DataSet.Fields[0].AsString] := DataSet.Fields[1].AsString;
+
+      DataSet.Next;
+    end;
+
+    SaveConfig(ConfigurationName, Values.DelimitedText);
+
+    Values.Free;
+  end;
+
 begin
   Configuration := GetSelectedConfiguration;
-  var Modules := TStringList.Create(dupIgnore, False, False);
 
   SaveConfig(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, BOOLEAN_VALUE[cbxDisableAllOptimizations.Checked]);
   SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, BOOLEAN_VALUE[cbxEnumartorNumber.Checked]);
@@ -173,24 +195,37 @@ begin
   SaveConfig(PAS2JS_REMOVE_NOT_USED_PRIVATES, BOOLEAN_VALUE[cbxRemoveNotUsedPrivates.Checked]);
   SaveConfig(PAS2JS_SEARCH_PATH, edtSearchPath.Text);
 
-  cdsModules.First;
+  SaveDataSet(cdsModules, PAS2JS_MODULES);
 
-  while not cdsModules.Eof do
-  begin
-    Modules.Values[cdsModulesSource.AsString] := cdsModulesModuleType.AsString;
-
-    cdsModules.Next;
-  end;
-
-  SaveConfig(PAS2JS_MODULES, Modules.DelimitedText);
-
-  Modules.Free;
+  SaveDataSet(ResourceDirectory, PAS2JS_RESOURCE_DIRECTORY_PATH);
 end;
 
 procedure TPas2JSProjectOptionForm.UpdateConfiguration;
+var
+  Configuration: IOTABuildConfiguration;
+
+  procedure LoadDataSet(const DataSet: TClientDataSet; const ConfigurationName: String);
+  begin
+    var Values := TStringList.Create;
+    Values.DelimitedText := Configuration.Value[ConfigurationName];
+
+    DataSet.EmptyDataSet;
+
+    for var A := 0  to Pred(Values.Count) do
+    begin
+      DataSet.Append;
+
+      DataSet.Fields[0].AsString := Values.KeyNames[A];
+      DataSet.Fields[1].AsString := Values.ValueFromIndex[A];
+
+      DataSet.Post;
+    end;
+
+    Values.Free;
+  end;
+
 begin
-  var Configuration := GetSelectedConfiguration;
-  var Modules := TStringList.Create;
+  Configuration := GetSelectedConfiguration;
 
   cbxDisableAllOptimizations.Checked := Configuration.GetBoolean(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, False);
   cbxEnumartorNumber.Checked := Configuration.GetBoolean(PAS2JS_ENUMERATOR_AS_NUMBER, False);
@@ -199,21 +234,10 @@ begin
   cbxRemoveNotUsedDeclaration.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, False);
   cbxRemoveNotUsedPrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_PRIVATES, False);
   edtSearchPath.Text := Configuration.Value[PAS2JS_SEARCH_PATH];
-  Modules.DelimitedText := Configuration.Value[PAS2JS_MODULES];
 
-  cdsModules.EmptyDataSet;
+  LoadDataSet(cdsModules, PAS2JS_MODULES);
 
-  for var A := 0  to Pred(Modules.Count) do
-  begin
-    cdsModules.Append;
-
-    cdsModulesModuleType.AsString := Modules.ValueFromIndex[A];
-    cdsModulesSource.AsString := Modules.KeyNames[A];
-
-    cdsModules.Post;
-  end;
-
-  Modules.Free;
+  LoadDataSet(ResourceDirectory, PAS2JS_RESOURCE_DIRECTORY_PATH);
 
   CheckOptimizations;
 end;

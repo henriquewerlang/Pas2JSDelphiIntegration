@@ -12,6 +12,7 @@ const
   PAS2JS_MODULES = 'Pas2JS_Modules';
   PAS2JS_REMOVE_NOT_USED_DECLARATIONS = 'Pas2JS_RemoveNotUsedDeclaration';
   PAS2JS_REMOVE_NOT_USED_PRIVATES = 'Pas2JS_RemoveNotUsedPrivate';
+  PAS2JS_RESOURCE_DIRECTORY_PATH = 'Pas2JS_DirectoryResource';
   PAS2JS_SEARCH_PATH = 'Pas2JS_Search';
 
 implementation

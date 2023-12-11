@@ -4,7 +4,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pas2JS Options'
-  ClientHeight = 576
+  ClientHeight = 769
   ClientWidth = 628
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +17,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   TextHeight = 15
   object lblModules: TLabel
     Left = 8
-    Top = 239
+    Top = 428
     Width = 46
     Height = 15
     Caption = '&Modules'
@@ -25,7 +25,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object lblSearchPath: TLabel
     Left = 8
-    Top = 52
+    Top = 58
     Width = 62
     Height = 15
     Caption = 'Search Path'
@@ -39,9 +39,17 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     Caption = 'Target'
     FocusControl = grdModule
   end
+  object LabelResourceDirectory: TLabel
+    Left = 8
+    Top = 246
+    Width = 99
+    Height = 15
+    Caption = 'Resource Directory'
+    FocusControl = grdModule
+  end
   object grdModule: TDBGrid
     Left = 8
-    Top = 260
+    Top = 449
     Width = 612
     Height = 281
     DataSource = dsModules
@@ -67,8 +75,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
       end>
   end
   object btnOk: TButton
-    Left = 4
-    Top = 546
+    Left = 8
+    Top = 736
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -78,8 +86,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     OnClick = btnOkClick
   end
   object btnCancel: TButton
-    Left = 84
-    Top = 546
+    Left = 89
+    Top = 736
     Width = 75
     Height = 25
     Cancel = True
@@ -89,14 +97,15 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object edtSearchPath: TEdit
     Left = 8
-    Top = 72
+    Top = 79
     Width = 612
     Height = 23
     TabOrder = 3
+    TextHint = 'Search directories...'
   end
   object cbxGenerateSingleFile: TCheckBox
     Left = 8
-    Top = 96
+    Top = 108
     Width = 145
     Height = 17
     Caption = 'Generate single JS file'
@@ -104,7 +113,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxGenerateMapFile: TCheckBox
     Left = 8
-    Top = 120
+    Top = 131
     Width = 145
     Height = 17
     Caption = 'Generate MAP File'
@@ -112,7 +121,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxEnumartorNumber: TCheckBox
     Left = 8
-    Top = 168
+    Top = 177
     Width = 217
     Height = 17
     Caption = 'Generate enumerators as numbers'
@@ -120,7 +129,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxRemoveNotUsedPrivates: TCheckBox
     Left = 8
-    Top = 192
+    Top = 200
     Width = 217
     Height = 17
     Caption = 'Remove not  used privates'
@@ -128,16 +137,17 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cobTarget: TComboBox
     Left = 8
-    Top = 28
+    Top = 29
     Width = 273
     Height = 23
     Style = csDropDownList
     TabOrder = 8
+    TextHint = 'Target'
     OnSelect = cobTargetSelect
   end
   object cbxRemoveNotUsedDeclaration: TCheckBox
     Left = 8
-    Top = 215
+    Top = 223
     Width = 217
     Height = 17
     Caption = 'Remove not used declarations'
@@ -145,12 +155,38 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object cbxDisableAllOptimizations: TCheckBox
     Left = 8
-    Top = 144
+    Top = 154
     Width = 217
     Height = 17
     Caption = 'Disable all optimizations'
     TabOrder = 10
     OnClick = cbxDisableAllOptimizationsClick
+  end
+  object ResourceGrid: TDBGrid
+    Left = 8
+    Top = 268
+    Width = 612
+    Height = 154
+    DataSource = dsResourceDirectory
+    TabOrder = 11
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Source'
+        Width = 292
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Destiny'
+        Width = 284
+        Visible = True
+      end>
   end
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
@@ -174,6 +210,43 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   object dsModules: TDataSource
     DataSet = cdsModules
     Left = 520
+    Top = 152
+  end
+  object ResourceDirectory: TClientDataSet
+    PersistDataPacket.Data = {
+      510000009619E0BD010000001800000002000000000003000000510006536F75
+      726365020049000000010005574944544802000200E8030744657374696E7902
+      0049000000010005574944544802000200E8030000}
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'Source'
+        DataType = ftString
+        Size = 1000
+      end
+      item
+        Name = 'Destiny'
+        DataType = ftString
+        Size = 1000
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 432
+    Top = 96
+    object ResourceDirectorySource: TStringField
+      FieldName = 'Source'
+      Size = 1000
+    end
+    object ResourceDirectoryDestiny: TStringField
+      FieldName = 'Destiny'
+      Size = 1000
+    end
+  end
+  object dsResourceDirectory: TDataSource
+    DataSet = ResourceDirectory
+    Left = 432
     Top = 152
   end
 end
