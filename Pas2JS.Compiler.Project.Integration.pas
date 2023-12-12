@@ -34,7 +34,7 @@ const
 
 implementation
 
-uses System.SysUtils, System.IOUtils, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts;
+uses System.SysUtils, System.IOUtils, Rest.Types, Vcl.Dialogs, Winapi.Windows, Xml.XMLDoc, DCCStrs, Pas2JS.Consts, Pas2JS.Project.Options.Form;
 
 function ExpandMacros(const Value: String): String;
 begin
@@ -116,37 +116,16 @@ procedure TPas2JSProjectCompiler.Run(const Project: IOTAProject);
 
   procedure LoadCompilerConfiguration(const Compiler: TPas2JSCompilerDelphi);
   begin
+    var Configuration := TPas2JSProjectOptionForm.Create(nil);
     var Options := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
 
     Compiler.Defines := Options.GetValue(sDefine, True);
     Compiler.OutputPath := GetOutputConfiguration;
     Compiler.SearchPath := Format('%s;%s', [ExpandMacros(Registry.LibraryPath), Options.Value[PAS2JS_SEARCH_PATH]]);
 
-    if Options.GetBoolean(sRangeChecking) then
-      Compiler.Options := Compiler.Options + [TCompilerOption.RangeCheckError];
+    Configuration.LoadConfiguration(Compiler, Options);
 
-    if Options.GetBoolean(sIntegerOverflowCheck) then
-      Compiler.Options := Compiler.Options + [TCompilerOption.IntegerOverflowCheck];
-
-    if Options.AsBoolean[PAS2JS_GENERATE_SINGLE_FILE] then
-      Compiler.Options := Compiler.Options + [TCompilerOption.GenerateSingleFile];
-
-    if Options.AsBoolean[PAS2JS_GENERATE_MAP_FILE] then
-      Compiler.Options := Compiler.Options + [TCompilerOption.GenerateMapFile];
-
-    if Options.AsBoolean[PAS2JS_DISABLE_ALL_OPTIMIZATIONS] then
-      Compiler.Options := Compiler.Options + [TCompilerOption.DisableAllOptimizations]
-    else
-    begin
-      if not Options.AsBoolean[PAS2JS_ENUMERATOR_AS_NUMBER] then
-        Compiler.Options := Compiler.Options + [TCompilerOption.GenerateEnumeratorNumber];
-
-      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_PRIVATES] then
-        Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedPrivates];
-
-      if Options.AsBoolean[PAS2JS_REMOVE_NOT_USED_DECLARATIONS] then
-        Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedDeclaration];
-    end;
+    Configuration.Free;
   end;
 
 begin

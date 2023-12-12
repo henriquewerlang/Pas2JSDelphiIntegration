@@ -35,6 +35,7 @@ uses
   pasuseanalyzer in '..\Pas2JS\Compiler\packages\fcl-passrc\src\pasuseanalyzer.pas',
   avl_tree in '..\Pas2JS\Compiler\packages\fcl-base\src\avl_tree.pas',
   Pas2JS.Compiler.Delphi in '..\Pas2JS.Compiler.Delphi.pas',
+  Pas2JS.Compiler.Options.Form in '..\Pas2JS.Compiler.Options.Form.pas' {CompilerOptionsForm},
   Debug.Main in 'Debug.Main.pas' {DebugMain};
 
 {$R *.res}

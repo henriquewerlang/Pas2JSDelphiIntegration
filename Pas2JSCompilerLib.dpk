@@ -38,7 +38,11 @@
 
 requires
   rtl,
-  RESTComponents;
+  RESTComponents,
+  vcl,
+  vclwinx,
+  vcldb,
+  dsnap;
 
 contains
   Delphi.Helper in 'Compiler\Delphi.Helper.pas',

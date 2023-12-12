@@ -2,30 +2,20 @@ unit Debug.Main;
 
 interface
 
-uses Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes, Vcl.Controls, System.Skia, Vcl.Skia;
+uses Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes, Vcl.Controls, System.Skia, Vcl.Skia, Pas2JS.Compiler.Options.Form, Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids;
 
 type
-  TDebugMain = class(TForm)
+  TDebugMain = class(TCompilerOptionsForm)
     CompilerExecute: TButton;
     FileToCompile: TEdit;
     SelectFile: TOpenDialog;
     OpenFile: TButton;
-    SearchPath: TEdit;
-    GenerateSingleFile: TCheckBox;
-    GenerateMapFile: TCheckBox;
-    EnumartorNumber: TCheckBox;
-    RemoveNotUsedPrivates: TCheckBox;
-    RemoveNotUsedDeclaration: TCheckBox;
-    DisableAllOptimizations: TCheckBox;
     lblFileToCompile: TLabel;
-    lblSearchPath: TLabel;
-    RangeCheckError: TCheckBox;
-    IntegerOverflowCheck: TCheckBox;
-    Defines: TEdit;
-    lblDefines: TLabel;
-    OutputPath: TEdit;
-    lblOutputPath: TLabel;
     CompilerOutput: TSkLabel;
+    lblDefines: TLabel;
+    Defines: TEdit;
+    lblOutputPath: TLabel;
+    OutputPath: TEdit;
     procedure OpenFileClick(Sender: TObject);
     procedure CompilerExecuteClick(Sender: TObject);
   end;
@@ -66,29 +56,7 @@ begin
   CompilerOutput.AutoSize := False;
   CompilerOutput.Caption := EmptyStr;
 
-  if GenerateSingleFile.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.GenerateSingleFile];
-
-  if GenerateMapFile.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.GenerateMapFile];
-
-  if DisableAllOptimizations.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.DisableAllOptimizations];
-
-  if EnumartorNumber.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.GenerateEnumeratorNumber];
-
-  if RemoveNotUsedDeclaration.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedDeclaration];
-
-  if RemoveNotUsedPrivates.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.RemoveNotUsedPrivates];
-
-  if RangeCheckError.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.RangeCheckError];
-
-  if IntegerOverflowCheck.Checked then
-    Compiler.Options := Compiler.Options + [TCompilerOption.IntegerOverflowCheck];
+  LoadConfiguration(Compiler);
 
   Compiler.Run(FileToCompile.Text);
 

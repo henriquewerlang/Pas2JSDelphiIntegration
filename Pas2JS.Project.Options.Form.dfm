@@ -1,59 +1,201 @@
-object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
-  Left = 0
-  Top = 0
+inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pas2JS Options'
-  ClientHeight = 769
+  ClientHeight = 862
   ClientWidth = 628
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -12
-  Font.Name = 'Segoe UI'
-  Font.Style = []
+  Position = poDefaultSizeOnly
+  StyleElements = [seFont, seClient, seBorder]
   OnClose = FormClose
-  OnCreate = FormCreate
+  ExplicitWidth = 644
+  ExplicitHeight = 901
   TextHeight = 15
-  object lblModules: TLabel
-    Left = 8
-    Top = 428
-    Width = 46
-    Height = 15
-    Caption = '&Modules'
-    FocusControl = grdModule
-  end
-  object lblSearchPath: TLabel
+  inherited lblSearchPath: TLabel
     Left = 8
     Top = 58
-    Width = 62
-    Height = 15
-    Caption = 'Search Path'
-    FocusControl = grdModule
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 8
+    ExplicitTop = 58
   end
-  object lblTarget: TLabel
+  object lblTarget: TLabel [1]
     Left = 8
     Top = 8
     Width = 33
     Height = 15
     Caption = 'Target'
-    FocusControl = grdModule
   end
-  object LabelResourceDirectory: TLabel
-    Left = 8
-    Top = 246
+  inherited lblSourceRoot: TLabel
+    Left = 7
+    Top = 361
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 7
+    ExplicitTop = 361
+  end
+  inherited lblRelativeSourceFolder: TLabel
+    Left = 7
+    Top = 411
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 7
+    ExplicitTop = 411
+  end
+  object LabelResourceDirectory: TLabel [4]
+    Left = 9
+    Top = 461
     Width = 99
     Height = 15
     Caption = 'Resource Directory'
-    FocusControl = grdModule
+    FocusControl = GridModules
   end
-  object grdModule: TDBGrid
+  object lblModules: TLabel [5]
+    Left = 9
+    Top = 639
+    Width = 46
+    Height = 15
+    Caption = '&Modules'
+    FocusControl = GridModules
+  end
+  inherited SearchPath: TEdit
     Left = 8
-    Top = 449
-    Width = 612
-    Height = 281
-    DataSource = dsModules
+    Top = 79
+    TabOrder = 14
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 8
+    ExplicitTop = 79
+  end
+  inherited GenerateSingleFile: TCheckBox
+    Left = 8
+    Top = 108
+    TabOrder = 17
+    ExplicitLeft = 8
+    ExplicitTop = 108
+  end
+  inherited EnumaratoAsNumber: TCheckBox
+    Left = 7
+    Top = 131
+    ExplicitLeft = 7
+    ExplicitTop = 131
+  end
+  inherited RemoveNotUsedPrivates: TCheckBox
+    Left = 7
+    Top = 154
+    ExplicitLeft = 7
+    ExplicitTop = 154
+  end
+  inherited RemoveNotUsedDeclaration: TCheckBox
+    Left = 7
+    Top = 177
+    TabOrder = 18
+    ExplicitLeft = 7
+    ExplicitTop = 177
+  end
+  inherited GenerateMapFile: TCheckBox
+    Left = 7
+    Top = 269
+    ExplicitLeft = 7
+    ExplicitTop = 269
+  end
+  object btnOk: TButton [12]
+    Left = 8
+    Top = 828
+    Width = 75
+    Height = 25
+    Caption = 'OK'
+    Default = True
+    ModalResult = 1
     TabOrder = 0
+    OnClick = btnOkClick
+  end
+  object btnCancel: TButton [13]
+    Left = 89
+    Top = 828
+    Width = 75
+    Height = 25
+    Cancel = True
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 1
+  end
+  object cobTarget: TComboBox [14]
+    Left = 8
+    Top = 29
+    Width = 273
+    Height = 23
+    Style = csDropDownList
+    TabOrder = 4
+    TextHint = 'Target'
+    OnSelect = cobTargetSelect
+  end
+  inherited SourceRootFolder: TEdit
+    Left = 7
+    Top = 382
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 7
+    ExplicitTop = 382
+  end
+  inherited RelativeSourceFolder: TEdit
+    Left = 7
+    Top = 432
+    StyleElements = [seFont, seClient, seBorder]
+    ExplicitLeft = 7
+    ExplicitTop = 432
+  end
+  inherited IncludeSourceInMapFile: TCheckBox
+    Left = 7
+    Top = 292
+    ExplicitLeft = 7
+    ExplicitTop = 292
+  end
+  inherited AbsoluteFileNames: TCheckBox
+    Left = 7
+    Top = 315
+    ExplicitLeft = 7
+    ExplicitTop = 315
+  end
+  inherited XXSIProtection: TCheckBox
+    Left = 7
+    Top = 338
+    ExplicitLeft = 7
+    ExplicitTop = 338
+  end
+  inherited RangeCheckError: TCheckBox
+    Left = 7
+    Top = 200
+    ExplicitLeft = 7
+    ExplicitTop = 200
+  end
+  object ResourceGrid: TDBGrid [21]
+    Left = 9
+    Top = 482
+    Width = 612
+    Height = 154
+    DataSource = dsResourceDirectory
+    TabOrder = 15
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Source'
+        Width = 292
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Destiny'
+        Width = 284
+        Visible = True
+      end>
+  end
+  object GridModules: TDBGrid [22]
+    Left = 8
+    Top = 660
+    Width = 612
+    Height = 162
+    DataSource = dsModules
+    TabOrder = 16
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
@@ -74,119 +216,17 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
         Visible = True
       end>
   end
-  object btnOk: TButton
-    Left = 8
-    Top = 736
-    Width = 75
-    Height = 25
-    Caption = 'OK'
-    Default = True
-    ModalResult = 1
-    TabOrder = 1
-    OnClick = btnOkClick
-  end
-  object btnCancel: TButton
-    Left = 89
-    Top = 736
-    Width = 75
-    Height = 25
-    Cancel = True
-    Caption = 'Cancel'
-    ModalResult = 2
-    TabOrder = 2
-  end
-  object edtSearchPath: TEdit
-    Left = 8
-    Top = 79
-    Width = 612
-    Height = 23
-    TabOrder = 3
-    TextHint = 'Search directories...'
-  end
-  object cbxGenerateSingleFile: TCheckBox
-    Left = 8
-    Top = 108
-    Width = 145
-    Height = 17
-    Caption = 'Generate single JS file'
-    TabOrder = 4
-  end
-  object cbxGenerateMapFile: TCheckBox
-    Left = 8
-    Top = 131
-    Width = 145
-    Height = 17
-    Caption = 'Generate MAP File'
-    TabOrder = 5
-  end
-  object cbxEnumartorNumber: TCheckBox
-    Left = 8
-    Top = 177
-    Width = 217
-    Height = 17
-    Caption = 'Generate enumerators as numbers'
-    TabOrder = 6
-  end
-  object cbxRemoveNotUsedPrivates: TCheckBox
-    Left = 8
-    Top = 200
-    Width = 217
-    Height = 17
-    Caption = 'Remove not  used privates'
-    TabOrder = 7
-  end
-  object cobTarget: TComboBox
-    Left = 8
-    Top = 29
-    Width = 273
-    Height = 23
-    Style = csDropDownList
-    TabOrder = 8
-    TextHint = 'Target'
-    OnSelect = cobTargetSelect
-  end
-  object cbxRemoveNotUsedDeclaration: TCheckBox
-    Left = 8
+  inherited IntegerOverflowCheck: TCheckBox
+    Left = 7
     Top = 223
-    Width = 217
-    Height = 17
-    Caption = 'Remove not used declarations'
-    TabOrder = 9
+    ExplicitLeft = 7
+    ExplicitTop = 223
   end
-  object cbxDisableAllOptimizations: TCheckBox
-    Left = 8
-    Top = 154
-    Width = 217
-    Height = 17
-    Caption = 'Disable all optimizations'
-    TabOrder = 10
-    OnClick = cbxDisableAllOptimizationsClick
-  end
-  object ResourceGrid: TDBGrid
-    Left = 8
-    Top = 268
-    Width = 612
-    Height = 154
-    DataSource = dsResourceDirectory
-    TabOrder = 11
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -12
-    TitleFont.Name = 'Segoe UI'
-    TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'Source'
-        Width = 292
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Destiny'
-        Width = 284
-        Visible = True
-      end>
+  inherited CheckObjectsTypeCast: TCheckBox
+    Left = 7
+    Top = 246
+    ExplicitLeft = 7
+    ExplicitTop = 246
   end
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
@@ -196,8 +236,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 520
-    Top = 96
+    Left = 521
+    Top = 44
     object cdsModulesSource: TStringField
       FieldName = 'Source'
       Size = 1000
@@ -209,8 +249,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object dsModules: TDataSource
     DataSet = cdsModules
-    Left = 520
-    Top = 152
+    Left = 521
+    Top = 100
   end
   object ResourceDirectory: TClientDataSet
     PersistDataPacket.Data = {
@@ -233,8 +273,8 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     IndexDefs = <>
     Params = <>
     StoreDefs = True
-    Left = 432
-    Top = 96
+    Left = 433
+    Top = 44
     object ResourceDirectorySource: TStringField
       FieldName = 'Source'
       Size = 1000
@@ -246,7 +286,7 @@ object Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   object dsResourceDirectory: TDataSource
     DataSet = ResourceDirectory
-    Left = 432
-    Top = 152
+    Left = 433
+    Top = 100
   end
 end

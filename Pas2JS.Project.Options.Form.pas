@@ -3,38 +3,29 @@
 interface
 
 uses Vcl.Forms, System.Classes, Vcl.Controls, Vcl.ControlList, Vcl.CustomizeDlg, Vcl.ExtCtrls, Soap.InvokeRegistry, Soap.WSDLIntf, Soap.SOAPPasInv, Soap.SOAPHTTPPasInv, Data.DB,
-  Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, Vcl.StdCtrls, Vcl.ComCtrls, ToolsApi;
+  Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient, Vcl.StdCtrls, Vcl.ComCtrls, ToolsApi, Pas2JS.Compiler.Options.Form, Pas2JS.Compiler.Delphi;
 
 type
-  TPas2JSProjectOptionForm = class(TForm)
+  TPas2JSProjectOptionForm = class(TCompilerOptionsForm)
+    btnOk: TButton;
+    btnCancel: TButton;
+    cobTarget: TComboBox;
+    lblTarget: TLabel;
     cdsModules: TClientDataSet;
     cdsModulesSource: TStringField;
     cdsModulesModuleType: TStringField;
-    grdModule: TDBGrid;
     dsModules: TDataSource;
-    btnOk: TButton;
-    btnCancel: TButton;
-    lblModules: TLabel;
-    lblSearchPath: TLabel;
-    edtSearchPath: TEdit;
-    cbxGenerateSingleFile: TCheckBox;
-    cbxGenerateMapFile: TCheckBox;
-    cbxEnumartorNumber: TCheckBox;
-    cbxRemoveNotUsedPrivates: TCheckBox;
-    cobTarget: TComboBox;
-    lblTarget: TLabel;
-    cbxRemoveNotUsedDeclaration: TCheckBox;
-    cbxDisableAllOptimizations: TCheckBox;
-    LabelResourceDirectory: TLabel;
-    ResourceGrid: TDBGrid;
     ResourceDirectory: TClientDataSet;
-    dsResourceDirectory: TDataSource;
     ResourceDirectorySource: TStringField;
     ResourceDirectoryDestiny: TStringField;
+    dsResourceDirectory: TDataSource;
+    LabelResourceDirectory: TLabel;
+    ResourceGrid: TDBGrid;
+    lblModules: TLabel;
+    GridModules: TDBGrid;
     procedure cobTargetSelect(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure cbxDisableAllOptimizationsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     FSelectedConfiguration: IOTABuildConfiguration;
@@ -42,11 +33,11 @@ type
     function GetSelectedConfiguration: IOTABuildConfiguration;
 
     procedure ActivateConfiguration(const ItemIndex: Integer);
-    procedure CheckOptimizations;
     procedure ClearConfiguration;
     procedure SaveConfiguration;
-    procedure UpdateConfiguration;
+    procedure UpdateConfiguration(const Configuration: IOTABuildConfiguration);
   public
+    procedure LoadConfiguration(const Compiler: TPas2JSCompilerDelphi; const Configuration: IOTABuildConfiguration);
     procedure Open;
   end;
 
@@ -73,7 +64,7 @@ begin
   cobTarget.ItemIndex := ItemIndex;
   FSelectedConfiguration := TConfiguration(cobTarget.Items.Objects[ItemIndex]).Configuration;
 
-  UpdateConfiguration;
+  UpdateConfiguration(GetSelectedConfiguration);
 end;
 
 procedure TPas2JSProjectOptionForm.btnOkClick(Sender: TObject);
@@ -81,18 +72,6 @@ begin
   SaveConfiguration;
 
   GetActiveProject.MarkModified;
-end;
-
-procedure TPas2JSProjectOptionForm.cbxDisableAllOptimizationsClick(Sender: TObject);
-begin
-  CheckOptimizations;
-end;
-
-procedure TPas2JSProjectOptionForm.CheckOptimizations;
-begin
-  cbxEnumartorNumber.Enabled := not cbxDisableAllOptimizations.Checked;
-  cbxRemoveNotUsedDeclaration.Enabled := not cbxDisableAllOptimizations.Checked;
-  cbxRemoveNotUsedPrivates.Enabled := not cbxDisableAllOptimizations.Checked;
 end;
 
 procedure TPas2JSProjectOptionForm.ClearConfiguration;
@@ -117,14 +96,21 @@ end;
 
 procedure TPas2JSProjectOptionForm.FormCreate(Sender: TObject);
 begin
-  grdModule.Columns[1].PickList.AddStrings(SCRIPT_TYPE);
+  GridModules.Columns[1].PickList.AddStrings(SCRIPT_TYPE);
 
-  grdModule.Columns[1].DropDownRows := grdModule.Columns[1].PickList.Count;
+  GridModules.Columns[1].DropDownRows := GridModules.Columns[1].PickList.Count;
 end;
 
 function TPas2JSProjectOptionForm.GetSelectedConfiguration: IOTABuildConfiguration;
 begin
   Result := FSelectedConfiguration;
+end;
+
+procedure TPas2JSProjectOptionForm.LoadConfiguration(const Compiler: TPas2JSCompilerDelphi; const Configuration: IOTABuildConfiguration);
+begin
+  UpdateConfiguration(Configuration);
+
+  inherited LoadConfiguration(Compiler);
 end;
 
 procedure TPas2JSProjectOptionForm.Open;
@@ -159,12 +145,17 @@ const
 var
   Configuration: IOTABuildConfiguration;
 
-  procedure SaveConfig(const PropertyName, Value: String);
+  procedure SaveConfig(const PropertyName, Value: String); overload;
   begin
     if Configuration.PropertyExists(PropertyName) and Value.IsEmpty then
       Configuration.Remove(PropertyName)
     else
       Configuration.Value[PropertyName] := Value;
+  end;
+
+  procedure SaveConfig(const PropertyName: String; const Value: Boolean); overload;
+  begin
+    SaveConfig(PropertyName, BOOLEAN_VALUE[Value]);
   end;
 
   procedure SaveDataSet(const DataSet: TDataSet; const ConfigurationName: String);
@@ -187,22 +178,27 @@ var
 begin
   Configuration := GetSelectedConfiguration;
 
-  SaveConfig(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, BOOLEAN_VALUE[cbxDisableAllOptimizations.Checked]);
-  SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, BOOLEAN_VALUE[cbxEnumartorNumber.Checked]);
-  SaveConfig(PAS2JS_GENERATE_MAP_FILE, BOOLEAN_VALUE[cbxGenerateMapFile.Checked]);
-  SaveConfig(PAS2JS_GENERATE_SINGLE_FILE, BOOLEAN_VALUE[cbxGenerateSingleFile.Checked]);
-  SaveConfig(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, BOOLEAN_VALUE[cbxRemoveNotUsedDeclaration.Checked]);
-  SaveConfig(PAS2JS_REMOVE_NOT_USED_PRIVATES, BOOLEAN_VALUE[cbxRemoveNotUsedPrivates.Checked]);
-  SaveConfig(PAS2JS_SEARCH_PATH, edtSearchPath.Text);
+  SaveConfig(PAS2JS_ABSOLUTE_FILE_NAME_MAP_FILE, AbsoluteFileNames.Checked);
+  SaveConfig(PAS2JS_CHECK_OBJECT_TYPE_CAST, CheckObjectsTypeCast.Checked);
+  SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, EnumaratoAsNumber.Checked);
+  SaveConfig(PAS2JS_GENERATE_MAP_FILE, GenerateMapFile.Checked);
+  SaveConfig(PAS2JS_GENERATE_SINGLE_FILE, GenerateSingleFile.Checked);
+  SaveConfig(PAS2JS_INCLUDE_SOURCE_MAP_FILE, IncludeSourceInMapFile.Checked);
+  SaveConfig(PAS2JS_CHECK_INTEGER_OVERFLOW, IntegerOverflowCheck.Checked);
+  SaveConfig(PAS2JS_MAP_FILE_PROTECTION, XXSIProtection.Checked);
+  SaveConfig(PAS2JS_RANGE_CHECK_ERROR, RangeCheckError.Checked);
+  SaveConfig(PAS2JS_RELATIVE_SOURCE_FOLDER, RelativeSourceFolder.Text);
+  SaveConfig(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, RemoveNotUsedDeclaration.Checked);
+  SaveConfig(PAS2JS_REMOVE_NOT_USED_PRIVATES, RemoveNotUsedPrivates.Checked);
+  SaveConfig(PAS2JS_SEARCH_PATH, SearchPath.Text);
+  SaveConfig(PAS2JS_SOURCE_ROOT_FOLDER, SourceRootFolder.Text);
 
   SaveDataSet(cdsModules, PAS2JS_MODULES);
 
   SaveDataSet(ResourceDirectory, PAS2JS_RESOURCE_DIRECTORY_PATH);
 end;
 
-procedure TPas2JSProjectOptionForm.UpdateConfiguration;
-var
-  Configuration: IOTABuildConfiguration;
+procedure TPas2JSProjectOptionForm.UpdateConfiguration(const Configuration: IOTABuildConfiguration);
 
   procedure LoadDataSet(const DataSet: TClientDataSet; const ConfigurationName: String);
   begin
@@ -225,21 +221,26 @@ var
   end;
 
 begin
-  Configuration := GetSelectedConfiguration;
-
-  cbxDisableAllOptimizations.Checked := Configuration.GetBoolean(PAS2JS_DISABLE_ALL_OPTIMIZATIONS, False);
-  cbxEnumartorNumber.Checked := Configuration.GetBoolean(PAS2JS_ENUMERATOR_AS_NUMBER, False);
-  cbxGenerateMapFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_MAP_FILE, False);
-  cbxGenerateSingleFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_SINGLE_FILE, False);
-  cbxRemoveNotUsedDeclaration.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, False);
-  cbxRemoveNotUsedPrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_PRIVATES, False);
-  edtSearchPath.Text := Configuration.Value[PAS2JS_SEARCH_PATH];
+  AbsoluteFileNames.Checked := Configuration.GetBoolean(PAS2JS_ABSOLUTE_FILE_NAME_MAP_FILE, False);
+  CheckObjectsTypeCast.Checked := Configuration.GetBoolean(PAS2JS_CHECK_OBJECT_TYPE_CAST, False);
+  EnumaratoAsNumber.Checked := Configuration.GetBoolean(PAS2JS_ENUMERATOR_AS_NUMBER, False);
+  GenerateMapFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_MAP_FILE, False);
+  GenerateSingleFile.Checked := Configuration.GetBoolean(PAS2JS_GENERATE_SINGLE_FILE, False);
+  IncludeSourceInMapFile.Checked := Configuration.GetBoolean(PAS2JS_INCLUDE_SOURCE_MAP_FILE, False);
+  IntegerOverflowCheck.Checked := Configuration.GetBoolean(PAS2JS_CHECK_INTEGER_OVERFLOW, False);
+  RangeCheckError.Checked := Configuration.GetBoolean(PAS2JS_RANGE_CHECK_ERROR, False);
+  RelativeSourceFolder.Text := Configuration.GetValue(PAS2JS_RELATIVE_SOURCE_FOLDER, False);
+  RemoveNotUsedDeclaration.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_DECLARATIONS, False);
+  RemoveNotUsedPrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_PRIVATES, False);
+  SearchPath.Text := Configuration.Value[PAS2JS_SEARCH_PATH];
+  SourceRootFolder.Text := Configuration.GetValue(PAS2JS_SOURCE_ROOT_FOLDER, False);
+  XXSIProtection.Checked := Configuration.GetBoolean(PAS2JS_MAP_FILE_PROTECTION, False);
 
   LoadDataSet(cdsModules, PAS2JS_MODULES);
 
   LoadDataSet(ResourceDirectory, PAS2JS_RESOURCE_DIRECTORY_PATH);
 
-  CheckOptimizations;
+  CheckMapFileConfiguration;
 end;
 
 { TConfiguration }

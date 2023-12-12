@@ -9,15 +9,10 @@ uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, FPPJsSrcMa
 type
   TCompilerMessage = class;
 
-  TCompilerOption = (RangeCheckError, IntegerOverflowCheck, GenerateSingleFile, GenerateMapFile, DisableAllOptimizations, GenerateEnumeratorNumber, RemoveNotUsedPrivates, RemoveNotUsedDeclaration);
-
-  TCompilerOptions = set of TCompilerOption;
-
   TPas2JSCompilerDelphi = class(TPas2JSFSCompiler)
   private
     FOnCompilerMessage: TProc<TCompilerMessage>;
     FOnReadFile: TProc<String>;
-    FOptions: TCompilerOptions;
     FSearchPath: String;
     FDefines: String;
     FOutputPath: String;
@@ -34,7 +29,6 @@ type
     property Defines: String read FDefines write FDefines;
     property OnCompilerMessage: TProc<TCompilerMessage> read FOnCompilerMessage write FOnCompilerMessage;
     property OnReadFile: TProc<String> read FOnReadFile write FOnReadFile;
-    property Options: TCompilerOptions read FOptions write FOptions;
     property OutputPath: String read FOutputPath write FOutputPath;
     property SearchPath: String read FSearchPath write FSearchPath;
   end;
@@ -58,7 +52,7 @@ type
 
 implementation
 
-uses System.IOUtils, Rest.JSON, PasUseAnalyzer;
+uses System.IOUtils, Rest.JSON, PasUseAnalyzer, Pas2JSCompiler, FPPas2Js, Pas2JS.Compiler.Options.Form;
 
 { TPas2JSCompilerDelphi }
 
@@ -89,7 +83,7 @@ begin
       else
       begin
         if CompilerMessage.Number > 0 then
-          CompilerMessage.Message := Format('Code: %d %s', [CompilerMessage.Number, CompilerMessage.Message]);
+          CompilerMessage.Message := Format('Code: %d %s %s', [CompilerMessage.Number, CompilerMessage.Message, CompilerMessage.FileName]);
 
         FOnCompilerMessage(CompilerMessage);
       end;
@@ -104,7 +98,7 @@ begin
   var DestinyFile := TMemoryStream.Create;
   Result := True;
 
-  Writer.SaveJSToStream(False, MapFilename, DestinyFile);
+  Writer.SaveJSToStream(False, ExtractFileName(MapFilename), DestinyFile);
 
   DestinyFile.WriteData(#0);
 
@@ -123,67 +117,28 @@ begin
 end;
 
 procedure TPas2JSCompilerDelphi.Run(const FileName: String);
-var
-  CommandLine: TStrings;
-
-  procedure LoadCommandLine;
-  begin
-    var CheckError := EmptyStr;
-
-    CommandLine.AddStrings([
-      '-JRjs',
-      '-MDelphi',
-      '-Pecmascript6',
-      '-JeJSON',
-      '-vewhqb',
-      '-Fu' + SearchPath,
-      Format('-FE%s', [OutputPath])
-    ]);
-
-    if TCompilerOption.RangeCheckError in Options then
-      CheckError := CheckError + 'r';
-
-    if TCompilerOption.IntegerOverflowCheck in Options then
-      CheckError := CheckError + 'o';
-
-    if CheckError <> '' then
-      CommandLine.Add('-C' + CheckError);
-
-    for var DefineName in Defines.Split([';']) do
-      CommandLine.Add('-d' + DefineName);
-
-    if TCompilerOption.GenerateSingleFile in Options then
-      CommandLine.Add('-Jc');
-
-    if TCompilerOption.GenerateMapFile in Options then
-      CommandLine.Add('-Jm');
-
-    if TCompilerOption.DisableAllOptimizations in Options then
-      CommandLine.Add('-O-')
-    else
-    begin
-      if not (TCompilerOption.GenerateEnumeratorNumber in Options)  then
-        CommandLine.Add('-OoEnumNumbers-');
-
-      if not (TCompilerOption.RemoveNotUsedPrivates in Options) then
-        CommandLine.Add('-OoRemoveNotUsedPrivates-');
-
-      if TCompilerOption.RemoveNotUsedDeclaration in Options then
-        CommandLine.Add('-OoRemoveNotUsedDeclarations');
-    end;
-  end;
-
 begin
-  CommandLine := TStringList.Create;
+  var CommandLine := TStringList.Create;
+  var ErrorMessage := EmptyStr;
   FileCache.OnReadFile := LoadFile;
+  FileCache.MainOutputPath := OutputPath;
+  Log.Encoding := 'JSON';
   Log.OnLog := CompilerLog;
   MainSrcFile := FileName;
+  ModeSwitches := p2jsMode_SwitchSets[p2jmDelphi];
+  Options := Options + [coShowErrors, coShowWarnings, coShowHints, coShowMessageNumbers];
+  ResourceMode := rmJS;
+  ShowFullPaths := True;
+  TargetProcessor := ProcessorECMAScript6;
 
-  LoadCommandLine;
+  FileCache.AddUnitPaths(SearchPath, False, ErrorMessage);
+
+  ForceDirectories(OutputPath);
+
+  for var DefineName in Defines.Split([';']) do
+    AddDefine(DefineName);
 
   try
-    ForceDirectories(OutputPath);
-
     inherited Run(EmptyStr, EmptyStr, CommandLine, False);
   finally
     CommandLine.Free;
