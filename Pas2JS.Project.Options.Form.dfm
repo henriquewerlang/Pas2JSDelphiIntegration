@@ -2,13 +2,13 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pas2JS Options'
-  ClientHeight = 862
-  ClientWidth = 628
+  ClientHeight = 790
+  ClientWidth = 1243
   Position = poDefaultSizeOnly
   StyleElements = [seFont, seClient, seBorder]
   OnClose = FormClose
-  ExplicitWidth = 644
-  ExplicitHeight = 901
+  ExplicitWidth = 1259
+  ExplicitHeight = 829
   TextHeight = 15
   inherited lblSearchPath: TLabel
     Left = 8
@@ -39,20 +39,34 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitTop = 411
   end
   object LabelResourceDirectory: TLabel [4]
-    Left = 9
-    Top = 461
+    Left = 8
+    Top = 561
     Width = 99
     Height = 15
     Caption = 'Resource Directory'
     FocusControl = GridModules
   end
   object lblModules: TLabel [5]
-    Left = 9
-    Top = 639
+    Left = 626
+    Top = 561
     Width = 46
     Height = 15
     Caption = '&Modules'
     FocusControl = GridModules
+  end
+  object lblApplicationTitle: TLabel [6]
+    Left = 8
+    Top = 461
+    Width = 77
+    Height = 15
+    Caption = 'Aplication title'
+  end
+  object lblApplicationIcon: TLabel [7]
+    Left = 8
+    Top = 511
+    Width = 80
+    Height = 15
+    Caption = 'Aplication icon'
   end
   inherited SearchPath: TEdit
     Left = 8
@@ -94,9 +108,9 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitLeft = 7
     ExplicitTop = 269
   end
-  object btnOk: TButton [12]
+  object btnOk: TButton [14]
     Left = 8
-    Top = 828
+    Top = 760
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -105,9 +119,9 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     TabOrder = 0
     OnClick = btnOkClick
   end
-  object btnCancel: TButton [13]
+  object btnCancel: TButton [15]
     Left = 89
-    Top = 828
+    Top = 760
     Width = 75
     Height = 25
     Cancel = True
@@ -115,7 +129,7 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ModalResult = 2
     TabOrder = 1
   end
-  object cobTarget: TComboBox [14]
+  object cobTarget: TComboBox [16]
     Left = 8
     Top = 29
     Width = 273
@@ -163,11 +177,11 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitLeft = 7
     ExplicitTop = 200
   end
-  object ResourceGrid: TDBGrid [21]
-    Left = 9
-    Top = 482
+  object ResourceGrid: TDBGrid [23]
+    Left = 8
+    Top = 582
     Width = 612
-    Height = 154
+    Height = 172
     DataSource = dsResourceDirectory
     TabOrder = 15
     TitleFont.Charset = DEFAULT_CHARSET
@@ -189,11 +203,11 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
         Visible = True
       end>
   end
-  object GridModules: TDBGrid [22]
-    Left = 8
-    Top = 660
+  object GridModules: TDBGrid [24]
+    Left = 626
+    Top = 582
     Width = 612
-    Height = 162
+    Height = 172
     DataSource = dsModules
     TabOrder = 16
     TitleFont.Charset = DEFAULT_CHARSET
@@ -227,6 +241,22 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     Top = 246
     ExplicitLeft = 7
     ExplicitTop = 246
+  end
+  object ApplicationTitle: TEdit
+    Left = 8
+    Top = 482
+    Width = 268
+    Height = 23
+    TabOrder = 19
+    TextHint = 'The aplication title...'
+  end
+  object ApplicationIcon: TEdit
+    Left = 8
+    Top = 532
+    Width = 268
+    Height = 23
+    TabOrder = 20
+    TextHint = 'The aplication icon file...'
   end
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {

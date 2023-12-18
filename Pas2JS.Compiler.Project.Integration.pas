@@ -5,7 +5,7 @@ interface
 uses System.Classes, System.Generics.Collections, Xml.XMLIntf, Pas2JS.Registry, ToolsAPI, Pas2JS.Compiler.Delphi;
 
 type
-  TScriptType = (Style, Script, Module);
+  TScriptType = (Style, Script, Module, Icon);
 
   TPas2JSProjectCompiler = class
   private
@@ -30,7 +30,7 @@ type
   end;
 
 const
-  SCRIPT_TYPE: array[TScriptType] of String = ('Style', 'Library', 'Module');
+  SCRIPT_TYPE: array[TScriptType] of String = ('Style', 'Library', 'Module', 'Icon');
 
 implementation
 
@@ -81,10 +81,11 @@ begin
   if ScriptType in [Module, Script] then
     LinkNode.NodeValue := EmptyStr;
 
-  if ScriptType = Module then
-    LinkNode.Attributes['type'] := 'module'
-  else if ScriptType = Style then
-    LinkNode.Attributes['rel'] := 'stylesheet';
+  case ScriptType of
+    Icon: LinkNode.Attributes['rel'] := 'icon';
+    Module: LinkNode.Attributes['type'] := 'module';
+    Style: LinkNode.Attributes['rel'] := 'stylesheet';
+  end;
 end;
 
 destructor TPas2JSProjectCompiler.Destroy;
@@ -181,6 +182,8 @@ begin
 end;
 
 procedure TPas2JSProjectCompiler.StartIndexFile;
+var
+  Configuration: IOTABuildConfiguration;
 
   function GetScriptType(const TypeName: String): TScriptType;
   begin
@@ -194,7 +197,7 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
   procedure AddScriptFiles;
   begin
     var ModuleList := TStringList.Create;
-    ModuleList.DelimitedText := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration.Value[PAS2JS_MODULES];
+    ModuleList.DelimitedText := Configuration.Value[PAS2JS_MODULES];
 
     for var A := 0 to Pred(ModuleList.Count) do
       AddScriptFile(ModuleList.KeyNames[A], GetScriptType(ModuleList.ValueFromIndex[A]));
@@ -205,8 +208,7 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
   procedure CopyResourceFiles;
   begin
     var ResourceDirectoryList := TStringList.Create;
-
-    ResourceDirectoryList.DelimitedText := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration.Value[PAS2JS_RESOURCE_DIRECTORY_PATH];
+    ResourceDirectoryList.DelimitedText := Configuration.Value[PAS2JS_RESOURCE_DIRECTORY_PATH];
 
     for var A := 0 to Pred(ResourceDirectoryList.Count) do
       TDirectory.Copy(ResourceDirectoryList.KeyNames[A], ExpandMacros(ResourceDirectoryList.ValueFromIndex[A].Replace('$(OutputDir)', GetOutputConfiguration, [rfIgnoreCase])));
@@ -214,7 +216,26 @@ procedure TPas2JSProjectCompiler.StartIndexFile;
     ResourceDirectoryList.Free;
   end;
 
+  procedure LoadApplicationName;
+  begin
+    var ApplicationName := Configuration.Value[PAS2JS_APPLICATION_TITLE];
+
+    if not ApplicationName.IsEmpty then
+      FHeader.AddChild('Title').Text := ApplicationName
+    else
+      FHeader.AddChild('Title').Text := 'Untitle';
+  end;
+
+  procedure LoadApplicationIcon;
+  begin
+    var ApplicationIcon := Configuration.Value[PAS2JS_APPLICATION_ICON];
+
+    if not ApplicationIcon.IsEmpty then
+      AddScriptFile(ApplicationIcon, Icon);
+  end;
+
 begin
+  Configuration := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
   FIndexFile := TXMLDocument.Create(nil);
   FIndexFile.XML.Text := '<!DOCTYPE html><html/>';
 
@@ -224,11 +245,15 @@ begin
 
   FHeader := HTML.ChildNodes['head'];
 
-  HTML.ChildNodes['body'].ChildNodes['script'].Text := 'rtl.run();';
+  LoadApplicationIcon;
+
+  LoadApplicationName;
 
   AddScriptFiles;
 
   CopyResourceFiles;
+
+  HTML.ChildNodes['body'].ChildNodes['script'].Text := 'rtl.run();';
 end;
 
 end.
