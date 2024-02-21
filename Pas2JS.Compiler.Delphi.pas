@@ -67,6 +67,7 @@ procedure TPas2JSCompilerDelphi.CheckUnitAlias(var UseUnitName: string);
   end;
 
 begin
+  RemoveAlias('Data');
   RemoveAlias('System');
 end;
 
