@@ -11,6 +11,9 @@ type
   QWord = UInt64;
   SizeInt = NativeInt;
   TStringArray = TArray<String>;
+  UnicodeChar = Char;
+
+  PSizeInt = ^SizeInt;
 
   TListFreePascal = class(TList)
   public
@@ -72,6 +75,7 @@ function BoolToStr(const Value: Boolean; const TrueValue, FalseValue: String): S
 function EncodeStringBase64(const Value: String): String;
 function GetLastOSError: Cardinal;
 function HexStr(const Value: Int64; const Digits: Integer): String;
+function IndexByte(const Buffer; BufferLength: SizeInt; B: Byte): SizeInt;
 function IsValidIdent(const Ident: string; AllowDots: Boolean = False; StrictDots: Boolean = False): Boolean;
 function LeftStr(const Str: String; const Count: Integer): String;
 function RightStr(const Str: String; const Count: Integer): String;
@@ -88,6 +92,21 @@ procedure SetCodePage(S: RawByteString; CodePage: Word; Convert: Boolean);
 implementation
 
 uses System.NetEncoding;
+
+function IndexByte(const Buffer; BufferLength: SizeInt; B: Byte): SizeInt;
+var
+  ByteBuffer: PByte absolute Buffer;
+
+begin
+  if BufferLength > 0 then
+  begin
+    for var A := 0 to BufferLength do
+      if B = ByteBuffer[A] then
+        Exit(A);
+  end
+  else
+    Result := -1;
+end;
 
 function UnicodeFormat(const Expression: String; const Params: array of const): String;
 begin
@@ -383,3 +402,4 @@ begin
 end;
 
 end.
+
