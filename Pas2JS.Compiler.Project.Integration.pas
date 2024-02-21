@@ -151,11 +151,10 @@ begin
 
       MessageService := nil;
     end;
-  Compiler.OnReadFile :=
-    procedure (FileName: String)
+  Compiler.OnAddUnit :=
+    procedure (UnitName: String)
     begin
-      if (TPath.GetExtension(FileName) = '.pas') or (TPath.GetExtension(FileName) = '.dpr') or (TPath.GetExtension(FileName) = '.pp') then
-        AddScriptFile(TPath.GetFileName(TPath.ChangeExtension(FileName, '.js')), Script);
+      AddScriptFile(UnitName + '.js', Script);
     end;
   FCurrentProject := Project;
 
@@ -167,6 +166,8 @@ begin
     StartIndexFile;
 
     Compiler.Run(ChangeFileExt(Project.FileName, '.dpr'));
+
+    AddScriptFile(TPath.GetFileName(ChangeFileExt(Project.FileName, '.js')), Script);
 
     SaveIndexFile;
   finally

@@ -4,7 +4,7 @@
 
 interface
 
-uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, FPPJsSrcMap;
+uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, Pas2JSCompiler, FPPJsSrcMap;
 
 type
   TCompilerMessage = class;
@@ -16,6 +16,7 @@ type
     FSearchPath: String;
     FDefines: String;
     FOutputPath: String;
+    FOnAddUnit: TProc<String>;
 
     function LoadFile(FileName: String; var Source: String): Boolean;
 
@@ -23,10 +24,12 @@ type
   protected
     function DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean; override;
   public
+    procedure AddUsedUnit(AFile: TPas2jsCompilerFile); override;
     procedure Run(const FileName: String);
 
     property Defines: String read FDefines write FDefines;
     property OnCompilerMessage: TProc<TCompilerMessage> read FOnCompilerMessage write FOnCompilerMessage;
+    property OnAddUnit: TProc<String> read FOnAddUnit write FOnAddUnit;
     property OnReadFile: TProc<String> read FOnReadFile write FOnReadFile;
     property OutputPath: String read FOutputPath write FOutputPath;
     property SearchPath: String read FSearchPath write FSearchPath;
@@ -51,9 +54,17 @@ type
 
 implementation
 
-uses System.IOUtils, Rest.JSON, PasUseAnalyzer, Pas2JSCompiler, FPPas2Js, Pas2JS.Compiler.Options.Form;
+uses System.IOUtils, Rest.JSON, PasUseAnalyzer, FPPas2Js, Pas2JS.Compiler.Options.Form;
 
 { TPas2JSCompilerDelphi }
+
+procedure TPas2JSCompilerDelphi.AddUsedUnit(AFile: TPas2jsCompilerFile);
+begin
+  inherited;
+
+  if Assigned(OnAddUnit) then
+    OnAddUnit(AFile.PasUnitName);
+end;
 
 procedure TPas2JSCompilerDelphi.CompilerLog(Sender: TObject; const Info: String);
 begin
