@@ -23,7 +23,6 @@ type
   protected
     function DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean; override;
   public
-    procedure CheckUnitAlias(var UseUnitName: string); override;
     procedure Run(const FileName: String);
 
     property Defines: String read FDefines write FDefines;
@@ -55,21 +54,6 @@ implementation
 uses System.IOUtils, Rest.JSON, PasUseAnalyzer, Pas2JSCompiler, FPPas2Js, Pas2JS.Compiler.Options.Form;
 
 { TPas2JSCompilerDelphi }
-
-procedure TPas2JSCompilerDelphi.CheckUnitAlias(var UseUnitName: string);
-
-  function RemoveAlias(Alias: String): String;
-  begin
-    Alias := Alias + '.';
-
-    if UseUnitName.StartsWith(Alias) then
-      UseUnitName := UseUnitName.Substring(High(Alias));
-  end;
-
-begin
-  RemoveAlias('Data');
-  RemoveAlias('System');
-end;
 
 procedure TPas2JSCompilerDelphi.CompilerLog(Sender: TObject; const Info: String);
 begin
