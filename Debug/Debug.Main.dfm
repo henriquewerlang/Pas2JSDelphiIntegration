@@ -1,11 +1,11 @@
 inherited DebugMain: TDebugMain
   BorderIcons = [biSystemMenu]
   Caption = 'Debug Pas2JS'
-  ClientHeight = 726
-  ClientWidth = 733
+  ClientHeight = 751
+  ClientWidth = 928
   StyleElements = [seFont, seClient, seBorder]
-  ExplicitWidth = 749
-  ExplicitHeight = 765
+  ExplicitWidth = 944
+  ExplicitHeight = 790
   TextHeight = 15
   inherited lblSearchPath: TLabel
     Left = 8
@@ -15,19 +15,19 @@ inherited DebugMain: TDebugMain
     ExplicitTop = 158
   end
   inherited lblSourceRoot: TLabel
-    Top = 461
+    Top = 484
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 461
+    ExplicitTop = 484
   end
   inherited lblRelativeSourceFolder: TLabel
-    Top = 511
+    Top = 534
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 511
+    ExplicitTop = 534
   end
   object CompilerOutput: TSkLabel [3]
     Left = 8
-    Top = 561
-    Width = 705
+    Top = 588
+    Width = 901
     Height = 127
     AutoSize = False
     TextSettings.VertAlign = Leading
@@ -86,7 +86,7 @@ inherited DebugMain: TDebugMain
   end
   object CompilerExecute: TButton [12]
     Left = 8
-    Top = 694
+    Top = 721
     Width = 75
     Height = 25
     Caption = 'Execute'
@@ -116,14 +116,14 @@ inherited DebugMain: TDebugMain
     ExplicitTop = 369
   end
   inherited SourceRootFolder: TEdit
-    Top = 482
+    Top = 505
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 482
+    ExplicitTop = 505
   end
   inherited RelativeSourceFolder: TEdit
-    Top = 532
+    Top = 555
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitTop = 532
+    ExplicitTop = 555
   end
   inherited IncludeSourceInMapFile: TCheckBox
     Top = 392
@@ -142,7 +142,7 @@ inherited DebugMain: TDebugMain
     Top = 79
     Width = 521
     Height = 23
-    TabOrder = 14
+    TabOrder = 19
     TextHint = 'Fill with the defines, comma separeted...'
   end
   object OutputPath: TEdit [22]
@@ -172,6 +172,10 @@ inherited DebugMain: TDebugMain
     Top = 346
     TabOrder = 18
     ExplicitTop = 346
+  end
+  inherited UseCORBAInterfaceImplementation: TCheckBox
+    Top = 461
+    ExplicitTop = 461
   end
   object SelectFile: TOpenDialog
     Left = 471

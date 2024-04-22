@@ -2,13 +2,13 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Pas2JS Options'
-  ClientHeight = 790
+  ClientHeight = 814
   ClientWidth = 1243
   Position = poDefaultSizeOnly
   StyleElements = [seFont, seClient, seBorder]
   OnClose = FormClose
   ExplicitWidth = 1259
-  ExplicitHeight = 829
+  ExplicitHeight = 853
   TextHeight = 15
   inherited lblSearchPath: TLabel
     Left = 8
@@ -25,45 +25,41 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     Caption = 'Target'
   end
   inherited lblSourceRoot: TLabel
-    Left = 7
-    Top = 361
+    Top = 384
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitLeft = 7
-    ExplicitTop = 361
+    ExplicitTop = 384
   end
   inherited lblRelativeSourceFolder: TLabel
-    Left = 7
-    Top = 411
+    Top = 434
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitLeft = 7
-    ExplicitTop = 411
+    ExplicitTop = 434
   end
   object LabelResourceDirectory: TLabel [4]
-    Left = 8
-    Top = 561
+    Left = 9
+    Top = 584
     Width = 99
     Height = 15
     Caption = 'Resource Directory'
     FocusControl = GridModules
   end
   object lblModules: TLabel [5]
-    Left = 626
-    Top = 561
+    Left = 627
+    Top = 584
     Width = 46
     Height = 15
     Caption = '&Modules'
     FocusControl = GridModules
   end
   object lblApplicationTitle: TLabel [6]
-    Left = 8
-    Top = 461
+    Left = 9
+    Top = 484
     Width = 77
     Height = 15
     Caption = 'Aplication title'
   end
   object lblApplicationIcon: TLabel [7]
-    Left = 8
-    Top = 511
+    Left = 9
+    Top = 534
     Width = 80
     Height = 15
     Caption = 'Aplication icon'
@@ -71,7 +67,7 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   inherited SearchPath: TEdit
     Left = 8
     Top = 79
-    TabOrder = 14
+    TabOrder = 21
     StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 8
     ExplicitTop = 79
@@ -109,8 +105,8 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitTop = 269
   end
   object btnOk: TButton [14]
-    Left = 8
-    Top = 760
+    Left = 9
+    Top = 783
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -120,8 +116,8 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     OnClick = btnOkClick
   end
   object btnCancel: TButton [15]
-    Left = 89
-    Top = 760
+    Left = 90
+    Top = 783
     Width = 75
     Height = 25
     Cancel = True
@@ -140,18 +136,14 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     OnSelect = cobTargetSelect
   end
   inherited SourceRootFolder: TEdit
-    Left = 7
-    Top = 382
+    Top = 405
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitLeft = 7
-    ExplicitTop = 382
+    ExplicitTop = 405
   end
   inherited RelativeSourceFolder: TEdit
-    Left = 7
-    Top = 432
+    Top = 455
     StyleElements = [seFont, seClient, seBorder]
-    ExplicitLeft = 7
-    ExplicitTop = 432
+    ExplicitTop = 455
   end
   inherited IncludeSourceInMapFile: TCheckBox
     Left = 7
@@ -178,8 +170,8 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitTop = 200
   end
   object ResourceGrid: TDBGrid [23]
-    Left = 8
-    Top = 582
+    Left = 9
+    Top = 605
     Width = 612
     Height = 172
     DataSource = dsResourceDirectory
@@ -204,8 +196,8 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
       end>
   end
   object GridModules: TDBGrid [24]
-    Left = 626
-    Top = 582
+    Left = 627
+    Top = 605
     Width = 612
     Height = 172
     DataSource = dsModules
@@ -242,17 +234,21 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     ExplicitLeft = 7
     ExplicitTop = 246
   end
+  inherited UseCORBAInterfaceImplementation: TCheckBox
+    Top = 361
+    ExplicitTop = 361
+  end
   object ApplicationTitle: TEdit
-    Left = 8
-    Top = 482
+    Left = 9
+    Top = 505
     Width = 268
     Height = 23
     TabOrder = 19
     TextHint = 'The aplication title...'
   end
   object ApplicationIcon: TEdit
-    Left = 8
-    Top = 532
+    Left = 9
+    Top = 555
     Width = 268
     Height = 23
     TabOrder = 20

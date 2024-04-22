@@ -2,7 +2,7 @@ object CompilerOptionsForm: TCompilerOptionsForm
   Left = 0
   Top = 0
   Caption = 'Options'
-  ClientHeight = 414
+  ClientHeight = 434
   ClientWidth = 629
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,14 +21,14 @@ object CompilerOptionsForm: TCompilerOptionsForm
   end
   object lblSourceRoot: TLabel
     Left = 8
-    Top = 309
+    Top = 332
     Width = 147
     Height = 15
     Caption = 'Prefix for source root in URL'
   end
   object lblRelativeSourceFolder: TLabel
     Left = 8
-    Top = 359
+    Top = 382
     Width = 163
     Height = 15
     Caption = 'Relative directory source folder'
@@ -84,7 +84,7 @@ object CompilerOptionsForm: TCompilerOptionsForm
   end
   object SourceRootFolder: TEdit
     Left = 8
-    Top = 330
+    Top = 353
     Width = 269
     Height = 23
     TabOrder = 6
@@ -92,7 +92,7 @@ object CompilerOptionsForm: TCompilerOptionsForm
   end
   object RelativeSourceFolder: TEdit
     Left = 8
-    Top = 380
+    Top = 403
     Width = 269
     Height = 23
     TabOrder = 7
@@ -147,5 +147,15 @@ object CompilerOptionsForm: TCompilerOptionsForm
     Height = 17
     Caption = 'Check objects type cast'
     TabOrder = 13
+  end
+  object UseCORBAInterfaceImplementation: TCheckBox
+    Left = 8
+    Top = 309
+    Width = 241
+    Height = 17
+    Caption = 'Use CORBA interface implementation'
+    Checked = True
+    State = cbChecked
+    TabOrder = 14
   end
 end

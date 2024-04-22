@@ -23,6 +23,7 @@ type
     RangeCheckError: TCheckBox;
     IntegerOverflowCheck: TCheckBox;
     CheckObjectsTypeCast: TCheckBox;
+    UseCORBAInterfaceImplementation: TCheckBox;
     procedure GenerateMapFileClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   protected
@@ -35,7 +36,7 @@ implementation
 
 {$R *.dfm}
 
-uses Pas2jsCompiler;
+uses Pas2jsCompiler, PasTree;
 
 { TCompilerOptions }
 
@@ -50,8 +51,12 @@ begin
 end;
 
 procedure TCompilerOptionsForm.LoadConfiguration(const Compiler: TPas2JSCompilerDelphi);
+const
+  INTERFACE_TYPE: array[Boolean] of TPasClassInterfaceType = (citCom, citCorba);
+
 begin
   Compiler.AllJSIntoMainJS := GenerateSingleFile.Checked;
+  Compiler.InterfaceType := INTERFACE_TYPE[UseCORBAInterfaceImplementation.Checked];
   Compiler.SrcMapBaseDir := RelativeSourceFolder.Text;
   Compiler.SrcMapEnable := GenerateMapFile.Checked;
   Compiler.SrcMapFilenamesAbsolute := AbsoluteFileNames.Checked;
@@ -88,3 +93,4 @@ begin
 end;
 
 end.
+
