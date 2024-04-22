@@ -74,7 +74,7 @@ begin
 
     case CompilerMessage.Number of
       nPAUnitNotUsed: ;
-      nPAParameterNotUsed: ;
+
       nPAParameterInOverrideNotUsed: ;
       else
       begin
