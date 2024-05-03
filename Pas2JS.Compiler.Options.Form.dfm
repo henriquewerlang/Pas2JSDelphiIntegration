@@ -154,8 +154,6 @@ object CompilerOptionsForm: TCompilerOptionsForm
     Width = 241
     Height = 17
     Caption = 'Use CORBA interface implementation'
-    Checked = True
-    State = cbChecked
     TabOrder = 14
   end
 end
