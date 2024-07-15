@@ -2,7 +2,7 @@
 
 interface
 
-uses System.Classes, System.Generics.Collections, Xml.XMLIntf, Pas2JS.Registry, ToolsAPI, Pas2JS.Compiler.Delphi;
+uses System.Classes, System.Generics.Collections, Xml.XMLIntf, Pas2JS.Registry, ToolsAPI, Pas2JS.Compiler.Delphi, Pas2jsCompiler;
 
 type
   TScriptType = (Style, Script, Module, Icon);
@@ -152,9 +152,9 @@ begin
       MessageService := nil;
     end;
   Compiler.OnAddUnit :=
-    procedure (UnitName: String)
+    procedure (FileName: TPas2jsCompilerFile)
     begin
-      AddScriptFile(UnitName + '.js', Script);
+      AddScriptFile(ExtractFileName(ChangeFileExt(FileName.PasFileName, '.js')), Script);
     end;
   FCurrentProject := Project;
 

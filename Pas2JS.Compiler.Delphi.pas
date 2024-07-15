@@ -16,7 +16,7 @@ type
     FSearchPath: String;
     FDefines: String;
     FOutputPath: String;
-    FOnAddUnit: TProc<String>;
+    FOnAddUnit: TProc<TPas2jsCompilerFile>;
 
     function LoadFile(FileName: String; var Source: String): Boolean;
 
@@ -29,7 +29,7 @@ type
 
     property Defines: String read FDefines write FDefines;
     property OnCompilerMessage: TProc<TCompilerMessage> read FOnCompilerMessage write FOnCompilerMessage;
-    property OnAddUnit: TProc<String> read FOnAddUnit write FOnAddUnit;
+    property OnAddUnit: TProc<TPas2jsCompilerFile> read FOnAddUnit write FOnAddUnit;
     property OnReadFile: TProc<String> read FOnReadFile write FOnReadFile;
     property OutputPath: String read FOutputPath write FOutputPath;
     property SearchPath: String read FSearchPath write FSearchPath;
@@ -63,7 +63,7 @@ begin
   inherited;
 
   if Assigned(OnAddUnit) then
-    OnAddUnit(AFile.PasUnitName);
+    OnAddUnit(AFile);
 end;
 
 procedure TPas2JSCompilerDelphi.CompilerLog(Sender: TObject; const Info: String);
