@@ -23,6 +23,7 @@ const
   PAS2JS_RESOURCE_DIRECTORY_PATH = 'Pas2JS_DirectoryResource';
   PAS2JS_SEARCH_PATH = 'Pas2JS_Search';
   PAS2JS_SOURCE_ROOT_FOLDER = 'Pas2JS_SourceRoot';
+  PAS2JS_USE_CORBA_INTERFACE = 'Pas2JS_UseCORBAInterface';
 
 implementation
 

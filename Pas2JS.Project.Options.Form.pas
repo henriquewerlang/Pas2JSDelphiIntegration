@@ -198,6 +198,7 @@ begin
   SaveConfig(PAS2JS_REMOVE_NOT_USED_PRIVATES, RemoveNotUsedPrivates.Checked);
   SaveConfig(PAS2JS_SEARCH_PATH, SearchPath.Text);
   SaveConfig(PAS2JS_SOURCE_ROOT_FOLDER, SourceRootFolder.Text);
+  SaveConfig(PAS2JS_USE_CORBA_INTERFACE, UseCORBAInterfaceImplementation.Checked);
 
   SaveDataSet(cdsModules, PAS2JS_MODULES);
 
@@ -242,6 +243,7 @@ begin
   RemoveNotUsedPrivates.Checked := Configuration.GetBoolean(PAS2JS_REMOVE_NOT_USED_PRIVATES, False);
   SearchPath.Text := Configuration.Value[PAS2JS_SEARCH_PATH];
   SourceRootFolder.Text := Configuration.GetValue(PAS2JS_SOURCE_ROOT_FOLDER, False);
+  UseCORBAInterfaceImplementation.Checked := Configuration.GetBoolean(PAS2JS_USE_CORBA_INTERFACE, False);
   XXSIProtection.Checked := Configuration.GetBoolean(PAS2JS_MAP_FILE_PROTECTION, False);
 
   LoadDataSet(cdsModules, PAS2JS_MODULES);

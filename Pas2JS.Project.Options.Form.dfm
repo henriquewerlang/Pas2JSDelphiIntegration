@@ -5,7 +5,6 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   ClientHeight = 814
   ClientWidth = 1243
   Position = poDefaultSizeOnly
-  StyleElements = [seFont, seClient, seBorder]
   OnClose = FormClose
   ExplicitWidth = 1259
   ExplicitHeight = 853
@@ -13,7 +12,6 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   inherited lblSearchPath: TLabel
     Left = 8
     Top = 58
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 8
     ExplicitTop = 58
   end
@@ -26,12 +24,10 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   inherited lblSourceRoot: TLabel
     Top = 384
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 384
   end
   inherited lblRelativeSourceFolder: TLabel
     Top = 434
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 434
   end
   object LabelResourceDirectory: TLabel [4]
@@ -68,7 +64,6 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
     Left = 8
     Top = 79
     TabOrder = 21
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 8
     ExplicitTop = 79
   end
@@ -137,12 +132,10 @@ inherited Pas2JSProjectOptionForm: TPas2JSProjectOptionForm
   end
   inherited SourceRootFolder: TEdit
     Top = 405
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 405
   end
   inherited RelativeSourceFolder: TEdit
     Top = 455
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 455
   end
   inherited IncludeSourceInMapFile: TCheckBox
