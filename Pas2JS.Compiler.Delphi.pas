@@ -122,7 +122,7 @@ begin
   Log.OnLog := CompilerLog;
   MainSrcFile := FileName;
   ModeSwitches := p2jsMode_SwitchSets[p2jmDelphi];
-  Options := Options + [coShowErrors, coShowWarnings, coShowHints, coShowMessageNumbers];
+  Options := Options + [coShowErrors, coShowWarnings, coShowHints, coShowMessageNumbers, coBuildAll];
   ResourceMode := rmJS;
   ShowFullPaths := True;
   TargetProcessor := ProcessorECMAScript6;
