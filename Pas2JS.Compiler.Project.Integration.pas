@@ -154,7 +154,8 @@ begin
   Compiler.OnAddUnit :=
     procedure (FileName: TPas2jsCompilerFile)
     begin
-      AddScriptFile(ExtractFileName(ChangeFileExt(FileName.PasFileName, '.js')), Script);
+      if not Compiler.AllJSIntoMainJS then
+        AddScriptFile(ExtractFileName(ChangeFileExt(FileName.PasFileName, '.js')), Script);
     end;
   FCurrentProject := Project;
 
