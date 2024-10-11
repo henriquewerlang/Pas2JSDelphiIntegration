@@ -5,11 +5,15 @@ interface
 uses System.SysUtils, System.Generics.Collections, System.Classes, System.WideStrUtils, System.Generics.Defaults, System.Types, Winapi.Windows;
 
 type
+  PSizeUint = ^NativeUInt;
   PtrInt = NativeInt;
   PtrUInt = ^NativeInt;
+  PUint8 = PByte;
   PUnicodeChar = PChar;
+  PUInt16 = PWord;
   QWord = UInt64;
   SizeInt = NativeInt;
+  SizeUInt = NativeUInt;
   TStringArray = TArray<String>;
   UnicodeChar = Char;
 
