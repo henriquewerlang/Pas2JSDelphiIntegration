@@ -27,6 +27,8 @@ type
     lblApplicationTitle: TLabel;
     lblApplicationIcon: TLabel;
     ApplicationIcon: TEdit;
+    lblAplicationLanguage: TLabel;
+    ApplicationLanguage: TEdit;
     procedure cobTargetSelect(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -184,6 +186,7 @@ begin
 
   SaveConfig(PAS2JS_ABSOLUTE_FILE_NAME_MAP_FILE, AbsoluteFileNames.Checked);
   SaveConfig(PAS2JS_APPLICATION_ICON, ApplicationIcon.Text);
+  SaveConfig(PAS2JS_APPLICATION_LANGUAGE, ApplicationLanguage.Text);
   SaveConfig(PAS2JS_APPLICATION_TITLE, ApplicationTitle.Text);
   SaveConfig(PAS2JS_CHECK_OBJECT_TYPE_CAST, CheckObjectsTypeCast.Checked);
   SaveConfig(PAS2JS_ENUMERATOR_AS_NUMBER, EnumaratoAsNumber.Checked);
@@ -230,6 +233,7 @@ procedure TPas2JSProjectOptionForm.UpdateConfiguration(const Configuration: IOTA
 begin
   AbsoluteFileNames.Checked := Configuration.GetBoolean(PAS2JS_ABSOLUTE_FILE_NAME_MAP_FILE, False);
   ApplicationIcon.Text := Configuration.GetValue(PAS2JS_APPLICATION_ICON, False);
+  ApplicationLanguage.Text := Configuration.GetValue(PAS2JS_APPLICATION_LANGUAGE, False);
   ApplicationTitle.Text := Configuration.GetValue(PAS2JS_APPLICATION_TITLE, False);
   CheckObjectsTypeCast.Checked := Configuration.GetBoolean(PAS2JS_CHECK_OBJECT_TYPE_CAST, False);
   EnumaratoAsNumber.Checked := Configuration.GetBoolean(PAS2JS_ENUMERATOR_AS_NUMBER, False);

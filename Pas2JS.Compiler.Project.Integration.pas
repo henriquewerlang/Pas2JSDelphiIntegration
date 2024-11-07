@@ -186,6 +186,7 @@ end;
 procedure TPas2JSProjectCompiler.StartIndexFile;
 var
   Configuration: IOTABuildConfiguration;
+  HTML: IXMLNode;
 
   function GetScriptType(const TypeName: String): TScriptType;
   begin
@@ -236,6 +237,14 @@ var
       AddScriptFile(ApplicationIcon, Icon);
   end;
 
+  procedure LoadApplicationLanguage;
+  begin
+    var ApplicationLanguage := Configuration.Value[PAS2JS_APPLICATION_LANGUAGE];
+
+    if not ApplicationLanguage.IsEmpty then
+      HTML.Attributes['lang'] := ApplicationLanguage;
+  end;
+
 begin
   Configuration := (FCurrentProject.ProjectOptions as IOTAProjectOptionsConfigurations).ActiveConfiguration;
   FIndexFile := TXMLDocument.Create(nil);
@@ -243,13 +252,15 @@ begin
 
   FIndexFile.Active := True;
   FIndexFile.Options := [doNodeAutoIndent, doNodeAutoCreate];
-  var HTML := FIndexFile.DocumentElement;
+  HTML := FIndexFile.DocumentElement;
 
   FHeader := HTML.ChildNodes['head'];
 
   LoadApplicationIcon;
 
   LoadApplicationName;
+
+  LoadApplicationLanguage;
 
   AddScriptFiles;
 
