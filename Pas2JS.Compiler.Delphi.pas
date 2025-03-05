@@ -4,10 +4,14 @@
 
 interface
 
-uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, Pas2JSCompiler, FPPJsSrcMap;
+uses System.Classes, System.SysUtils, Pas2JSFScompiler, Pas2JSLogger, Pas2JSCompiler, FPPJsSrcMap, Pas2JSFS;
 
 type
   TCompilerMessage = class;
+
+  TPas2jsCompilerFileDelphi = class(TPas2jsCompilerFile)
+    procedure CreateScannerAndParser(aFileResolver: TPas2jsFSResolver); override;
+  end;
 
   TPas2JSCompilerDelphi = class(TPas2JSFSCompiler)
   private
@@ -22,6 +26,7 @@ type
 
     procedure CompilerLog(Sender: TObject; const Info: String);
   protected
+    function CreateCompilerFile(const PasFileName, PCUFilename: String): TPas2jsCompilerFile; override;
     function DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean; override;
   public
     procedure AddUsedUnit(AFile: TPas2jsCompilerFile); override;
@@ -54,7 +59,7 @@ type
 
 implementation
 
-uses System.IOUtils, Rest.JSON, PasUseAnalyzer, FPPas2Js, Pas2JS.Compiler.Options.Form;
+uses System.IOUtils, Rest.JSON, PasUseAnalyzer, FPPas2Js, Pas2JS.Compiler.Options.Form, pastree;
 
 { TPas2JSCompilerDelphi }
 
@@ -87,6 +92,11 @@ begin
 
     CompilerMessage.Free;
   end;
+end;
+
+function TPas2JSCompilerDelphi.CreateCompilerFile(const PasFileName, PCUFilename: String): TPas2jsCompilerFile;
+begin
+  Result:=TPas2jsCompilerFileDelphi.Create(Self,PasFileName,PCUFilename);
 end;
 
 function TPas2JSCompilerDelphi.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
@@ -139,6 +149,17 @@ begin
   finally
     CommandLine.Free;
   end;
+end;
+
+{ TPas2jsCompilerFileDelphi }
+
+procedure TPas2jsCompilerFileDelphi.CreateScannerAndParser(aFileResolver: TPas2jsFSResolver);
+begin
+  inherited;
+
+  Parser.RTTIVisibility.Fields := [vcPublic];
+  Parser.RTTIVisibility.Methods := [vcPublic,vcPublished];
+  Parser.RTTIVisibility.Properties := [vcPublic,vcPublished];
 end;
 
 end.
