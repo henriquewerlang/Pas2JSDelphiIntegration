@@ -3,25 +3,21 @@ inherited DebugMain: TDebugMain
   Caption = 'Debug Pas2JS'
   ClientHeight = 751
   ClientWidth = 928
-  StyleElements = [seFont, seClient, seBorder]
   ExplicitWidth = 944
   ExplicitHeight = 790
   TextHeight = 15
   inherited lblSearchPath: TLabel
     Left = 8
     Top = 158
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 8
     ExplicitTop = 158
   end
   inherited lblSourceRoot: TLabel
     Top = 484
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 484
   end
   inherited lblRelativeSourceFolder: TLabel
     Top = 534
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 534
   end
   object CompilerOutput: TSkLabel [3]
@@ -60,7 +56,6 @@ inherited DebugMain: TDebugMain
     Left = 8
     Top = 179
     TabOrder = 11
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitLeft = 8
     ExplicitTop = 179
   end
@@ -117,12 +112,10 @@ inherited DebugMain: TDebugMain
   end
   inherited SourceRootFolder: TEdit
     Top = 505
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 505
   end
   inherited RelativeSourceFolder: TEdit
     Top = 555
-    StyleElements = [seFont, seClient, seBorder]
     ExplicitTop = 555
   end
   inherited IncludeSourceInMapFile: TCheckBox

@@ -51,7 +51,7 @@ begin
       else if CompilerMessage.&Type = 'Hint' then
         Line.FontColor := TAlphaColors.Darkorchid;
 
-      Line.Caption := Format('%s: %s'#13#10, [CompilerMessage.&Type, CompilerMessage.Message]);
+      Line.Caption := Format('Line: %d, Column: %d - %s: %s'#13#10, [CompilerMessage.Line, CompilerMessage.Col, CompilerMessage.&Type, CompilerMessage.Message]);
     end;
   CompilerOutput.AutoSize := False;
   CompilerOutput.Caption := EmptyStr;
