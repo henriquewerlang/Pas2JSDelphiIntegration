@@ -102,14 +102,11 @@ var
   ByteBuffer: PByte absolute Buffer;
 
 begin
-  if BufferLength > 0 then
-  begin
-    for var A := 0 to BufferLength do
-      if B = ByteBuffer[A] then
-        Exit(A);
-  end
-  else
-    Result := -1;
+  for var A := 0 to BufferLength do
+    if B = ByteBuffer[A] then
+      Exit(A);
+
+  Result := -1;
 end;
 
 function UnicodeFormat(const Expression: String; const Params: array of const): String;
