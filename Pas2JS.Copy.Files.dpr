@@ -1,4 +1,4 @@
-﻿program Pas2JSCopyFiles;
+﻿program Pas2JS.Copy.Files;
 
 {$APPTYPE CONSOLE}
 
@@ -58,7 +58,7 @@ var
 
   procedure ChangeFileExtension(const BaseFileName: String; const ExtensionConversor: EXTENSION_ARRAY);
   const
-    BASE_PATH = '\Pas2JS\Compiler\packages\';
+    BASE_PATH = '\Compiler\packages\';
 
   begin
     var FileName := BASE_PATH + BaseFileName;

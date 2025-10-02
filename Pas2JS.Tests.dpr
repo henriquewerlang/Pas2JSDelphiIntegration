@@ -1,4 +1,4 @@
-﻿program Pas2JSTests;
+﻿program Pas2JS.Tests;
 
 uses
   Delphi.Helper in 'Compiler\Delphi.Helper.pas',

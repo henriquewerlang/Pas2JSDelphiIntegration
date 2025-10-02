@@ -1,4 +1,4 @@
-﻿package Pas2JSStub;
+﻿package Pas2JS.Stub;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -25,8 +25,9 @@
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$LIBPREFIX 'Pas2JS Stub Compiler'}
+{$DESCRIPTION 'Pas2JS Stub'}
 {$LIBSUFFIX AUTO}
+{$RUNONLY}
 {$IMPLICITBUILD OFF}
 
 requires

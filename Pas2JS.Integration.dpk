@@ -1,4 +1,4 @@
-﻿package Pas2JSIntegration;
+﻿package Pas2JS.Integration;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -39,7 +39,7 @@ requires
   vcldb,
   soapserver,
   dsnap,
-  Pas2JSCompilerLib;
+  Pas2JS.Compiler;
 
 contains
   Pas2JS.Compiler.Project.Integration in 'Pas2JS.Compiler.Project.Integration.pas',
