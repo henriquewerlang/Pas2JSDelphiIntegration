@@ -2,3 +2,7 @@
 	path = Pas2JS
 	url = https://gitlab.com/henriquewerlang/pas2js.git
 	branch = main
+[submodule "Compiler"]
+	path = Compiler
+	url = https://gitlab.com/henriquewerlang/source.git
+	branch = main
