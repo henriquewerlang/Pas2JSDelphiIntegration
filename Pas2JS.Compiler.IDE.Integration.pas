@@ -44,7 +44,7 @@ procedure Register;
 
 implementation
 
-uses System.SysUtils, Pas2JS.Consts;
+uses System.SysUtils, Vcl.Dialogs, Pas2JS.Consts;
 
 procedure Register;
 begin
@@ -74,12 +74,10 @@ end;
 
 procedure TPas2JSIDECompilerIntegration.BeforeCompile(const Project: IOTAProject; IsCodeInsight: Boolean; var Cancel: Boolean);
 begin
-  if Project.ApplicationType = APPLICATION_TYPE then
-  begin
-    Cancel := True;
+  Cancel := Project.ApplicationType = APPLICATION_TYPE;
 
+  if Cancel then
     Compiler.Run(Project);
-  end;
 end;
 
 procedure TPas2JSIDECompilerIntegration.BeforeSave;
