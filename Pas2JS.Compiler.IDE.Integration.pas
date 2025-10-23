@@ -74,7 +74,7 @@ end;
 
 procedure TPas2JSIDECompilerIntegration.BeforeCompile(const Project: IOTAProject; IsCodeInsight: Boolean; var Cancel: Boolean);
 begin
-  Cancel := Project.ApplicationType = APPLICATION_TYPE;
+  Cancel := not IsCodeInsight and (Project.ApplicationType = APPLICATION_TYPE);
 
   if Cancel then
     Compiler.Run(Project);
