@@ -157,9 +157,9 @@ procedure TPas2jsCompilerFileDelphi.CreateScannerAndParser(aFileResolver: TPas2j
 begin
   inherited;
 
-  Parser.RTTIVisibility.Fields := [vcPublic];
-  Parser.RTTIVisibility.Methods := [vcPublic,vcPublished];
-  Parser.RTTIVisibility.Properties := [vcPublic,vcPublished];
+  Parser.RTTIVisibility.Fields := [vcPublic, vcPublished];
+  Parser.RTTIVisibility.Methods := [vcPublic, vcPublished];
+  Parser.RTTIVisibility.Properties := [vcPublic, vcPublished];
 end;
 
 end.
