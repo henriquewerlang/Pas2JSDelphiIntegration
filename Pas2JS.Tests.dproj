@@ -5,7 +5,7 @@
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
         <MainSource>Pas2JS.Tests.dpr</MainSource>
@@ -97,35 +97,35 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Compiler\Delphi.Helper.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-fpcunit\src\fpcunit.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-fpcunit\src\testregistry.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-fpcunit\src\testutils.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-fpcunit\src\testdecorator.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\src\fppas2js.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-js\src\jsbase.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-js\src\jssrcmap.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-js\src\jstoken.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-js\src\jstree.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-js\src\jswriter.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pasresolveeval.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pasresolver.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pastree.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pasuseanalyzer.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pparser.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-passrc\src\pscanner.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-json\src\fpjson.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-json\src\jsonparser.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-json\src\jsonreader.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\fcl-json\src\jsonscanner.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\tests\tcconverter.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\tests\tcgenerics.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\tests\tcmodules.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\tests\tcoptimizations.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\src\pas2jsuseanalyzer.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\tests\tcsrcmap.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\src\fppjssrcmap.pas"/>
-        <DCCReference Include="Pas2JS\compiler\packages\pastojs\src\pas2jsutils.pas"/>
+        <DCCReference Include="Helper\Delphi.Helper.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-fpcunit\src\fpcunit.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-fpcunit\src\testregistry.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-fpcunit\src\testutils.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-fpcunit\src\testdecorator.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\src\fppas2js.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-js\src\jsbase.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-js\src\jssrcmap.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-js\src\jstoken.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-js\src\jstree.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-js\src\jswriter.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pasresolveeval.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pasresolver.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pastree.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pasuseanalyzer.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pparser.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-passrc\src\pscanner.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-json\src\fpjson.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-json\src\jsonparser.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-json\src\jsonreader.pas"/>
+        <DCCReference Include="Compiler\packages\fcl-json\src\jsonscanner.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\tests\tcconverter.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\tests\tcgenerics.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\tests\tcmodules.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\tests\tcoptimizations.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\src\pas2jsuseanalyzer.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\tests\tcsrcmap.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\src\fppjssrcmap.pas"/>
+        <DCCReference Include="Compiler\packages\pastojs\src\pas2jsutils.pas"/>
         <DCCReference Include="TestInsight.FPCUnit.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
