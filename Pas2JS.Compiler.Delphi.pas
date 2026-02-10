@@ -59,7 +59,7 @@ type
 
 implementation
 
-uses System.IOUtils, Rest.JSON, PasUseAnalyzer, FPPas2Js, Pas2JS.Compiler.Options.Form, pastree;
+uses System.IOUtils, Rest.JSON, PasUseAnalyzer, FPPas2Js, Pas2JS.Compiler.Options.Form, PasTree, PScanner;
 
 { TPas2JSCompilerDelphi }
 
@@ -96,7 +96,7 @@ end;
 
 function TPas2JSCompilerDelphi.CreateCompilerFile(const PasFileName, PCUFilename: String): TPas2jsCompilerFile;
 begin
-  Result:=TPas2jsCompilerFileDelphi.Create(Self,PasFileName,PCUFilename);
+  Result := TPas2jsCompilerFileDelphi.Create(Self, PasFileName, PCUFilename);
 end;
 
 function TPas2JSCompilerDelphi.DoWriteJSFile(const DestFilename, MapFilename: String; Writer: TPas2JSMapper): Boolean;
@@ -157,6 +157,7 @@ procedure TPas2jsCompilerFileDelphi.CreateScannerAndParser(aFileResolver: TPas2j
 begin
   inherited;
 
+  Parser.Options := Parser.Options - [po_CheckCondFunction];
   Parser.RTTIVisibility.Fields := [vcPublic, vcPublished];
   Parser.RTTIVisibility.Methods := [vcPublic, vcPublished];
   Parser.RTTIVisibility.Properties := [vcPublic, vcPublished];
