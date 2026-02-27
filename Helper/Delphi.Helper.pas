@@ -81,8 +81,6 @@ function GetLastOSError: Cardinal;
 function HexStr(const Value: Int64; const Digits: Integer): String;
 function IndexByte(const Buffer; BufferLength: SizeInt; B: Byte): SizeInt;
 function IsValidIdent(const Ident: string; AllowDots: Boolean = False; StrictDots: Boolean = False): Boolean;
-function LeftStr(const Str: String; const Count: Integer): String;
-function RightStr(const Str: String; const Count: Integer): String;
 function SetDirSeparators(const FileName: String): String;
 function SplitCommandLine(S: String): TStringDynArray;
 function StringInList(const Value: String; const Values: TArray<String>): Boolean;
@@ -265,16 +263,6 @@ end;
 function TryStrToQWord(const Str: String; var Value: QWord): Boolean;
 begin
   Result := TryStrToUInt64(Str, Value);
-end;
-
-function LeftStr(const Str: String; const Count: Integer): String;
-begin
-  Result := Copy(Str, 1, Count);
-end;
-
-function RightStr(const Str: String; const Count: Integer): String;
-begin
-  Result := Copy(Str, Str.Length - Count, Count);
 end;
 
 { THashDictionary<V> }
