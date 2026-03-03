@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="FPMake.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="9"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="packages\fpmkunit\src\fpmkunit.pp"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="fpMkUnit"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="4"/>
+        <CursorPos X="36" Y="19"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="packages\fpmkunit\src\fpmkunit.pas"/>
+        <UnitName Value="fpMkUnit"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="51" Y="17"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="fpmake.pp"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="3" Y="18"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpcupdeluxe\fpcsrc\packages\fpmkunit\src\fpmkunit.pp"/>
+        <UnitName Value="fpMkUnit"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5237"/>
+        <CursorPos X="16" Y="5256"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="packages\hash\namespaced\System.Hash.Sha1.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="11" Y="3"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="1">
+      <Position>
+        <Filename Value="packages\fpmkunit\src\fpmkunit.pp"/>
+        <Caret Line="10" Column="40"/>
+      </Position>
+      <Position>
+        <Filename Value="packages\fpmkunit\src\fpmkunit.pp"/>
+        <Caret Line="19" Column="38"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="-sp D:\Componentes\Pas2JSDelphiIntegration\Compiler -s unicodertl -ns"/>
+          </local>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="CommandLineParameters" Count="1">
+        <Item1 Value="-sp D:\Componentes\Pas2JSDelphiIntegration\Compiler -s unicodertl -ns"/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="packages\fpmkunit\src\fpmkunit.pas"/>
+        <Line Value="5267"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="packages\fpmkunit\src\fpmkunit.pas"/>
+        <Line Value="5262"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="D:\fpcupdeluxe\fpcsrc\packages\fpmkunit\src\fpmkunit.pp"/>
+        <Line Value="5258"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>
