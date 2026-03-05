@@ -2,7 +2,7 @@ unit Delphi.Windows.Helper;
 
 interface
 
-uses System.Classes, System.SysUtils;
+uses System.Classes, System.SysUtils, Delphi.Helper;
 
 type
   TStreamHelper = class helper for TStream
@@ -14,6 +14,7 @@ type
     procedure GetNameValue(Index : Integer; Out AName,AValue : String);
   end;
 
+  TEventType = (etCustom,etInfo,etWarning,etError,etDebug);
   TFileSearchOption = (sfoImplicitCurrentDir, sfoStripQuotes);
   TFileSearchOptions = set of TFileSearchOption;
 
@@ -31,6 +32,8 @@ function GetAppConfigFile(Global : Boolean): String;
 function GetEnvironmentString(Index: Integer): String;
 function GetEnvironmentVariableCount : Integer;
 function FileTruncate(Handle: THandle; Size: Int64): Boolean;
+function RPos(const Substr, Source: String): SizeInt;
+function RPosEx(const Substr, Source: String; const OffSet: SizeInt): SizeInt;
 function StdErr: THandle;
 function StdErrorHandle: THandle;
 function StdInput: THandle;
@@ -51,7 +54,7 @@ const
 
 implementation
 
-uses Winapi.Windows, Winapi.SHFolder, Winapi.ShlObj, Delphi.Helper;
+uses Winapi.Windows, Winapi.SHFolder, Winapi.ShlObj;
 
 Function GetSpecialDir(ID: Integer) : String;
 Var
@@ -328,6 +331,38 @@ begin
       CloseHandle(PI.hThread);
       raise e;
     end;
+end;
+
+function RPos(const Substr, Source: String): SizeInt;
+begin
+  Result := RPosEx(Substr,Source,High(Result)); { High(Result) is possible because string version clamps offs > length to offs = length. }
+end;
+
+function RPosEx(const Substr, Source: String; const OffSet: SizeInt): SizeInt;
+var
+  MaxLen,llen : SizeInt;
+  c : unicodechar;
+  pc,pc2 : punicodechar;
+begin
+  llen:=Length(SubStr);
+  maxlen:=length(source);
+  if OffSet<maxlen then maxlen:=OffSet;
+  if (llen>0) and (maxlen>0) and ( llen<=maxlen)  then
+   begin
+     pc:=@source[maxlen-llen+1];
+     pc2:=@source[1];
+     c:=substr[1];
+     repeat
+       if (c=pc^) and
+          (System.Pos(Substr[1],pc^,llen)=0) then
+        begin
+          rPosex:=SizeUint(PChar(pc)-PChar(pc2)) div sizeof(unicodechar)+1; { pc-pc2+1 but avoids signed division... }
+          exit;
+        end;
+       dec(pc);
+     until pc<pc2;
+   end;
+  rPosex:=0;
 end;
 
 { TStreamHelper }
