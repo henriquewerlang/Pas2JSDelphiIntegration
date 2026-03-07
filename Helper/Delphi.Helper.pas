@@ -15,6 +15,7 @@ type
   SizeInt = NativeInt;
   SizeUInt = NativeUInt;
   TStringArray = TArray<String>;
+  TSystemCodePage = Integer;
   UnicodeChar = Char;
 
   PSizeInt = ^SizeInt;
