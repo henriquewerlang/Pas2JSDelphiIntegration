@@ -58,13 +58,13 @@ var
 
   procedure ChangeFileExtension(const BaseFileName: String; const ExtensionConversor: EXTENSION_ARRAY);
   const
-    BASE_PATH = '\Compiler\packages\';
+    BASE_PATH = 'Compiler\packages';
 
   begin
-    var FileName := BASE_PATH + BaseFileName;
+    var FileName := IncludeTrailingPathDelimiter(BASE_PATH) + BaseFileName;
 
-    var DestinyFile := ProjectFolder + ChangeFileExt(FileName, ExtensionConversor[not PasToFPC]);
-    var SourceFile := ProjectFolder + ChangeFileExt(FileName, ExtensionConversor[PasToFPC]);
+    var DestinyFile := IncludeTrailingPathDelimiter(ProjectFolder) + ChangeFileExt(FileName, ExtensionConversor[not PasToFPC]);
+    var SourceFile := IncludeTrailingPathDelimiter(ProjectFolder) + ChangeFileExt(FileName, ExtensionConversor[PasToFPC]);
 
     if TFile.Exists(SourceFile) and not TFile.Exists(DestinyFile) then
       TFile.Move(SourceFile, DestinyFile);
@@ -75,8 +75,8 @@ const
   EXTENSION_PROJECT_CONVERSION: EXTENSION_ARRAY = ('.dpr', '.pp');
 
 begin
-  PasToFPC := ParamStr(2) = '1';
-  ProjectFolder := ParamStr(1);
+  PasToFPC := ParamStr(1) = '1';
+  ProjectFolder := ExtractFilePath(ParamStr(0));
 
   ChangeFileExtension('pastojs\tests\testpas2js.file', EXTENSION_PROJECT_CONVERSION);
 
