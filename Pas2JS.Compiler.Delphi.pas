@@ -21,6 +21,7 @@ type
     FDefines: String;
     FOutputPath: String;
     FOnAddUnit: TProc<TPas2jsCompilerFile>;
+    FInclusePath: String;
 
     function LoadFile(FileName: String; var Source: String): Boolean;
 
@@ -33,6 +34,7 @@ type
     procedure Run(const FileName: String);
 
     property Defines: String read FDefines write FDefines;
+    property InclusePath: String read FInclusePath write FInclusePath;
     property OnCompilerMessage: TProc<TCompilerMessage> read FOnCompilerMessage write FOnCompilerMessage;
     property OnAddUnit: TProc<TPas2jsCompilerFile> read FOnAddUnit write FOnAddUnit;
     property OnReadFile: TProc<String> read FOnReadFile write FOnReadFile;
@@ -136,6 +138,8 @@ begin
   ResourceMode := rmJS;
   ShowFullPaths := True;
   TargetProcessor := ProcessorECMAScript6;
+
+  FileCache.AddIncludePaths(InclusePath, False, ErrorMessage);
 
   FileCache.AddUnitPaths(SearchPath, False, ErrorMessage);
 
