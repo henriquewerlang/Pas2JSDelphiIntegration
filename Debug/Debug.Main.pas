@@ -2,7 +2,7 @@ unit Debug.Main;
 
 interface
 
-uses Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes, Vcl.Controls, System.Skia, Vcl.Skia, Pas2JS.Compiler.Options.Form, Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids;
+uses Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, System.Classes, Vcl.Controls, System.Skia, Vcl.Skia, Pas2JS.Compiler.Options.Form, Data.DB, Datasnap.DBClient, Vcl.Grids, Vcl.DBGrids, Vcl.CheckLst;
 
 type
   TDebugMain = class(TCompilerOptionsForm)
@@ -16,8 +16,13 @@ type
     Defines: TEdit;
     lblOutputPath: TLabel;
     OutputPath: TEdit;
+    lblIncludePaths: TLabel;
+    IncludePath: TEdit;
+    ShowCompilingMessages: TGroupBox;
+    ShowErrors: TCheckListBox;
     procedure OpenFileClick(Sender: TObject);
     procedure CompilerExecuteClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   end;
 
 var
@@ -35,24 +40,35 @@ procedure TDebugMain.CompilerExecuteClick(Sender: TObject);
 begin
   var Compiler := TPas2JSCompilerDelphi.Create;
   Compiler.Defines := Defines.Text;
-  Compiler.SearchPath := '..\..\..\Pas2JS\packages\rtl\namespaced;' + SearchPath.Text;
+  Compiler.InclusePath := IncludePath.Text;
   Compiler.OutputPath := OutputPath.Text;
   Compiler.OnCompilerMessage :=
     procedure(CompilerMessage: TCompilerMessage)
+
+      function CompilerMessageChecked(var Color: TAlphaColor): Boolean;
+      const
+        COLOR_INDEX: array[0..4] of TAlphaColor = (TAlphaColors.Red, TAlphaColors.Crimson, TAlphaColors.Orange, TAlphaColors.Darkorchid, TAlphaColors.Black);
+
+      begin
+        var ItemIndex := ShowErrors.Items.IndexOf(CompilerMessage.&Type);
+
+        Result := (ItemIndex > -1) and ShowErrors.Checked[ItemIndex];
+
+        if Result then
+          Color := COLOR_INDEX[ItemIndex];
+      end;
+
     begin
+      var Color: TAlphaColor;
       var Line := CompilerOutput.Words.Add;
 
-      if CompilerMessage.&Type = 'Fatal' then
-        Line.FontColor := TAlphaColors.Red
-      else if CompilerMessage.&Type = 'Error' then
-        Line.FontColor := TAlphaColors.Crimson
-      else if CompilerMessage.&Type = 'Warning' then
-        Line.FontColor := TAlphaColors.Orange
-      else if CompilerMessage.&Type = 'Hint' then
-        Line.FontColor := TAlphaColors.Darkorchid;
-
-      Line.Caption := Format('Line: %d, Column: %d - %s: %s'#13#10, [CompilerMessage.Line, CompilerMessage.Col, CompilerMessage.&Type, CompilerMessage.Message]);
+      if CompilerMessageChecked(Color) then
+      begin
+        Line.Caption := Format('Line: %d, Column: %d - %s: %s'#13#10, [CompilerMessage.Line, CompilerMessage.Col, CompilerMessage.&Type, CompilerMessage.Message]);
+        Line.FontColor := Color;
+      end;
     end;
+  Compiler.SearchPath := SearchPath.Text;
   CompilerOutput.AutoSize := False;
   CompilerOutput.Caption := EmptyStr;
 
@@ -69,6 +85,13 @@ begin
   CompilerOutput.AutoSize := True;
 
   Compiler.Free;
+end;
+
+procedure TDebugMain.FormCreate(Sender: TObject);
+begin
+  inherited;
+
+  ShowErrors.CheckAll(TCheckBoxState.cbChecked);
 end;
 
 procedure TDebugMain.OpenFileClick(Sender: TObject);
